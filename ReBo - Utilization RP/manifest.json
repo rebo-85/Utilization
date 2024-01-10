@@ -1,0 +1,30 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "pack.name",
+    "description": "pack.description",
+    "uuid": "0d9feae7-47a6-47df-921d-dfb679f7aff5",
+    "version": [1,0,0],
+    "min_engine_version": [1,19,50]
+  },
+  "metadata": {
+    "authors": ["pack.authors"],
+    "generated_with": {
+      "minecraft_pack_tools": ["3.2.0"]
+    }
+  },
+  "modules": [
+    {
+      "description": "pack.description",
+      "version": [1,0,0],
+      "uuid": "576191bd-d348-4f49-9980-38c772d8eb79",
+      "type": "resources"
+    }
+  ],
+  "dependencies": [
+    {
+      "uuid": "f6be82a8-bc86-4399-b7da-f01ff510c91b",
+      "version": [1,0,0]
+    }
+  ]
+}
