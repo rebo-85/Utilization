@@ -2,20 +2,30 @@ import { world, system } from "@minecraft/server";
 
 export class reboDB {
   constructor() {
-    this.database = ws.getObjective("rebo:database");
-    if (this.database === undefined) {
-      ws.addObjective("rebo:database", "Database List");
-    }
+    system.runInterval(() => {
+      this.database = ws.getObjective("rebo:database");
+      if (this.database === undefined) {
+        ws.addObjective("rebo:database", "rebo:database");
+      }
+      this.tables = this.database.getParticipants();
+    });
   }
+  
   /**
    * 
    * @param {string} tableName 
    */
-  addTable(tableName) {
-    this.checkIfTableExist(tableName).catch(() => {
-      ws.getObjective("rebo:database").setScore(tableName, this.tables.length);
-      this.database.setScore(tableName, this.tables.length);
-      this.log(`${tableName} table is added to the database.`);
+  async addTable(tableName) {
+    await this.checkIfTableExists(tableName).catch((error) => {
+      if (!error) {
+        const tableObjective = ws.getObjective("rebo:database");
+        tableObjective.setScore( tableName, tableObjective.getParticipants().length );
+        this.database = tableObjective;
+
+        ws.addObjective(`database:${tableName}`, `database:${tableName}`);
+        
+        this.log(`${tableName} table is added to the database.`);
+      }
     });
   }
   /**
@@ -24,39 +34,60 @@ export class reboDB {
    * @param {string} fieldName 
    * @param {enum} fieldType 'string', 'bool', 'number'
    */
-  addField(tableName, fieldName, fieldType) {
-    this.checkIfTableExist(tableName)
-      .then(() => {
-        // const types = ['string', 'bool', 'number'] //                            << Ends here
-        this.log(`${fieldName} field is added to ${tableName} table.`);
+  async addField(tableName, fieldName, fieldType) {
+    await this.checkIfFieldExists(tableName, fieldName)
+      .then((field) => {
+        this.logWarning(`${field.displayName} field already exists in ${tableName} table.`);
       })
-      .catch(() => {
-        this.logError(`${tableName} table does not exists.`);
+      .catch((error) => {
+        if (!error) {
+          const fieldObjective = ws.getObjective(`database:${tableName}`);
+          fieldObjective.setScore( fieldName, fieldObjective.getParticipants().length );
+          this.log(`${fieldName} field is added to ${tableName} table.`);
+        }
       });
   }
 
-  checkIfTableExist(tableName) {
+  async checkIfTableExists(tableName) {
     return new Promise((resolve, reject) => {
-      this.tables = this.database.getParticipants();
-      const tableExists = this.tables.some(
-        (table) => table.displayName === tableName
-      );
-      if (tableExists) {
-        resolve(tableName);
-      } else {
-        reject(tableName);
+      try {
+        const table = this.tables.find( (table) => table.displayName === tableName );
+        if (table) {
+          resolve(table);
+        }
+        else {
+          reject();
+        }
+      } catch (error) {
+        this.logError(error)
       }
+    });
+  }
+  
+  async checkIfFieldExists(tableName, fieldName) {
+    return new Promise(async (resolve, reject) => {
+      await this.checkIfTableExists(tableName)
+        .then((table) => {
+          try {
+            const field = ws.getObjective(`database:${tableName}`).getParticipants() .find((field) => field.displayName === fieldName);
+            if (field) resolve(field);
+            else reject();
+          } catch (error) {
+            this.logError(error);
+          }
+        })
+        .catch((error) => { if (!error) this.logWarning(`${tableName} table does not exists.`); });
     });
   }
 
   log(message) {
-    console.warn(`§l[ReboDB]: §r§a( ✔ ) ${message}`);
+    console.log(`[ReboDB] - ( ✔ ) ${message}`);
   }
   logWarning(message) {
-    console.warn(`§l[ReboDB]: §r§6( ! ) ${message}`);
+    console.warn(`[ReboDB] - ( ! ) ${message}`);
   }
   logError(message) {
-    console.warn(`§l[ReboDB]: §r§c( X ) ${message}`);
+    console.error(`[ReboDB] - ( X ) ${message}`);
   }
 }
 
