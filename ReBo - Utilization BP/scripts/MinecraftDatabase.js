@@ -1,5 +1,3 @@
-// MinecraftDatabase.js
-
 import { world } from "@minecraft/server";
 
 export class MinecraftDatabase {
@@ -7,44 +5,87 @@ export class MinecraftDatabase {
     this.databaseName = databaseName;
     this.databaseObjective = world.scoreboard.getObjective(databaseName);
     if (!this.databaseObjective) {
-      world.scoreboard.addObjective(databaseName, databaseName);
-      this.databaseObjective = world.scoreboard.getObjective(databaseName);
+      try {
+        utils.addScoreObjective(databaseName, databaseName);
+        this.databaseObjective = world.scoreboard.getObjective(databaseName);
+      } catch (error) {
+        console.error("Error creating database objective:", error);
+      }
     }
   }
 
-  addEntry(player, value) {
-    // Convert the value to a string and store it as a score
-    const stringValue = JSON.stringify(value);
-    const numericValue = parseFloat(stringValue);
-    
-    if (!isNaN(numericValue)) {
-      this.databaseObjective.setScore(player, numericValue);
-    } else {
-      console.error(`Failed to add entry for player ${player}. Value must be a number.`);
-    }
-  }
-
-  getEntry(player) {
-    // Retrieve the stored value, convert it back to a string, and then deserialize
-    const rawValue = this.databaseObjective.getScore(player);
+  addEntry(player, score) {
     try {
-      return rawValue !== null ? JSON.parse(rawValue.toString()) : null;
+      this.databaseObjective.setScore(player, score);
     } catch (error) {
-      console.error(`Failed to parse entry for player ${player}.`, error);
+      console.error("Error adding entry:", error);
+    }
+  }
+
+  addEntryIfHigher(player, score) {
+    try {
+      const currentScore = this.getScore(player);
+      if (currentScore === undefined || score > currentScore) {
+        this.addEntry(player, score);
+        console.log(`Added entry for ${player} with score ${score}`);
+      } else {
+        console.log(
+          `Score for ${player} (${currentScore}) is higher or equal. Not adding entry.`
+        );
+      }
+    } catch (error) {
+      console.error("Error adding entry:", error);
+    }
+  }
+
+  getScore(player) {
+    try {
+      const isParticipantExist = this.databaseObjective.hasParticipant(player);
+      if (isParticipantExist) return this.databaseObjective.getScore(player);
+      else return null;
+    } catch (error) {
+      console.error("Error getting score:", error);
       return null;
     }
-  } 
+  }
 
   removeEntry(player) {
-    this.databaseObjective.resetScore(player);
+    try {
+      this.databaseObjective.removeParticipant(player);
+    } catch (error) {
+      console.error("Error removing entry:", error);
+    }
   }
 
   getAllEntries() {
-    const entries = this.databaseObjective.getParticipants();
-    return entries.map((entry) => ({
-      player: entry,
-      value: this.getEntry(entry),
-    }));
+    try {
+      const entries = this.databaseObjective.getParticipants();
+      return entries.map((entry) => ({
+        player: entry,
+        score: this.getScore(entry),
+      }));
+    } catch (error) {
+      console.error("Error getting all entries:", error);
+      return [];
+    }
+  }
+
+  getHighestEntry() {
+    try {
+      const allEntries = this.getAllEntries();
+      if (allEntries.length === 0) {
+        return null; // No entries, return null
+      }
+
+      // Find the entry with the highest score
+      const highestEntry = allEntries.reduce((prev, current) => {
+        return current.score > prev.score ? current : prev;
+      });
+
+      return highestEntry;
+    } catch (error) {
+      console.error("Error getting highest score:", error);
+      return null;
+    }
   }
 }
-  
