@@ -40,7 +40,8 @@ class Utils {
    * @param {...string} commands - The commands to be executed.
    * @param { Entity } entity - The executed entity.
    * @returns { int } The number of successful commands executed.
-   */ async entityCommandAsync(entity, ...commands) {
+   */ 
+  async entityCommandAsync(entity, ...commands) {
     try {
       let successCount = 0;
 
@@ -244,18 +245,19 @@ class Utils {
   }
   selectorToEntityQueryOptions(selector) {
     const options = {};
-    const regex = /@e\[(.+)\]/;
+    const regex = /@([aeprs]|initiator)\[(.+)\]/;
     const matches = selector.match(regex);
 
-    if (matches && matches.length === 2) {
-      const attributes = matches[1].split(",");
+    if (matches && matches.length === 3) {
+      const entityType = matches[1];
+      const attributes = matches[2].split(",");
       let excludeFamilies = [];
       let excludeGameModes = [];
       let excludeTags = [];
       let excludeTypes = [];
       let families = [];
       let tags = [];
-      options.location = {};
+      options.location = { x: 0, y: 0, z: 0 }; // Initialize location object with default values
 
       attributes.forEach((attribute) => {
         const [key, value] = attribute.split("=");
@@ -355,10 +357,10 @@ class Utils {
       });
     }
 
-    if (selector.includes('@a') || selector.includes('@p')) {
+    if (selector.includes('@a') || selector.includes('@p') || selector.includes('@initiator')) {
       options.type = "minecraft:player";
     }
-    if (selector.includes('@p')) {
+    if (selector.includes('@p') || selector.includes('@initiator')) {
       options.closest = 1;
     }
 
@@ -367,17 +369,17 @@ class Utils {
 
   test(value = "test", type = "chat") {
     switch (type) {
-      case "chat":
-        this.serverCommandAsync(`say ${value}`);
+    case "chat":
+        this.serverCommandAsync(`say ${JSON.stringify(value, null, 2)}`);
         break;
       case "error":
         console.error(value);
         break;
       case "log":
-        console.log(value);
+        console.log(JSON.stringify(value, null, 2));
         break;
       default:
-        this.serverCommandAsync(`say ${value}`);
+        this.serverCommandAsync(`say ${JSON.stringify(value, null, 2)}`);
         break;
     }
   }

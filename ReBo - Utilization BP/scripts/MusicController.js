@@ -34,6 +34,7 @@ const musicTrack = [
   new musicData(`music.bumper_cars`, `@a[tag=bumperCars]`, 1220),
   new musicData(`music.race`, `@a[tag=race]`, 730),
 
+  // new musicData(`music.bumper_cars`, `@a[x=~,y=~,z=~,dx=-10,dy=3,dz=-20]`, 1220, new Vector3(-99, 67, -92)),
   // new musicData(`music.circus`, `@a[r=20]`, 730, new Vector3(-71, 72, -27)),
   // new musicData(`music.race`, `@a[x=~,y=~,z=~,dx=41,dy=5,dz=60]`, 730, new Vector3(-37, 69, -54)),
   // new musicData(`music.bumper_cars`, `@a[x=~,y=~,z=~,dx=-24,dy=5,dz=-31]`, 1220, new Vector3(-89, 67, -86)),
@@ -47,6 +48,26 @@ class MusicController {
       `scoreboard players reset @a ${objID2}`,
       `stopsound @a`
     )
+
+    utils.afterEvents.playerJoin.subscribe((e) => {
+      const playerName = e.playerName;
+
+      const runInterval1 = system.runInterval(async () => {
+        const successCount = await utils.serverCommandAsync(
+          `testfor ${playerName}`
+        )
+        if (successCount > 0) {
+          system.runTimeout(() => {
+            utils.serverCommandAsync(
+              `scoreboard players reset ${playerName} ${objID}`,
+              `scoreboard players reset ${playerName} ${objID2}`
+            );
+          }, 40);
+
+          system.clearRun(runInterval1);
+        }
+      })
+    });
 
     system.runInterval(async() => {
       utils.addScoreObjective(`${objID}`, ``);
@@ -88,6 +109,7 @@ class MusicController {
       );
     });
   }
+
 }
 
 export const musicController = new MusicController();
