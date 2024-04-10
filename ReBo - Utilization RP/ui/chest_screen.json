@@ -1,0 +1,111 @@
+
+
+{
+  "namespace": "chest",
+  "chest_label": {
+    "type": "label",
+    "offset": [ 7, -1 ],
+    "anchor_from": "top_left",
+    "anchor_to": "top_left",
+    "text": "$container_title",
+    "size": [ "90%", "default" ],
+    "color": "$title_text_color",
+    "layer": 2
+  },
+
+  "small_chest_grid": {
+    "type": "grid",
+    "anchor_from": "top_left",
+    "anchor_to": "top_left",
+    "grid_item_template": "chest.chest_grid_item",
+    "collection_name": "container_items",
+
+    "$temp_text": "$container_title",
+    "variables": [
+      {
+        "requires": "(not ($temp_text = 'container.chest' or $temp_text = 'container.enderchest' or $temp_text = 'entity.chest_boat.name' or $temp_text = 'entity.chest_minecart.name'))",
+        "$size": [162, 90],
+        "$grid_dimensions": [9, 5]
+      },
+      {
+        "requires": "($temp_text = 'container.chest' or $temp_text = 'container.enderchest' or $temp_text = 'entity.chest_boat.name' or $temp_text = 'entity.chest_minecart.name')",
+        "$size": [162, 54],
+        "$grid_dimensions": [9, 3]
+      }
+    ],
+    "size": "$size",
+    "grid_dimensions": "$grid_dimensions"
+  },
+
+  "small_chest_panel_top_half": {
+    "type": "panel",
+    "size": ["100%", "100%c"],
+    "offset": [0, 12],
+    "anchor_to": "top_left",
+    "anchor_from": "top_left",
+    "controls": [
+      { "chest_label@chest.chest_label": {} },
+      {
+        "small_chest_grid@chest.small_chest_grid": {
+          "offset": [7, 9]
+        }
+      }
+    ]
+  },
+
+  "small_chest_panel/root_panel": {
+    "layer": 1,
+    "controls": [
+      {
+        "common_panel@common.common_panel": {
+          "$temp_text": "$container_title",
+          "variables": [
+            {
+              "requires": "(not ($temp_text = 'container.chest' or $temp_text = 'container.enderchest' or $temp_text = 'entity.chest_boat.name' or $temp_text = 'entity.chest_minecart.name'))",
+              "$size": ["100%", "122.5%"]
+            },
+            {
+              "requires": "($temp_text = 'container.chest' or $temp_text = 'container.enderchest' or $temp_text = 'entity.chest_boat.name' or $temp_text = 'entity.chest_minecart.name')",
+              "$size": ["100%", "100%"]
+            }
+          ],
+          "size": "$size"
+        }
+      },
+      {
+        "chest_panel": {
+          "type": "panel",
+          "layer": 5,
+          "$temp_text": "$container_title",
+          "variables": [
+            {
+              "requires": "(not ($temp_text = 'container.chest' or $temp_text = 'container.enderchest' or $temp_text = 'entity.chest_boat.name' or $temp_text = 'entity.chest_minecart.name'))",
+              "$size": ["100%", "122.5%"]
+            },
+            {
+              "requires": "($temp_text = 'container.chest' or $temp_text = 'container.enderchest' or $temp_text = 'entity.chest_boat.name' or $temp_text = 'entity.chest_minecart.name')",
+              "$size": ["100%", "100%"]
+            }
+          ],
+          "size": "$size",
+          "controls": [
+            {
+              "small_chest_panel_top_half@chest.small_chest_panel_top_half": {}
+            },
+            {
+              "inventory_panel_bottom_half_with_label@common.inventory_panel_bottom_half_with_label": {}
+            },
+            { "hotbar_grid@common.hotbar_grid_template": {} },
+            {
+              "inventory_take_progress_icon_button@common.inventory_take_progress_icon_button": {}
+            }
+          ]
+        }
+      },
+      {
+        "inventory_selected_icon_button@common.inventory_selected_icon_button": {}
+      },
+      { "gamepad_cursor@common.gamepad_cursor_button": {} }
+    ]
+  }
+}

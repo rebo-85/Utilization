@@ -12,6 +12,17 @@ class Utils {
   scoreboard = world.scoreboard;
 
   /**
+   * Gets the inventory of the entity.
+   * @returns { Container } Entity inventory.
+   */
+  getInventory(entity) {
+    try {
+      return entity.getComponent("minecraft:inventory").container;
+    } catch (error) {
+      return console.error(error);
+    }
+  }
+  /**
    * Run commands synchronously from actor.
    * @param {...string} commands - The commands to be executed.
    * @param { Entity } entity - The executed entity.
@@ -40,7 +51,7 @@ class Utils {
    * @param {...string} commands - The commands to be executed.
    * @param { Entity } entity - The executed entity.
    * @returns { int } The number of successful commands executed.
-   */ 
+   */
   async entityCommandAsync(entity, ...commands) {
     try {
       let successCount = 0;
@@ -357,10 +368,14 @@ class Utils {
       });
     }
 
-    if (selector.includes('@a') || selector.includes('@p') || selector.includes('@initiator')) {
+    if (
+      selector.includes("@a") ||
+      selector.includes("@p") ||
+      selector.includes("@initiator")
+    ) {
       options.type = "minecraft:player";
     }
-    if (selector.includes('@p') || selector.includes('@initiator')) {
+    if (selector.includes("@p") || selector.includes("@initiator")) {
       options.closest = 1;
     }
 
@@ -369,7 +384,7 @@ class Utils {
 
   test(value = "test", type = "chat") {
     switch (type) {
-    case "chat":
+      case "chat":
         this.serverCommandAsync(`say ${JSON.stringify(value, null, 2)}`);
         break;
       case "error":
