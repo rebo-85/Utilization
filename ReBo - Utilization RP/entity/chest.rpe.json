@@ -1,0 +1,32 @@
+{
+    "format_version": "1.10.0",
+    "minecraft:client_entity": {
+      "description": {
+        "identifier": "rebo:chest",
+        "materials": { "default": "entity_alphatest" },
+        "textures": {
+          "default": "textures/entity/chest/default"
+        },
+        "geometry": {
+          "default": "geometry.chest"
+        },
+        "animations": {
+          "ac.root": "controller.animation.chest.root",
+          "ac.interaction": "controller.animation.chest.interaction",
+          "a.open": "animation.chest.open",
+          "a.close": "animation.chest.close"
+        },
+        "sound_effects": {
+          "sfx.open": "random.chestopen",
+          "sfx.close": "random.chestclosed"
+        },
+        "scripts": {
+          "animate": [
+            "ac.root"
+          ]
+        },    
+        "render_controllers": [ "controller.render.default" ]
+      }
+    }
+  }
+  

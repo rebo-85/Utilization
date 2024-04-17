@@ -1,8 +1,22 @@
 import {
+  ItemStack,
   ScoreboardIdentity,
   ScoreboardObjective,
+  EntityInventoryComponent,
+  EntityEquippableComponent,
   world,
 } from "@minecraft/server";
+
+/* 
+*******************************************************************************************************************************
+DISCLAIMER: 
+  This code is provided "as is" without warranty of any kind, either express or implied, including but not limited to 
+  the implied warranties of merchantability and fitness for a particular purpose. ReBo and any contributors provide 
+  this code for educational and informational purposes only. Users are encouraged to freely use, modify, and distribute 
+  this code for non-commercial purposes. Any commercial use of this code or derivative works thereof is strictly prohibited 
+  unless explicit permission is obtained from ReBo and any contributors.
+******************************************************************************************************************************* 
+*/
 
 class Utils {
   afterEvents = world.afterEvents;
@@ -17,7 +31,18 @@ class Utils {
    */
   getInventory(entity) {
     try {
-      return entity.getComponent("minecraft:inventory").container;
+      return entity.getComponent(EntityInventoryComponent.componentId).container;
+    } catch (error) {
+      return console.error(error);
+    }
+  }
+  /**
+   * Gets the equipment of the entity in the specified slot.
+   * @returns { ItemStack }
+   */
+  getEquipment(entity, slot) {
+    try {
+      return entity.getComponent(EntityEquippableComponent.componentId).getEquipment(slot);
     } catch (error) {
       return console.error(error);
     }
