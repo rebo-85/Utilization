@@ -34,7 +34,6 @@ class Utils {
       if (!this.players[0]) {
         system.runTimeout(() => {
           this.players = this.overworld.getPlayers();
-          this.test(this.players, "error");
         }, 200);
       }
     });
