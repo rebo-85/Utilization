@@ -5,6 +5,7 @@ import {
   EntityInventoryComponent,
   EntityEquippableComponent,
   world,
+  system,
 } from "@minecraft/server";
 
 /* 
@@ -18,12 +19,30 @@ DISCLAIMER:
 ******************************************************************************************************************************* 
 */
 
+ 
+
 class Utils {
   afterEvents = world.afterEvents;
   beforeEvents = world.beforeEvents;
   overworld = world.getDimension("overworld");
   players = this.overworld.getPlayers();
   scoreboard = world.scoreboard;
+
+  constructor() {
+      this.afterEvents.playerJoin.subscribe(() => {
+      this.players = this.overworld.getPlayers();
+      if (!this.players[0]) {
+        system.runTimeout(() => {
+          this.players = this.overworld.getPlayers();
+          this.test(this.players, "error");
+        }, 200);
+      }
+    });
+    
+    this.afterEvents.playerLeave.subscribe(() => {
+      this.players = this.overworld.getPlayers();
+    });
+  }
 
   /**
    * Gets the inventory of the entity.
@@ -408,18 +427,19 @@ class Utils {
   }
 
   test(value = "test", type = "chat") {
+    value = JSON.stringify(value, null, 2);
     switch (type) {
       case "chat":
-        this.serverCommandAsync(`say ${JSON.stringify(value, null, 2)}`);
+        this.serverCommandAsync(`say ${value}`);
         break;
       case "error":
         console.error(value);
         break;
       case "log":
-        console.log(JSON.stringify(value, null, 2));
+        console.log(value);
         break;
       default:
-        this.serverCommandAsync(`say ${JSON.stringify(value, null, 2)}`);
+        this.serverCommandAsync(`say ${value}`);
         break;
     }
   }
@@ -462,8 +482,7 @@ export class Checkpoint {
   return() {
     return utils.entityCommandAsync(
       this.entity, 
-      `teleport @s ${this.x} ${this.y} ${this.z} ${this.rx} ${this.ry}`,
-      `teleport @s ${this.x} ${this.y} ${this.z} facing ${this.fx} ${this.fy} ${this.fz}`,
+      `teleport @s ${this.x} ${this.y} ${this.z} ${this.ry} ${this.rx}`,
       );
   }
 }
