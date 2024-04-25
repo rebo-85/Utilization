@@ -189,12 +189,17 @@ class Utils {
   }
   /**
    * Returns a set of entities based on a set of conditions defined via the EntityQueryOptions set of filter criteria.
-   * @param { EntityQueryOptions } option - Additional options that can be used to filter the set of entities returned.
+   * @param { EntityQueryOptions | String} filter - Additional options that can be used to filter the set of entities returned.
    * @returns { Entity[]|null } The entities array matched with the options.
    */
-  getEntities(option) {
+  getEntities(filter) {
     try {
-      return this.overworld.getEntities(option);
+      if (typeof filter === "string") {
+        return this.overworld.getEntities(
+          this.selectorToEntityQueryOptions(filter)
+        );
+      }
+      return this.overworld.getEntities(filter);
     } catch (error) {
       console.error("Error getting entities:", error);
       return null;
