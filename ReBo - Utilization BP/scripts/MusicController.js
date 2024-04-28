@@ -1,5 +1,6 @@
 import { system } from "@minecraft/server";
 import { utils, Vector3 } from "Utils";
+import { Music } from "Modules";
 
 /* 
 *******************************************************************************************************************************
@@ -20,36 +21,12 @@ const defaultVolume = 0.5;
 const defaultPitch = 1.0;
 
 
-class musicData {
-  /**
-   * @param {string} track - Identifier of the sound/music defined in the 'sound_definitions.json'.
-   * @param {string} selector - Selector for entities to music to play with.
-   * @param {int} duration - Duration of the sound/music in ticks.
-   * @param {Vector3} origin - Origin coordinates of the selector.
-   * @param {float} volume - Volume of the sound/music. 
-   * @param {float} pitch - Pitch of the sound/music. 
-   */
-  constructor(track, selector, duration, origin = new Vector3(), volume = defaultVolume, pitch = defaultPitch){
-    this.track = track;
-    this.selector = selector;
-    this.duration = duration;
-    this.origin = origin;
-    this.volume = volume;
-    this.pitch = pitch;
-  }
-}
-
 const musicTrack = [
-  new musicData(`music.main`, `@a`, 930),
-  new musicData(`music.circus`, `@a[r=20]`, 730, new Vector3(-71, 72, -27)),
-  new musicData(`music.circus`, `@a[tag=caroussel]`, 730),
-  new musicData(`music.bumper_cars`, `@a[tag=bumperCars]`, 1220),
-  new musicData(`music.race`, `@a[tag=race]`, 730),
-
-  // new musicData(`music.bumper_cars`, `@a[x=~,y=~,z=~,dx=-10,dy=3,dz=-20]`, 1220, new Vector3(-99, 67, -92)),
-  // new musicData(`music.circus`, `@a[r=20]`, 730, new Vector3(-71, 72, -27)),
-  // new musicData(`music.race`, `@a[x=~,y=~,z=~,dx=41,dy=5,dz=60]`, 730, new Vector3(-37, 69, -54)),
-  // new musicData(`music.bumper_cars`, `@a[x=~,y=~,z=~,dx=-24,dy=5,dz=-31]`, 1220, new Vector3(-89, 67, -86)),
+  new Music(`music.main`, `@a`, 930),
+  new Music(`music.circus`, `@a[r=20]`, 730, new Vector3(-71, 72, -27)),
+  new Music(`music.circus`, `@a[tag=caroussel]`, 730),
+  new Music(`music.bumper_cars`, `@a[tag=bumperCars]`, 1220),
+  new Music(`music.race`, `@a[tag=race]`, 730),
   
 ];
 
