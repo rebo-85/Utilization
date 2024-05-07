@@ -11,8 +11,7 @@
   */
 
 import {utils} from 'Utils';
-import {TicksPerSecond, system} from '@minecraft/server';
-
+import {Entity, TicksPerSecond, system} from '@minecraft/server';
 
 export class ScoreboardDB {
   /**
@@ -107,6 +106,8 @@ export class ScoreboardDB {
   }
 }
 
+
+
 export class Vector2 {
   /**
    * @param {float} x - X-coordinate.
@@ -120,6 +121,8 @@ export class Vector2 {
     return `${this.x} ${this.y}`;
   }
 }
+
+
 
 export class Vector3 {
   /**
@@ -160,17 +163,17 @@ export class Music {
   }
 }
 
+
 export class Checkpoint {
-  constructor(entity) {
-    this.entity = entity;
-    this.x = entity.location.x;
-    this.y = entity.location.y;
-    this.z = entity.location.z;
-    this.rx = entity.getRotation().x;
-    this.ry = entity.getRotation().y;
-    this.fx = entity.getViewDirection().x;
-    this.fy = entity.getViewDirection().y;
-    this.fz = entity.getViewDirection().z;
+  constructor(x, y, z, rx, ry) {
+    this.save(x, y, z, rx, ry);
+  }
+  save(x, y, z, rx, ry) {
+    this.x = x;
+    this.y = y;
+    this.z = z;
+    this.rx = rx;
+    this.ry = ry;
   }
   return() {
     return utils.entityCommandAsync(
@@ -179,6 +182,10 @@ export class Checkpoint {
     );
   }
 }
+
+Entity.prototype.checkpoint = function() {
+  return new Checkpoint(this.location.x, this.location.y, this.location.z, this.getRotation().x, this.getRotation().y)
+};
 
 export class Fade {
   /**
