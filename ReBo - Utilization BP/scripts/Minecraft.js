@@ -2,46 +2,31 @@
 ================================================================================================================================
   DISCLAIMER: 
     This code is provided "as is" without warranty of any kind, either express or implied, including but not limited to 
-    the implied warranties of merchantability and fitness for a particular purpose. ReBo and any contributors provide 
+    the implied warranties of merchantability and fitness for a particular purpose. The contributors provide 
     this code for educational and informational purposes only. Users are encouraged to freely use, modify, and distribute 
     this code for non-commercial purposes. Any commercial use of this code or derivative works thereof is strictly prohibited 
-    unless explicit permission is obtained from ReBo and any contributors.
+    unless explicit permission is obtained from the contributors.
 ================================================================================================================================= 
 */
 
 import {
   EntityInventoryComponent,
   EntityEquippableComponent,
+  MinecraftDimensionTypes,
+  Dimension,
   Entity,
-  world,
-  system,
+  world as w,
+  system as s,
 } from "@minecraft/server";
 
-export const afterEvents = world.afterEvents;
-export const beforeEvents = world.beforeEvents;
-export const scoreboard = world.scoreboard;
-export const overworld = world.getDimension("overworld");
-export let players = getPlayers();
-export let currentTick = 0;
-export function getPlayers() {
-  return overworld.getPlayers();
-}
-
-export function getBlock(vector3) {
-  return this.overworld.getBlock(vector3);
-}
-
-export function getEntities(filter) {
-  if (typeof filter === "string") {
-    const regex = /^@(a|p|r|e|s|initiator)(?:\[(.+)\])?$/;
-    const matches = filter.match(regex);
-    if (matches) {
-      return overworld.getEntities(filter.toEQO());
-    }
-    return [];
-  }
-  return overworld.getEntities(filter);
-}
+export const world = w;
+export const system = s;
+export const afterEvents = w.afterEvents;
+export const beforeEvents = w.beforeEvents;
+export const scoreboard = w.scoreboard;
+export const overworld = w.getDimension(MinecraftDimensionTypes.overworld);
+export const nether = w.getDimension(MinecraftDimensionTypes.nether);
+export const end = w.getDimension(MinecraftDimensionTypes.theEnd);
 
 export function getScoreboard(id) {
   return scoreboard.getObjective(id);
@@ -56,9 +41,11 @@ export function addScoreboard(id, displayName) {
 export function addScore(id, participant, score) {
   return getScoreboard(id).addScore(participant, score);
 }
+
 export function getScore(id, participant) {
   return getScoreboard(id).getScore(participant);
 }
+
 export function setScore(id, participant, score) {
   return getScoreboard(id).setScore(participant, score);
 }
@@ -68,10 +55,10 @@ export function removeParticipant(id, participant) {
 }
 
 export function test(value, type = "chat") {
-  value = JSON.stringify(value, null, 2);
+  value = JSON.stringify(value, null, 0);
   switch (type) {
     case "chat":
-      commandRunAsync(`say ${value}`);
+      overworld.RunCommandAsync(`say ${value}`);
       break;
     case "error":
       console.error(value);
@@ -80,70 +67,12 @@ export function test(value, type = "chat") {
       console.log(value);
       break;
     default:
-      commandRunAsync(`say ${value}`);
+      overworld.RunCommandAsync(`say ${value}`);
       break;
   }
 }
 
-export function runInterval(func, interval = 1) {
-  return new RunInterval(func, interval);
-}
-
-export function runTimeout(func, timeOut = 1) {
-  return new RunTimeOut(func, timeOut);
-}
-
-export function commandRun(...commands) {
-  let successCount = 0;
-
-  const flattenedCommands = commands.flat();
-
-  flattenedCommands.forEach((command) => {
-    if (overworld.runCommand(`${command}`).successCount > 0) {
-      successCount++;
-    }
-  });
-  return { successCount: successCount };
-}
-
-export async function commandRunAsync(...commands) {
-  let successCount = 0;
-
-  const flattenedCommands = commands.flat();
-
-  const commandPromises = flattenedCommands.map(async (command) => {
-    const result = await overworld.runCommandAsync(command);
-    if (result.successCount > 0) {
-      successCount++;
-    }
-  });
-
-  await Promise.all(commandPromises);
-
-  return { successCount: successCount };
-}
-/* 
-================================================================================================================================ 
-*/
-
-afterEvents.playerJoin.subscribe(() => {
-  players = getPlayers();
-  if (!players[0]) {
-    system.runTimeout(() => {
-      players = getPlayers();
-    }, 200);
-  }
-});
-
-afterEvents.playerLeave.subscribe(() => {
-  players = getPlayers();
-});
-
-system.runInterval(() => {
-  currentTick = system.currentTick;
-});
-
-class RunInterval {
+export class RunInterval {
   constructor(func, interval) {
     this.process = system.runInterval(func, interval);
   }
@@ -152,7 +81,7 @@ class RunInterval {
   }
 }
 
-class RunTimeOut {
+export class RunTimeOut {
   constructor(func, timeOut) {
     this.process = system.runTimeout(func, timeOut);
   }
@@ -160,34 +89,75 @@ class RunTimeOut {
     system.clearRun(this.process);
   }
 }
+
+export class Vector2 {
+  constructor(x = 0, y = 0) {
+    this.x = x;
+    this.y = y;
+  }
+  toString() {
+    return `${this.x} ${this.y}`;
+  }
+}
+
+export class Vector3 {
+  constructor(x = 0, y = 0, z = 0) {
+    this.x = x;
+    this.y = y;
+    this.z = z;
+  }
+  toVector2() {
+    return new Vector2(this.x, this.y);
+  }
+  toString() {
+    return `${this.x} ${this.y} ${this.z}`;
+  }
+}
+
+export class Checkpoint {
+  constructor(entity) {
+    this.entity = entity;
+    this.save();
+  }
+  save() {
+    this.location = this.entity.GetLocation();
+    this.rotation = this.entity.GetRotation();
+  }
+  return() {
+    this.entity.RunCommandAsync(`teleport @s ${this.location.toString()} ${this.rotation.y} ${this.rotation.x}`)
+  }
+}
+
 /* 
 ================================================================================================================================ 
 */
 
-Entity.prototype.getCheckpoint = function () {
-  return new Checkpoint(
-    this.location.x,
-    this.location.y,
-    this.location.z,
-    this.getRotation().x,
-    this.getRotation().y
-  );
+
+
+Entity.prototype.GetRotation = function () {
+  return new Vector2(this.getRotation().x, this.getRotation().y);
+}
+
+Entity.prototype.GetLocation = function () {
+  return new Vector3(this.location.x, this.location.y, this.location.z);
+}
+
+Entity.prototype.GetCheckpoint = function () {
+  return new Checkpoint(this);
 };
 
-Entity.prototype.getInventory = function () {
+Entity.prototype.GetInventory = function () {
   return this.getComponent(EntityInventoryComponent.componentId).container;
+
 };
 
-Entity.prototype.getEquipment = function (slot) {
+Entity.prototype.GetEquipment = function (slot) {
   return this.getComponent(EntityEquippableComponent.componentId).getEquipment(
     slot
   );
 };
-/* 
-================================================================================================================================ 
-*/
 
-Entity.prototype.commandRun = function (...commands) {
+Entity.prototype.RunCommand = function (...commands) {
   let successCount = 0;
 
   const flattenedCommands = commands.flat();
@@ -201,7 +171,7 @@ Entity.prototype.commandRun = function (...commands) {
   this.successCount = successCount;
 };
 
-Entity.prototype.commandRunAsync = async function (...commands) {
+Entity.prototype.RunCommandAsync = async function (...commands) {
   let successCount = 0;
   const flattenedCommands = commands.flat();
 
@@ -216,7 +186,49 @@ Entity.prototype.commandRunAsync = async function (...commands) {
 
   this.successCount = successCount;
 };
-String.prototype.toEQO = function () {
+
+Dimension.prototype.GetEntities = function (filter) {
+  if (typeof filter === "string") {
+    const regex = /^@(a|p|r|e|s|initiator)(?:\[(.+)\])?$/;
+    const matches = filter.match(regex);
+    if (matches) {
+      return this.getEntities(filter.ToEQO());
+    }
+    return [];
+  }
+  return this.getEntities(filter);
+}
+
+Dimension.prototype.RunCommand = function (...commands) {
+    let successCount = 0;
+  
+    const flattenedCommands = commands.flat();
+  
+    flattenedCommands.forEach((command) => {
+      if (this.runCommand(`${command}`).successCount > 0) {
+        successCount++;
+      }
+    });
+    return { successCount: successCount };
+}
+
+Dimension.prototype.RunCommandAsync = async function (...commands) {
+    let successCount = 0;
+    const flattenedCommands = commands.flat();
+  
+    const commandPromises = flattenedCommands.map(async (command) => {
+      const result = await this.runCommandAsync(command);
+      if (result.successCount > 0) {
+        successCount++;
+      }
+    });
+  
+    await Promise.all(commandPromises);
+  
+    return { successCount: successCount };
+}
+
+String.prototype.ToEQO = function () {
   const options = {};
   const regex = /^@(a|p|r|e|s|initiator)(?:\[(.+)\])?$/; // Updated regex to validate selectors
   const matches = this.match(regex);
@@ -239,7 +251,7 @@ String.prototype.toEQO = function () {
       switch (trimmedKey) {
         case "c":
           options.closest = parseInt(trimmedValue, 10);
-          
+
           // If @p, @s, @r, or @initiator is present, override closest to 1
           if (
             matches[1] === "p" ||
@@ -355,22 +367,20 @@ String.prototype.toEQO = function () {
       }
     });
 
-    if (matches[1] === 'a' || matches[1] === 'p'|| matches[1] === 'r'|| matches[1] === 's' || matches[1] === 'initiator') {
+    if (
+      matches[1] === "a" ||
+      matches[1] === "p" ||
+      matches[1] === "r" ||
+      matches[1] === "s" ||
+      matches[1] === "initiator"
+    ) {
       options.type = "minecraft:player";
 
       if (!(matches[1] === "a")) {
         options.closest = 1;
       }
     }
-    
-
 
     return options;
   }
 };
-
-
-
-/* 
-================================================================================================================================ 
-*/
