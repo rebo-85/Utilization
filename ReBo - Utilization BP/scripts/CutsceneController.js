@@ -1,21 +1,7 @@
-/* 
-================================================================================================================================
-  DISCLAIMER: 
-    This code is provided "as is" without warranty of any kind, either express or implied, including but not limited to 
-    the implied warranties of merchantability and fitness for a particular purpose. The contributors provide 
-    this code for educational and informational purposes only. Users are encouraged to freely use, modify, and distribute 
-    this code for non-commercial purposes. Any commercial use of this code or derivative works thereof is strictly prohibited 
-    unless explicit permission is obtained from the contributors.
-================================================================================================================================= 
-*/
-
 import { Cutscene, Scene, Fade, TimedCommand } from "Modules";
 
 const cutscene1Timeline = [
-  new TimedCommand(0.0, [
-        "effect @a blindness 0 0",
-        "playsound eternal.jingle @a",
-  ]),
+  new TimedCommand(0.0, ["effect @a blindness 0 0", "playsound eternal.jingle @a"]),
   new TimedCommand(4.0, [
     "event entity @e[family=cinematic] e:add-instant_despawn",
     "playsound music.intro @a",
@@ -49,46 +35,11 @@ const cutscene1Timeline = [
 ];
 
 const cutscene1 = [
-    new Scene(
-      "49951.94 171.28 -248.87",
-      "49950.34 178.41 -260.84",
-      "49943 195 -309",
-      7.0,
-    "in_sine",
-    new Fade(0.0, 4.0, 0.5)
-    ),
-  new Scene(
-    "50094.03 123.56 271.57",
-    "50050.95 166.77 286.06",
-    "50080 163 357",
-    7.0,
-    "in_out_sine",
-    new Fade(0.5, 1.5, 0.5)
-  ),
-  new Scene(
-    "49263.8 102.12 -180.28",
-    "49226.62 147.87 -122.78",
-    "49160.68 119.27 -177.89",
-    7.0,
-    "in_sine",
-    new Fade(0.5, 1.5, 0.5)
-  ),
-  new Scene(
-    "49875.24 118.19 -776.02",
-    "49857.2 183.81 -833.16",
-    "49824.42 128.81 -937.28",
-    7.0,
-    "in_sine",
-    new Fade(0.5, 1.5, 0.5)
-  ),
-  new Scene(
-    "50421.54 138.14 -406.23",
-    "50457.87 147.52 -400.49",
-    "50439.48 117.82 -447.68",
-    7.0,
-    "in_sine",
-    new Fade(0.5, 1.5, 0.5)
-  ),
+  new Scene("49951.94 171.28 -248.87", "49950.34 178.41 -260.84", "49943 195 -309", 7.0, "in_sine", new Fade(0.0, 4.0, 0.5)),
+  new Scene("50094.03 123.56 271.57", "50050.95 166.77 286.06", "50080 163 357", 7.0, "in_out_sine", new Fade(0.5, 1.5, 0.5)),
+  new Scene("49263.8 102.12 -180.28", "49226.62 147.87 -122.78", "49160.68 119.27 -177.89", 7.0, "in_sine", new Fade(0.5, 1.5, 0.5)),
+  new Scene("49875.24 118.19 -776.02", "49857.2 183.81 -833.16", "49824.42 128.81 -937.28", 7.0, "in_sine", new Fade(0.5, 1.5, 0.5)),
+  new Scene("50421.54 138.14 -406.23", "50457.87 147.52 -400.49", "50439.48 117.82 -447.68", 7.0, "in_sine", new Fade(0.5, 1.5, 0.5)),
 ];
 
 class CutsceneController {
@@ -108,12 +59,7 @@ class CutsceneController {
         "event entity @e[type=eternal:pointer] e:add-instant_despawn",
         "event entity @e[type=eternal:theia_guide] e:add-instant_despawn",
       ],
-      [
-        "effect @a blindness 0 0",
-        "inputpermission set @a camera enabled",
-        "inputpermission set @a movement enabled",
-        "tag @a remove stop_sequence",
-      ],
+      ["effect @a blindness 0 0", "inputpermission set @a camera enabled", "inputpermission set @a movement enabled", "tag @a remove stop_sequence"],
       cutscene1Timeline
     );
   }

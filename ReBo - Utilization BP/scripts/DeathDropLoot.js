@@ -1,58 +1,79 @@
-/* 
-================================================================================================================================
-  DISCLAIMER: 
-    This code is provided "as is" without warranty of any kind, either express or implied, including but not limited to 
-    the implied warranties of merchantability and fitness for a particular purpose. The contributors provide 
-    this code for educational and informational purposes only. Users are encouraged to freely use, modify, and distribute 
-    this code for non-commercial purposes. Any commercial use of this code or derivative works thereof is strictly prohibited 
-    unless explicit permission is obtained from the contributors.
-================================================================================================================================= 
-*/
-import { EquipmentSlot } from "@minecraft/server";
-import { afterEvents } from "./Minecraft"
+import { EquipmentSlot, world } from "@minecraft/server";
+import { afterEvents, overworld, test, runTimeout, addScoreboard, getScore, setScore } from "./Minecraft";
+import { onWorldOpen, onWorldClose } from "./Utils";
 
-const entityContainer = 'rebo:chest';
+const sbId = "initial_gamerules";
+const entityContainer = "rebo:loot_chest";
+const entityGamerule = "rebo:gamerule";
+const isSeeThrough = false;
+const keepToOwner = false;
+//==================================================================================================================================//
+onWorldOpen((player) => {
+  addScoreboard(sbId);
 
-export class DeathDropLoot {
-  constructor() {
-    afterEvents.entityDie.subscribe((event) => {
-      const entity = event.deadEntity;
-      if (entity.typeId != "minecraft:player") {
-        return;
-      }
+  const dimension = player.dimension;
+  const gamerule = dimension.spawnEntity(entityGamerule, player.location);
 
-      const player = event.deadEntity;
-      const dimension = player.dimension;
-      const playerInventory = player.GetInventory();
+  const keepInventory = gamerule.getProperty("p:keepinventory");
+  gamerule.remove();
 
-      const container = dimension.spawnEntity(entityContainer, player.location);
-      const containerInvertory = container.GetInventory();
+  if (keepInventory) setScore(sbId, "keepinventory", 1);
+  else setScore(sbId, "keepinventory", 0);
 
-      container.nameTag = player.name;
-      container.setRotation(player.getRotation());
+  player.commandRunAsync(`gamerule keepinventory true`);
+});
 
-      // Copy Equipments
-      const head = player.GetEquipment(EquipmentSlot.Head);
-      const chest = player.GetEquipment(EquipmentSlot.Chest);
-      const legs = player.GetEquipment(EquipmentSlot.Legs);
-      const feet = player.GetEquipment(EquipmentSlot.Feet);
-      const offhand = player.GetEquipment(EquipmentSlot.Offhand);
+onWorldClose((player) => {
+  const keepInventory = getScore(sbId, "keepinventory");
+  if (!keepInventory) player.dimension.commandRun(`gamerule keepinventory false`);
+});
 
-      const equipments = [head, chest, legs, feet, offhand];
-
-      equipments.forEach((equipment) => {
-        containerInvertory.addItem(equipment);
-      });
-
-      // Copy Inventory
-      for (let slot = 0; slot < playerInventory.size; slot++) {
-        const item = playerInventory.getItem(slot);
-        if (!item) {
-          continue;
-        }
-
-        containerInvertory.addItem(item);
-      }
-    });
+afterEvents.entityDie.subscribe((event) => {
+  const entity = event.deadEntity;
+  if (entity.typeId != "minecraft:player") {
+    return;
   }
-}
+  const player = event.deadEntity;
+
+  const dimension = player.dimension;
+  const playerInventory = player.getInventory();
+
+  const container = dimension.spawnEntity(entityContainer, player.location);
+  const containerInvertory = container.getInventory();
+
+  container.nameTag = `Dropped by: ${player.name}`;
+  container.setRotation(player.fetchRotation().toOppositeY());
+  container.tp(container.getLocation().toCenterXZ());
+
+  // Copy Equipments
+  const head = player.getEquipment(EquipmentSlot.Head);
+  const chest = player.getEquipment(EquipmentSlot.Chest);
+  const legs = player.getEquipment(EquipmentSlot.Legs);
+  const feet = player.getEquipment(EquipmentSlot.Feet);
+  const offhand = player.getEquipment(EquipmentSlot.Offhand);
+
+  const equipments = [head, chest, legs, feet, offhand];
+
+  let hasItem = false;
+  equipments.forEach((equipment) => {
+    if (equipment) {
+      containerInvertory.addItem(equipment);
+      hasItem = true;
+    }
+  });
+
+  // Copy Inventory
+  for (let slot = 0; slot < playerInventory.size; slot++) {
+    const item = playerInventory.getItem(slot);
+    if (item) {
+      containerInvertory.addItem(item);
+      hasItem = true;
+    }
+  }
+
+  // Clear
+  player.commandRunAsync("clear @s");
+
+  // Despawn
+  if (!hasItem) container.remove();
+});

@@ -1,0 +1,30 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "rebo:loot_chest",
+      "materials": { "default": "entity_emissive_alpha" },
+      "textures": {
+        "default": "textures/entity/loot_chest/default"
+      },
+      "geometry": {
+        "default": "geometry.loot_chest"
+      },
+      "animations": {
+        "a.face_dimming": "animation.utils.face_dimming",
+        "a.open": "animation.loot_chest.open",
+        "a.close": "animation.loot_chest.close",
+        "ac.interaction": "controller.animation.loot_chest.interaction",
+        "ac.root": "controller.animation.loot_chest.root"
+      },
+      "sound_effects": {
+        "sfx.open": "random.chestopen",
+        "sfx.close": "random.chestclosed"
+      },
+      "scripts": {
+        "animate": ["ac.root"]
+      },
+      "render_controllers": ["controller.render.default"]
+    }
+  }
+}

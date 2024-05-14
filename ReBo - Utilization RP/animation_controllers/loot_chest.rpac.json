@@ -1,0 +1,50 @@
+{
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.loot_chest.root": {
+      "states": {
+        "default": {
+          "animations": ["ac.interaction", "a.face_dimming"]
+        }
+      }
+    },
+    "controller.animation.loot_chest.interaction": {
+      "initial_state": "default",
+      "states": {
+        "default": {
+          "transitions": [
+            {
+              "open": "q.property('p:state') == 'open'"
+            }
+          ]
+        },
+        "open": {
+          "sound_effects": [
+            {
+              "effect": "sfx.open"
+            }
+          ],
+          "animations": ["a.open"],
+          "transitions": [
+            {
+              "close": "q.property('p:state') == 'close'"
+            }
+          ]
+        },
+        "close": {
+          "sound_effects": [
+            {
+              "effect": "sfx.close"
+            }
+          ],
+          "animations": ["a.close"],
+          "transitions": [
+            {
+              "default": "q.all_animations_finished"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

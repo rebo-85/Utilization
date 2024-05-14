@@ -1,15 +1,5 @@
-/* 
-================================================================================================================================
-  DISCLAIMER: 
-    This code is provided "as is" without warranty of any kind, either express or implied, including but not limited to 
-    the implied warranties of merchantability and fitness for a particular purpose. The contributors provide 
-    this code for educational and informational purposes only. Users are encouraged to freely use, modify, and distribute 
-    this code for non-commercial purposes. Any commercial use of this code or derivative works thereof is strictly prohibited 
-    unless explicit permission is obtained from the contributors.
-================================================================================================================================= 
-*/
-import {utils} from 'Utils';
-import {Entity, TicksPerSecond, system} from '@minecraft/server';
+import { utils } from "Utils";
+import { Entity, TicksPerSecond, system } from "@minecraft/server";
 
 export class ScoreboardDB {
   /**
@@ -43,9 +33,7 @@ export class ScoreboardDB {
         this.addEntry(player, score);
         console.log(`Added entry for ${player} with score ${score}`);
       } else {
-        console.log(
-          `Score for ${player} (${currentScore}) is higher or equal. Not adding entry.`
-        );
+        console.log(`Score for ${player} (${currentScore}) is higher or equal. Not adding entry.`);
       }
     } catch (error) {
       console.error("Error adding entry:", error);
@@ -104,8 +92,6 @@ export class ScoreboardDB {
   }
 }
 
-
-
 export class Vector2 {
   /**
    * @param {float} x - X-coordinate.
@@ -119,8 +105,6 @@ export class Vector2 {
     return `${this.x} ${this.y}`;
   }
 }
-
-
 
 export class Vector3 {
   /**
@@ -147,10 +131,10 @@ export class Music {
    * @param {string} selector - Selector for entities to music to play with.
    * @param {float} duration - Duration of the sound/music in seconds.
    * @param {Vector3} origin - Origin coordinates of the selector.
-   * @param {float} volume - Volume of the sound/music. 
-   * @param {float} pitch - Pitch of the sound/music. 
+   * @param {float} volume - Volume of the sound/music.
+   * @param {float} pitch - Pitch of the sound/music.
    */
-  constructor(track, selector, duration, origin = new Vector3(), volume = defaultVolume, pitch = defaultPitch){
+  constructor(track, selector, duration, origin = new Vector3(), volume = defaultVolume, pitch = defaultPitch) {
     this.track = track;
     this.selector = selector;
     this.duration = duration;
@@ -160,7 +144,6 @@ export class Music {
     this.pitch = pitch;
   }
 }
-
 
 export class Checkpoint {
   constructor(x, y, z, rx, ry) {
@@ -174,15 +157,12 @@ export class Checkpoint {
     this.ry = ry;
   }
   return() {
-    return utils.entityCommandAsync(
-      this.entity,
-      `teleport @s ${this.x} ${this.y} ${this.z} ${this.ry} ${this.rx}`
-    );
+    return utils.entityCommandAsync(this.entity, `teleport @s ${this.x} ${this.y} ${this.z} ${this.ry} ${this.rx}`);
   }
 }
 
-Entity.prototype.checkpoint = function() {
-  return new Checkpoint(this.location.x, this.location.y, this.location.z, this.getRotation().x, this.getRotation().y)
+Entity.prototype.checkpoint = function () {
+  return new Checkpoint(this.location.x, this.location.y, this.location.z, this.getRotation().x, this.getRotation().y);
 };
 
 export class Fade {
@@ -215,9 +195,9 @@ export class Scene {
     if (typeof start == "Vector3") {
       start = start.toString();
     }
-    if (typeof end == "string") { 
-      let location = end.split(' ');
-      end = new Vector3(location[0], location[1], location[2])
+    if (typeof end == "string") {
+      let location = end.split(" ");
+      end = new Vector3(location[0], location[1], location[2]);
     }
     if (typeof end == "Vector3") {
       end.y += 1.75; // Actual camera y-coordinate from player view.
@@ -245,7 +225,6 @@ export class TimedCommand {
   }
 }
 
-
 export class Cutscene {
   /**
    * @param {string} name - Name and identifier of the cutscene.
@@ -258,15 +237,7 @@ export class Cutscene {
    */
 
   checkpoints = [];
-  constructor(
-    name,
-    selector,
-    scenes,
-    spectator = true,
-    startFunction = ["testfor @s"],
-    endFunction = ["testfor @s"],
-    timeline
-  ) {
+  constructor(name, selector, scenes, spectator = true, startFunction = ["testfor @s"], endFunction = ["testfor @s"], timeline) {
     this.name = name;
     this.selector = selector;
     this.scenes = scenes;
@@ -305,29 +276,22 @@ export class Cutscene {
     // Execute Timed commands.
     this.timeline.forEach((timedCommand) => {
       system.runTimeout(() => {
-        utils.serverCommandAsync(timedCommand.command)
-      },timedCommand.timeTick )
+        utils.serverCommandAsync(timedCommand.command);
+      }, timedCommand.timeTick);
     });
     // Execute scenes
     let delay = 0;
     this.scenes.forEach((scene, i) => {
       if (scene.fade) {
         system.runTimeout(() => {
-          utils.serverCommandAsync(
-            `camera ${this.selector} fade time ${scene.fade.fadeIn} ${scene.fade.fadeHold} ${scene.fade.fadeOut}`
-          );
+          utils.serverCommandAsync(`camera ${this.selector} fade time ${scene.fade.fadeIn} ${scene.fade.fadeHold} ${scene.fade.fadeOut}`);
         }, delay);
       }
 
       delay += scene.fade ? scene.fade.fadeInTick : 0;
 
       system.runTimeout(() => {
-        utils.serverCommandAsync(
-          `camera ${this.selector} clear`,
-          `teleport ${this.selector} ${scene.start} facing ${
-            scene.facing
-          }`,
-        );
+        utils.serverCommandAsync(`camera ${this.selector} clear`, `teleport ${this.selector} ${scene.start} facing ${scene.facing}`);
       }, delay);
 
       delay += 1 + (scene.fade ? scene.fade.fadeInTick + (scene.fade.fadeHoldTick - 20) : 0);
@@ -335,11 +299,7 @@ export class Cutscene {
       system.runTimeout(() => {
         utils.serverCommandAsync(
           `camera ${this.selector} clear`,
-          `camera ${this.selector} set minecraft:free ease ${scene.duration} ${
-            scene.ease
-          } pos ${scene.end} facing ${
-            scene.facing
-          }`
+          `camera ${this.selector} set minecraft:free ease ${scene.duration} ${scene.ease} pos ${scene.end} facing ${scene.facing}`
         );
       }, delay);
 

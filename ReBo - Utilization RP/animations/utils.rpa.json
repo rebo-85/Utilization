@@ -1,13 +1,46 @@
 {
-    "format_version": "1.8.0",
-    "animations": {
-		"animation.utils.face_dimming": {
-			"loop": "hold_on_last_frame",
-			"bones": {
-				"root": {
-					"rotation": [0, "-query.body_y_rotation + (Math.round(query.body_y_rotation / 90) * 90)", 0]
-				}
-			}
-		}
+  "format_version": "1.8.0",
+  "animations": {
+    "animation.utils.face_dimming": {
+      "loop": "hold_on_last_frame",
+      "bones": {
+        "root": {
+          "rotation": [0, "-query.body_y_rotation + (Math.round(query.body_y_rotation / 90) * 90)", 0]
+        }
+      }
+    },
+    "animation.utils.hover": {
+      "loop": true,
+      "animation_length": 2,
+      "bones": {
+        "root": {
+          "position": { "0.0": [0, 0, 0], "1.0": [0, 4, 0], "2.0": [0, 0, 0] }
+        }
+      }
+    },
+    "animation.utils.billboard": {
+      "loop": true,
+      "bones": {
+        "root": {
+          "rotation": ["q.rotation_to_camera(0)", "q.rotation_to_camera(1)", 0.0]
+        }
+      }
+    },
+    "animation.utils.billboard.x_lock": {
+      "loop": true,
+      "bones": {
+        "root": {
+          "rotation": [0, "q.rotation_to_camera(1)", 0.0]
+        }
+      }
+    },
+    "animation.utils.billboard.y_lock": {
+      "loop": true,
+      "bones": {
+        "root": {
+          "rotation": ["q.rotation_to_camera(0)", 0, 0.0]
+        }
+      }
     }
+  }
 }

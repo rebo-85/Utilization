@@ -1,17 +1,29 @@
-
-
 {
   "namespace": "chest",
+  "chest_label": {
+    "$temp_text": "$container_title",
+    "text": "$temp_text2",
+    "variables": [
+      {
+        "requires": "(('%.12s' * $temp_text) = 'Dropped by: ')",
+        "$temp_text2": "entity.rebo:loot_chest.name"
+      },
+      {
+        "requires": "(not (('%.12s' * $temp_text) = 'Dropped by: '))",
+        "$temp_text2": "$temp_text"
+      }
+    ]
+  },
   "small_chest_grid": {
     "$temp_text": "$container_title",
     "variables": [
       {
-        "requires": "(not ($temp_text = 'container.chest' or $temp_text = 'container.enderchest' or $temp_text = 'entity.chest_boat.name' or $temp_text = 'entity.chest_minecart.name'))",
+        "requires": "(('%.12s' * $temp_text) = 'Dropped by: ')",
         "$size": [162, 90],
         "$grid_dimensions": [9, 5]
       },
       {
-        "requires": "($temp_text = 'container.chest' or $temp_text = 'container.enderchest' or $temp_text = 'entity.chest_boat.name' or $temp_text = 'entity.chest_minecart.name')",
+        "requires": "(not (('%.12s' * $temp_text) = 'Dropped by: '))",
         "$size": [162, 54],
         "$grid_dimensions": [9, 3]
       }
@@ -24,11 +36,11 @@
     "$temp_text": "$container_title",
     "variables": [
       {
-        "requires": "(not ($temp_text = 'container.chest' or $temp_text = 'container.enderchest' or $temp_text = 'entity.chest_boat.name' or $temp_text = 'entity.chest_minecart.name'))",
+        "requires": "(('%.12s' * $temp_text) = 'Dropped by: ')",
         "$size": ["100%", "122.5%"]
       },
       {
-        "requires": "($temp_text = 'container.chest' or $temp_text = 'container.enderchest' or $temp_text = 'entity.chest_boat.name' or $temp_text = 'entity.chest_minecart.name')",
+        "requires": "(not (('%.12s' * $temp_text) = 'Dropped by: '))",
         "$size": ["100%", "100%"]
       }
     ],
@@ -39,11 +51,11 @@
     "$temp_text": "$container_title",
     "variables": [
       {
-        "requires": "(not ($temp_text = 'container.chest' or $temp_text = 'container.enderchest' or $temp_text = 'entity.chest_boat.name' or $temp_text = 'entity.chest_minecart.name'))",
+        "requires": "(('%.12s' * $temp_text) = 'Dropped by: ')",
         "$size": ["100%", "122.5%"]
       },
       {
-        "requires": "($temp_text = 'container.chest' or $temp_text = 'container.enderchest' or $temp_text = 'entity.chest_boat.name' or $temp_text = 'entity.chest_minecart.name')",
+        "requires": "(not (('%.12s' * $temp_text) = 'Dropped by: '))",
         "$size": ["100%", "100%"]
       }
     ],

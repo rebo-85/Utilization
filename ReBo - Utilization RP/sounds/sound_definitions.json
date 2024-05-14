@@ -1,0 +1,6 @@
+{
+  "format_version": "1.20.40",
+  "sound_definitions": {
+    "sfx.loot_chest.open": { "category": "neutral", "sounds": [{ "name": "sounds/loot_chest_open", "volume": 0.4 }] }
+  }
+}

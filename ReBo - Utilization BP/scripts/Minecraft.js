@@ -9,21 +9,14 @@
 ================================================================================================================================= 
 */
 
-import {
-  EntityInventoryComponent,
-  EntityEquippableComponent,
-  MinecraftDimensionTypes,
-  Dimension,
-  Entity,
-  world as w,
-  system as s,
-} from "@minecraft/server";
+import { EntityInventoryComponent, EntityEquippableComponent, MinecraftDimensionTypes, Dimension, Entity, world as w, system as s } from "@minecraft/server";
 
 export const world = w;
 export const system = s;
 export const afterEvents = w.afterEvents;
 export const beforeEvents = w.beforeEvents;
 export const scoreboard = w.scoreboard;
+export const scriptEvent = s.afterEvents.scriptEventReceive;
 export const overworld = w.getDimension(MinecraftDimensionTypes.overworld);
 export const nether = w.getDimension(MinecraftDimensionTypes.nether);
 export const end = w.getDimension(MinecraftDimensionTypes.theEnd);
@@ -35,7 +28,9 @@ export function getScoreboard(id) {
 export function addScoreboard(id, displayName) {
   const isObjectiveExist = getScoreboard(id);
   if (isObjectiveExist) return;
-  else return scoreboard.addObjective(id, displayName);
+
+  if (!displayName) displayName = id;
+  return scoreboard.addObjective(id, displayName);
 }
 
 export function addScore(id, participant, score) {
@@ -58,7 +53,7 @@ export function test(value, type = "chat") {
   value = JSON.stringify(value, null, 0);
   switch (type) {
     case "chat":
-      overworld.RunCommandAsync(`say ${value}`);
+      w.sendMessage(`${value}`);
       break;
     case "error":
       console.error(value);
@@ -67,9 +62,16 @@ export function test(value, type = "chat") {
       console.log(value);
       break;
     default:
-      overworld.RunCommandAsync(`say ${value}`);
+      w.sendMessage(`${value}`);
       break;
   }
+}
+export function runInterval(func, interval) {
+  return new RunInterval(func, interval);
+}
+
+export function runTimeout(func, timeOut) {
+  return new RunTimeOut(func, timeOut);
 }
 
 export class RunInterval {
@@ -91,26 +93,115 @@ export class RunTimeOut {
 }
 
 export class Vector2 {
+  /**
+   * Creates an instance of Vector2.
+   * @param {number} [x=0] - The x-coordinate.
+   * @param {number} [y=0] - The y-coordinate.
+   */
   constructor(x = 0, y = 0) {
     this.x = x;
     this.y = y;
   }
+
+  /**
+   * Returns a string representation of the vector.
+   * @returns {string} A string in the format "x y".
+   */
   toString() {
     return `${this.x} ${this.y}`;
   }
-}
 
-export class Vector3 {
-  constructor(x = 0, y = 0, z = 0) {
-    this.x = x;
-    this.y = y;
-    this.z = z;
+  /**
+   * Returns a new Vector2 instance with the y-coordinate opposite.
+   * The y-coordinate is considered an angle in the range -180 to 180 degrees.
+   * @returns {Vector2} A new Vector2 instance with the opposite y-coordinate.
+   * @throws {Error} If the y-coordinate is not in the range -180 to 180 degrees.
+   */
+  toOppositeY() {
+    if (this.y < -180 || this.y > 180) {
+      throw new Error("Angle must be in the range -180 to 180 degrees.");
+    }
+
+    // Calculate the opposite angle within the range -180 to 180 degrees
+    let y = (this.y + 180) % 360;
+    if (y > 180) y -= 360;
+
+    return new Vector2(this.x, y);
   }
+}
+export class Vector3 {
+  /**
+   * Creates an instance of Vector3.
+   * @param {number} [x=0] - The x-coordinate.
+   * @param {number} [y=0] - The y-coordinate.
+   * @param {number} [z=0] - The z-coordinate.
+   */
+  constructor(x = 0, y = 0, z = 0) {
+    this.x = this.#validateNumber(x);
+    this.y = this.#validateNumber(y);
+    this.z = this.#validateNumber(z);
+  }
+
+  /**
+   * Converts this vector to a Vector2 instance.
+   * @returns {Vector2} A new Vector2 instance with the same x and y coordinates.
+   */
   toVector2() {
     return new Vector2(this.x, this.y);
   }
+
+  /**
+   * Returns a string representation of the vector.
+   * @returns {string} A string in the format "x y z".
+   */
   toString() {
     return `${this.x} ${this.y} ${this.z}`;
+  }
+
+  /**
+   * Returns a new Vector3 instance with x and z coordinates rounded to the nearest half.
+   * @returns {Vector3} A new Vector3 instance with centered x and z coordinates.
+   */
+  toCenterXZ() {
+    const x = this.#roundToNearestHalf(this.x);
+    const y = this.y;
+    const z = this.#roundToNearestHalf(this.z);
+    return new Vector3(x, y, z);
+  }
+
+  /**
+   * Returns a new Vector3 instance with x, y, and z coordinates rounded to the nearest half.
+   * @returns {Vector3} A new Vector3 instance with centered x, y, and z coordinates.
+   */
+  toCenterXYZ() {
+    const x = this.#roundToNearestHalf(this.x);
+    const y = this.#roundToNearestHalf(this.y);
+    const z = this.#roundToNearestHalf(this.z);
+    return new Vector3(x, y, z);
+  }
+
+  /**
+   * Rounds a value to the nearest half.
+   * @private
+   * @param {number} value - The value to round.
+   * @returns {number} The value rounded to the nearest half.
+   */
+  #roundToNearestHalf(value) {
+    return Math.round(value * 2) / 2;
+  }
+
+  /**
+   * Validates if a value is a number.
+   * @private
+   * @param {number} value - The value to validate.
+   * @returns {number} The validated number.
+   * @throws {TypeError} If the value is not a number.
+   */
+  #validateNumber(value) {
+    if (typeof value !== "number") {
+      throw new TypeError("Value must be a number");
+    }
+    return value;
   }
 }
 
@@ -120,11 +211,11 @@ export class Checkpoint {
     this.save();
   }
   save() {
-    this.location = this.entity.GetLocation();
-    this.rotation = this.entity.GetRotation();
+    this.location = this.entity.getLocation();
+    this.rotation = this.entity.fetchRotation();
   }
   return() {
-    this.entity.RunCommandAsync(`teleport @s ${this.location.toString()} ${this.rotation.y} ${this.rotation.x}`)
+    this.entity.commandRunAsync(`teleport @s ${this.location.toString()} ${this.rotation.y} ${this.rotation.x}`);
   }
 }
 
@@ -132,32 +223,35 @@ export class Checkpoint {
 ================================================================================================================================ 
 */
 
+Entity.prototype.tp = function (loc, rot) {
+  if (typeof loc === "string") loc = loc.toVector2();
 
+  if (!rot) rot = this.fetchRotation();
+  else if (typeof rot === "string") rot = rot.toVector2();
+  this.teleport(loc, { rotation: rot });
+};
 
-Entity.prototype.GetRotation = function () {
+Entity.prototype.fetchRotation = function () {
   return new Vector2(this.getRotation().x, this.getRotation().y);
-}
+};
 
-Entity.prototype.GetLocation = function () {
+Entity.prototype.getLocation = function () {
   return new Vector3(this.location.x, this.location.y, this.location.z);
-}
+};
 
-Entity.prototype.GetCheckpoint = function () {
+Entity.prototype.getCheckpoint = function () {
   return new Checkpoint(this);
 };
 
-Entity.prototype.GetInventory = function () {
+Entity.prototype.getInventory = function () {
   return this.getComponent(EntityInventoryComponent.componentId).container;
-
 };
 
-Entity.prototype.GetEquipment = function (slot) {
-  return this.getComponent(EntityEquippableComponent.componentId).getEquipment(
-    slot
-  );
+Entity.prototype.getEquipment = function (slot) {
+  return this.getComponent(EntityEquippableComponent.componentId).getEquipment(slot);
 };
 
-Entity.prototype.RunCommand = function (...commands) {
+Entity.prototype.commandRun = function (...commands) {
   let successCount = 0;
 
   const flattenedCommands = commands.flat();
@@ -171,7 +265,7 @@ Entity.prototype.RunCommand = function (...commands) {
   this.successCount = successCount;
 };
 
-Entity.prototype.RunCommandAsync = async function (...commands) {
+Entity.prototype.commandRunAsync = async function (...commands) {
   let successCount = 0;
   const flattenedCommands = commands.flat();
 
@@ -187,52 +281,80 @@ Entity.prototype.RunCommandAsync = async function (...commands) {
   this.successCount = successCount;
 };
 
-Dimension.prototype.GetEntities = function (filter) {
+Dimension.prototype.fetchEntities = function (filter) {
   if (typeof filter === "string") {
-    const regex = /^@(a|p|r|e|s|initiator)(?:\[(.+)\])?$/;
-    const matches = filter.match(regex);
+    const matches = filter.getSelectorMatches();
     if (matches) {
-      return this.getEntities(filter.ToEQO());
+      return this.getEntities(filter.toEQO());
     }
     return [];
   }
   return this.getEntities(filter);
-}
+};
 
-Dimension.prototype.RunCommand = function (...commands) {
-    let successCount = 0;
-  
-    const flattenedCommands = commands.flat();
-  
-    flattenedCommands.forEach((command) => {
-      if (this.runCommand(`${command}`).successCount > 0) {
-        successCount++;
-      }
-    });
-    return { successCount: successCount };
-}
+Dimension.prototype.commandRun = function (...commands) {
+  let successCount = 0;
 
-Dimension.prototype.RunCommandAsync = async function (...commands) {
-    let successCount = 0;
-    const flattenedCommands = commands.flat();
-  
-    const commandPromises = flattenedCommands.map(async (command) => {
-      const result = await this.runCommandAsync(command);
-      if (result.successCount > 0) {
-        successCount++;
-      }
-    });
-  
-    await Promise.all(commandPromises);
-  
-    return { successCount: successCount };
-}
+  const flattenedCommands = commands.flat();
 
-String.prototype.ToEQO = function () {
-  const options = {};
-  const regex = /^@(a|p|r|e|s|initiator)(?:\[(.+)\])?$/; // Updated regex to validate selectors
+  flattenedCommands.forEach((command) => {
+    if (this.runCommand(`${command}`).successCount > 0) {
+      successCount++;
+    }
+  });
+  return { successCount: successCount };
+};
+
+Dimension.prototype.commandRunAsync = async function (...commands) {
+  let successCount = 0;
+  const flattenedCommands = commands.flat();
+
+  const commandPromises = flattenedCommands.map(async (command) => {
+    const result = await this.runCommandAsync(command);
+    if (result.successCount > 0) {
+      successCount++;
+    }
+  });
+
+  await Promise.all(commandPromises);
+
+  return { successCount: successCount };
+};
+String.prototype.toVector2 = function () {
+  const pattern = this.match(/^(\d+)\s(\d+)$/);
+  if (pattern) {
+    const x = parseInt(pattern[1]);
+    const y = parseInt(pattern[2]);
+    return new Vector2(x, y);
+  }
+
+  switch (this.toLowerCase()) {
+    case "north":
+      return new Vector2(0, 180);
+    case "east":
+      return new Vector2(0, -90);
+    case "south":
+      return new Vector2(0, 0);
+    case "west":
+      return new Vector2(0, 90);
+    default:
+      return this;
+  }
+};
+
+String.prototype.getSelectorMatches = function () {
+  const regex = /^@(a|p|r|e|s|initiator)(?:\[(.+)\])?$/;
   const matches = this.match(regex);
+  if (matches) {
+    return matches;
+  } else {
+    return console.error(`"${this}" is not a valid selector.`);
+  }
+};
 
+String.prototype.toEQO = function () {
+  const options = {};
+  const matches = this.getSelectorMatches();
   if (matches && matches.length >= 2) {
     const attributes = matches[2] ? matches[2].split(",") : [];
     let excludeFamilies = [];
@@ -253,12 +375,7 @@ String.prototype.ToEQO = function () {
           options.closest = parseInt(trimmedValue, 10);
 
           // If @p, @s, @r, or @initiator is present, override closest to 1
-          if (
-            matches[1] === "p" ||
-            matches[1] === "r" ||
-            matches[1] === "s" ||
-            matches[1] === "initiator"
-          ) {
+          if (matches[1] === "p" || matches[1] === "r" || matches[1] === "s" || matches[1] === "initiator") {
             options.closest = 1;
           }
           break;
@@ -274,9 +391,7 @@ String.prototype.ToEQO = function () {
         case "dx":
         case "dy":
         case "dz":
-          console.warn(
-            `'${trimmedKey}' cannot be converted to EntityQueryOptions property.`
-          );
+          console.warn(`'${trimmedKey}' cannot be converted to EntityQueryOptions property.`);
           break;
         case "l":
           options.maxLevel = parseInt(trimmedValue, 10);
@@ -287,9 +402,7 @@ String.prototype.ToEQO = function () {
         case "m":
           if (trimmedValue.includes("!")) {
             if (!isNaN(trimmedValue.replace(/!/g, ""))) {
-              excludeGameModes.push(
-                parseInt(trimmedValue.replace(/!/g, ""), 10)
-              );
+              excludeGameModes.push(parseInt(trimmedValue.replace(/!/g, ""), 10));
               options.excludeGameModes = excludeGameModes;
             } else {
               excludeGameModes.push(trimmedValue);
@@ -341,13 +454,7 @@ String.prototype.ToEQO = function () {
             options.type = trimmedValue;
           }
           // If @a, @p, @s, @r, or @initiator is present, override type to 'minecraft:player'
-          if (
-            matches[1] === "a" ||
-            matches[1] === "p" ||
-            matches[1] === "r" ||
-            matches[1] === "s" ||
-            matches[1] === "initiator"
-          ) {
+          if (matches[1] === "a" || matches[1] === "p" || matches[1] === "r" || matches[1] === "s" || matches[1] === "initiator") {
             options.type = "minecraft:player";
           }
           break;
@@ -367,13 +474,7 @@ String.prototype.ToEQO = function () {
       }
     });
 
-    if (
-      matches[1] === "a" ||
-      matches[1] === "p" ||
-      matches[1] === "r" ||
-      matches[1] === "s" ||
-      matches[1] === "initiator"
-    ) {
+    if (matches[1] === "a" || matches[1] === "p" || matches[1] === "r" || matches[1] === "s" || matches[1] === "initiator") {
       options.type = "minecraft:player";
 
       if (!(matches[1] === "a")) {
@@ -384,3 +485,16 @@ String.prototype.ToEQO = function () {
     return options;
   }
 };
+
+String.prototype.toVector3 = function () {
+  const coordinates = this.split(" ").map(parseFloat);
+  if (coordinates.some(isNaN) || coordinates.length !== 3) {
+    console.error('Invalid string format. It should be "x y z"');
+    return null; // Returning null to indicate failure
+  }
+  return new Vector3(coordinates[0], coordinates[1], coordinates[2]);
+};
+
+/* 
+================================================================================================================================ 
+*/
