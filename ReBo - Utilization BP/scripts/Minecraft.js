@@ -1,14 +1,3 @@
-/* 
-================================================================================================================================
-  DISCLAIMER: 
-    This code is provided "as is" without warranty of any kind, either express or implied, including but not limited to 
-    the implied warranties of merchantability and fitness for a particular purpose. The contributors provide 
-    this code for educational and informational purposes only. Users are encouraged to freely use, modify, and distribute 
-    this code for non-commercial purposes. Any commercial use of this code or derivative works thereof is strictly prohibited 
-    unless explicit permission is obtained from the contributors.
-================================================================================================================================= 
-*/
-
 import { EntityInventoryComponent, EntityEquippableComponent, MinecraftDimensionTypes, Dimension, Entity, world as w, system as s } from "@minecraft/server";
 
 export const world = w;
@@ -219,12 +208,72 @@ export class Checkpoint {
   }
 }
 
+export class ScoreboardDB {
+  constructor(sbId) {
+    this.sbId = sbId;
+    addScoreboard(sbId);
+    this.sb = getScoreboard(sbId);
+    this.sbIdens = [];
+    this.#update();
+  }
+
+  save(varName, value) {
+    // Convert value to a string in the format "varName = value"
+    const scoreEntry = `${varName} = ${JSON.stringify(value, null, 0)}`;
+
+    // Find the existing score entry and remove it if it exists
+    const existingSbIden = this.#getSbIden(varName);
+    if (existingSbIden) removeParticipant(this.sbId, existingSbIden);
+
+    // Save the new score entry
+    setScore(this.sbId, scoreEntry, 0);
+  }
+
+  get(varName) {
+    const sbIden = this.#getSbIden(varName);
+
+    if (!sbIden) return null;
+
+    const match = sbIden.displayName.match(/^\s*[\w$]+\s*=\s*(.*)\s*$/);
+    if (match) {
+      let valueStr = match[1].trim();
+      try {
+        return JSON.parse(valueStr);
+      } catch {
+        return valueStr;
+      }
+    }
+    return null;
+  }
+
+  #getSbIden(varName) {
+    this.#update();
+
+    return this.sbIdens.find((sbIden) => {
+      const str = sbIden.displayName;
+      if (typeof str !== "string") return false;
+
+      const extractedVarName = this.#getVarName(str);
+      return extractedVarName === varName;
+    });
+  }
+
+  #update() {
+    this.sbIdens = this.sb.getParticipants();
+  }
+
+  #getVarName(str) {
+    const match = str.match(/^\s*([\w$]+)\s*=/);
+    return match ? match[1] : null;
+  }
+}
+
 /* 
 ================================================================================================================================ 
 */
 
 Entity.prototype.tp = function (loc, rot) {
-  if (typeof loc === "string") loc = loc.toVector2();
+  if (typeof loc === "string") loc = loc.toVector3();
 
   if (!rot) rot = this.fetchRotation();
   else if (typeof rot === "string") rot = rot.toVector2();
