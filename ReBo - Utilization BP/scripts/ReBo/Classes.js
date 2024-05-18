@@ -1,5 +1,6 @@
 import { TicksPerSecond, system } from "@minecraft/server";
 import {} from "./Server";
+import { runInterval } from "./Utils";
 
 export class RunInterval {
   /**
@@ -181,15 +182,15 @@ export class Music {
   /**
    * Creates an instance of Music.
    * @param {string} track - Identifier of the sound/music defined in the 'sound_definitions.json'.
-   * @param {string} selector - Selector for entities to play the music.
+   * @param {string} tag - tag of players to play the music.
    * @param {number} duration - Duration of the sound/music in seconds.
    * @param {Vector3} [origin=new Vector3()] - Origin coordinates of the selector.
-   * @param {number} [volume=defaultVolume] - Volume of the sound/music.
-   * @param {number} [pitch=defaultPitch] - Pitch of the sound/music.
+   * @param {number} [volume=1] - Volume of the sound/music.
+   * @param {number} [pitch=1] - Pitch of the sound/music.
    */
-  constructor(track, selector, duration, origin = new Vector3(), volume = defaultVolume, pitch = defaultPitch) {
+  constructor(track, tag, duration, origin = new Vector3(), volume = 1, pitch = 1) {
     this.track = track;
-    this.selector = selector;
+    this.tag = tag;
     this.duration = duration;
     this.durationTick = duration * TicksPerSecond;
     this.origin = origin;
@@ -208,5 +209,31 @@ export class TimedCommand {
     this.time = time;
     this.timeTick = time * TicksPerSecond;
     this.command = command;
+  }
+}
+
+export class CountDownTimer {
+  constructor(durationInSeconds = 10, onEnd = () => {}, onUpdate = () => {}) {
+    this.timer = durationInSeconds;
+    this.process = runInterval(() => {
+      this.minutes = Math.floor(this.timer / 60);
+      this.seconds = this.timer % 60;
+
+      // Add leading zero to seconds if less than 10
+      this.seconds = this.seconds < 10 ? "0" + this.seconds : this.seconds;
+
+      // Display
+      onUpdate(this.minutes, this.seconds);
+
+      // Check if the timer has reached 0
+      if (--this.timer < -1) {
+        onEnd();
+        this.process.dispose();
+        return;
+      }
+    }, 20);
+  }
+  dispose() {
+    this.process.dispose();
   }
 }

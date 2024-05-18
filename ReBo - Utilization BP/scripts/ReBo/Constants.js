@@ -6,6 +6,7 @@ export const system = s;
 export const afterEvents = w.afterEvents;
 export const beforeEvents = w.beforeEvents;
 export const scoreboard = w.scoreboard;
+export const structureManager = w.structureManager;
 export const scriptEvent = s.afterEvents.scriptEventReceive;
 export const overworld = w.getDimension(MinecraftDimensionTypes.overworld);
 export const nether = w.getDimension(MinecraftDimensionTypes.nether);

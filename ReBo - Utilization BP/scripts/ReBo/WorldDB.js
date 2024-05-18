@@ -16,28 +16,28 @@ const displayType = "chat";
  * @method diplay(key: string): void
  * Display a specific dynamic property from the world.
  *
- * @method delete(key: string): void
- * Deletes a specific dynamic property from the world.
+ * @method remove(key: string): void
+ * Remove a specific dynamic property from the world.
  *
  * @method displayAll(): void
  * Display all properties specific to this database from the world.
  *
- * @method deleteAll(): void
- * Delete all properties specific to this database from the world.
+ * @method removeAll(): void
+ * Remove all properties specific to this database from the world.
  *
  * @static
  * @method displayAllProperties(): void
- * Clears all dynamic properties from the world.
+ * Display all dynamic properties from the world.
  *
  * @static
- * @static @method deleteAllProperties(): void
- * Delete all dynamic properties from the world.
+ * @static @method removeAllProperties(): void
+ * Remove all dynamic properties from the world.
  *
  * @example
  * const db = new WorldDB("myDatabase");
  * db.set("key", { foo: "bar" });
  * const value = db.get("key");
- * db.delete("key");
+ * db.remove("key");
  * db.clearAll();
  * db.clearAllProperties();
  */
@@ -93,9 +93,9 @@ export class WorldDB {
 
   /**
    * Deletes a specific dynamic property from the world.
-   * @param {string} key - The key of the property to delete.
+   * @param {string} key - The key of the property to remove.
    */
-  delete(key) {
+  remove(key) {
     const id = `${this.name}:${key}`;
     const index = this.propertyIds.indexOf(id);
 
@@ -117,9 +117,9 @@ export class WorldDB {
   }
 
   /**
-   * Delete all properties specific to this database from the world.
+   * Remove all properties specific to this database from the world.
    */
-  deleteAll() {
+  removeAll() {
     this.propertyIds.forEach((id) => {
       world.setDynamicProperty(id, undefined);
     });
@@ -138,9 +138,9 @@ export class WorldDB {
   }
 
   /**
-   * Delete all dynamic properties from the world.
+   * Remove all dynamic properties from the world.
    */
-  static deleteAllProperties() {
+  static removeAllProperties() {
     const allPropertyIds = world.getDynamicPropertyIds();
     allPropertyIds.forEach((id) => world.setDynamicProperty(id, undefined));
   }

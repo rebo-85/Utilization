@@ -1,6 +1,11 @@
-import { EntityInventoryComponent, EntityEquippableComponent, MinecraftDimensionTypes, Dimension, Entity, world as w, system as s } from "@minecraft/server";
-import { afterEvents } from "./Constants";
+import { EntityInventoryComponent, EntityEquippableComponent, Dimension, Entity } from "@minecraft/server";
+import { Vector3, Checkpoint, Vector2 } from "./Classes";
 
+/**
+ * Teleports the entity to a specified location with an optional rotation.
+ * @param {(Vector3|string)} loc - The location to teleport to, either as a Vector3 or a string.
+ * @param {(Vector2|string)} [rot] - The rotation after teleporting, either as a Vector2 or a string.
+ */
 Entity.prototype.tp = function (loc, rot) {
   if (typeof loc === "string") loc = loc.toVector3();
 
@@ -9,26 +14,51 @@ Entity.prototype.tp = function (loc, rot) {
   this.teleport(loc, { rotation: rot });
 };
 
+/**
+ * Fetches the current rotation of the entity.
+ * @returns {Vector2} The current rotation of the entity.
+ */
 Entity.prototype.fetchRotation = function () {
   return new Vector2(this.getRotation().x, this.getRotation().y);
 };
 
+/**
+ * Gets the current location of the entity.
+ * @returns {Vector3} The current location of the entity.
+ */
 Entity.prototype.getLocation = function () {
   return new Vector3(this.location.x, this.location.y, this.location.z);
 };
 
+/**
+ * Gets the current checkpoint of the entity.
+ * @returns {Checkpoint} The current checkpoint of the entity.
+ */
 Entity.prototype.getCheckpoint = function () {
   return new Checkpoint(this);
 };
 
+/**
+ * Gets the inventory of the entity.
+ * @returns {EntityInventoryComponent} The inventory of the entity.
+ */
 Entity.prototype.getInventory = function () {
   return this.getComponent(EntityInventoryComponent.componentId).container;
 };
 
+/**
+ * Gets the equipment in the specified slot of the entity.
+ * @param {number} slot - The slot to get the equipment from.
+ * @returns {ItemStack} The equipment in the specified slot.
+ */
 Entity.prototype.getEquipment = function (slot) {
   return this.getComponent(EntityEquippableComponent.componentId).getEquipment(slot);
 };
 
+/**
+ * Runs a series of commands on the entity.
+ * @param {...string[]} commands - The commands to run.
+ */
 Entity.prototype.commandRun = function (...commands) {
   let successCount = 0;
 
@@ -43,6 +73,11 @@ Entity.prototype.commandRun = function (...commands) {
   this.successCount = successCount;
 };
 
+/**
+ * Runs a series of commands asynchronously on the entity.
+ * @param {...string[]} commands - The commands to run.
+ * @returns {Promise<void>}
+ */
 Entity.prototype.commandRunAsync = async function (...commands) {
   let successCount = 0;
   const flattenedCommands = commands.flat();
@@ -59,6 +94,11 @@ Entity.prototype.commandRunAsync = async function (...commands) {
   this.successCount = successCount;
 };
 
+/**
+ * Fetches entities in the dimension based on a filter.
+ * @param {(string|Object)} filter - The filter to use for fetching entities.
+ * @returns {Entity[]} The fetched entities.
+ */
 Dimension.prototype.fetchEntities = function (filter) {
   if (typeof filter === "string") {
     const matches = filter.getSelectorMatches();
@@ -70,6 +110,11 @@ Dimension.prototype.fetchEntities = function (filter) {
   return this.getEntities(filter);
 };
 
+/**
+ * Runs a series of commands in the dimension.
+ * @param {...string[]} commands - The commands to run.
+ * @returns {{ successCount: number }} The result of running the commands.
+ */
 Dimension.prototype.commandRun = function (...commands) {
   let successCount = 0;
 
@@ -83,6 +128,11 @@ Dimension.prototype.commandRun = function (...commands) {
   return { successCount: successCount };
 };
 
+/**
+ * Runs a series of commands asynchronously in the dimension.
+ * @param {...string[]} commands - The commands to run.
+ * @returns {Promise<{ successCount: number }>} The result of running the commands.
+ */
 Dimension.prototype.commandRunAsync = async function (...commands) {
   let successCount = 0;
   const flattenedCommands = commands.flat();
@@ -98,6 +148,11 @@ Dimension.prototype.commandRunAsync = async function (...commands) {
 
   return { successCount: successCount };
 };
+
+/**
+ * Converts a string to a Vector2.
+ * @returns {Vector2} The Vector2 representation of the string.
+ */
 String.prototype.toVector2 = function () {
   const pattern = this.match(/^(\d+)\s(\d+)$/);
   if (pattern) {
@@ -120,6 +175,10 @@ String.prototype.toVector2 = function () {
   }
 };
 
+/**
+ * Gets selector matches from the string.
+ * @returns {Array<string>|undefined} The matches if valid, otherwise an error is logged.
+ */
 String.prototype.getSelectorMatches = function () {
   const regex = /^@(a|p|r|e|s|initiator)(?:\[(.+)\])?$/;
   const matches = this.match(regex);
@@ -130,6 +189,10 @@ String.prototype.getSelectorMatches = function () {
   }
 };
 
+/**
+ * Converts a string to EntityQueryOptions.
+ * @returns {Object} The EntityQueryOptions representation of the string.
+ */
 String.prototype.toEQO = function () {
   const options = {};
   const matches = this.getSelectorMatches();
@@ -165,11 +228,6 @@ String.prototype.toEQO = function () {
             families.push(trimmedValue);
             options.families = families;
           }
-          break;
-        case "dx":
-        case "dy":
-        case "dz":
-          console.warn(`'${trimmedKey}' cannot be converted to EntityQueryOptions property.`);
           break;
         case "l":
           options.maxLevel = parseInt(trimmedValue, 10);
@@ -247,7 +305,7 @@ String.prototype.toEQO = function () {
           break;
         default:
           // Handle unknown keys
-          console.warn(`Unknown key: ${trimmedKey}`);
+          console.warn(`'${trimmedKey}' cannot be converted to EntityQueryOptions property.`);
           break;
       }
     });
@@ -264,6 +322,10 @@ String.prototype.toEQO = function () {
   }
 };
 
+/**
+ * Converts a string to a Vector3.
+ * @returns {Vector3|null} The Vector3 representation of the string or null if the format is invalid.
+ */
 String.prototype.toVector3 = function () {
   const coordinates = this.split(" ").map(parseFloat);
   if (coordinates.some(isNaN) || coordinates.length !== 3) {
