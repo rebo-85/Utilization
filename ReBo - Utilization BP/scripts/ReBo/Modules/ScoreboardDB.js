@@ -1,4 +1,4 @@
-import { addScoreboard, getScoreboard, removeParticipant, setScore, removeScoreboard } from "./Utils";
+import { addScoreboard, getScoreboard, removeParticipant, setScore, removeScoreboard } from "../Utils";
 
 /**
  * ScoreboardDB class to handle key-value pairs stored in a Minecraft scoreboard.

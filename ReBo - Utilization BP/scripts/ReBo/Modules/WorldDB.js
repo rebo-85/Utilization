@@ -1,5 +1,5 @@
 import { world } from "@minecraft/server";
-import { test } from "./Utils";
+import { test } from "../Utils";
 const displayType = "chat";
 /**
  * WorldDB class to handle dynamic properties in the Minecraft world.
