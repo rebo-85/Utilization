@@ -1,5 +1,25 @@
-import { EntityInventoryComponent, EntityEquippableComponent, Dimension, Entity } from "@minecraft/server";
+import { EntityInventoryComponent, EntityEquippableComponent, Dimension, Entity, Player } from "@minecraft/server";
 import { Vector3, Checkpoint, Vector2 } from "./Classes";
+
+/**
+ * Get the current gamemode of the player
+ */
+Player.prototype.getGamemode = function () {
+  this.commandRunAsync(
+    `tag @s[m=adventure] add adventure`,
+    `tag @s[m=creative] add creative`,
+    `tag @s[m=spectator] add spectator`,
+    `tag @s[m=survival] add survival`
+  );
+  let gamemode = null;
+  if (this.hasTag(`adventure`)) gamemode = `adventure`;
+  if (this.hasTag(`creative`)) gamemode = `creative`;
+  if (this.hasTag(`spectator`)) gamemode = `spectator`;
+  if (this.hasTag(`survival`)) gamemode = `survival`;
+
+  this.removeTag(gamemode);
+  return gamemode;
+};
 
 /**
  * Teleports the entity to a specified location with an optional rotation.
@@ -290,7 +310,13 @@ String.prototype.toEQO = function () {
             options.type = trimmedValue;
           }
           // If @a, @p, @s, @r, or @initiator is present, override type to 'minecraft:player'
-          if (matches[1] === "a" || matches[1] === "p" || matches[1] === "r" || matches[1] === "s" || matches[1] === "initiator") {
+          if (
+            matches[1] === "a" ||
+            matches[1] === "p" ||
+            matches[1] === "r" ||
+            matches[1] === "s" ||
+            matches[1] === "initiator"
+          ) {
             options.type = "minecraft:player";
           }
           break;
@@ -310,7 +336,13 @@ String.prototype.toEQO = function () {
       }
     });
 
-    if (matches[1] === "a" || matches[1] === "p" || matches[1] === "r" || matches[1] === "s" || matches[1] === "initiator") {
+    if (
+      matches[1] === "a" ||
+      matches[1] === "p" ||
+      matches[1] === "r" ||
+      matches[1] === "s" ||
+      matches[1] === "initiator"
+    ) {
       options.type = "minecraft:player";
 
       if (!(matches[1] === "a")) {

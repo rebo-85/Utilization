@@ -1,6 +1,55 @@
-import { TicksPerSecond, system } from "@minecraft/server";
+import { system } from "@minecraft/server";
 import {} from "./Server";
 import { runInterval } from "./Utils";
+import { overworld, tps } from "./Constants";
+
+export class Transform {
+  /**
+   * Creates an instance of a Transform.
+   * @param {Vector3|string} [position = `~ ~ ~`]
+   * @param {Vector2|string} [position = `~ ~`]
+   * @param {Dimension} [dimension = overworld]
+   */
+  constructor(position = `~ ~ ~`, rotation = `~ ~`, dimension = overworld) {
+    if (position instanceof Vector3) this.position = position.toString();
+    else this.position = position;
+
+    if (rotation instanceof Vector2) this.rotation = rotation.toString();
+    else this.rotation = rotation;
+
+    this.dimension = dimension;
+  }
+}
+export class Scene {
+  /**
+   * Creates an instance of Scene.
+   * @param {Transform} start - starting position and rotation.
+   * @param {Transform} end - ending position and rotation.
+   * @param {float} duration
+   * @param {enum} [ease_type = 'linear']
+   */
+  constructor(start, end, duration, ease_type = "linear") {
+    this.start = start;
+    this.end = end;
+    this.duration = duration;
+    this.ease_type = ease_type;
+  }
+}
+export class Cutscene {
+  /**
+   * Creates an instance of Cutscene.
+   * @param {string} trigger_tag - Tag that starts the cutscene.
+   * @param {Scene[]} scenes - Scenes to play in order.
+   * @param {bool} [is_spectator = true] - Define if cutscene should be played in spectator mode.
+   * @param {bool} [is_invisible = true] - Define if cutscene should hide the player while playing.
+   */
+  constructor(trigger_tag, scenes, is_spectator = true, is_invisible = true) {
+    this.trigger_tag = trigger_tag;
+    this.scenes = scenes;
+    this.is_spectator = is_spectator;
+    this.is_invisible = is_invisible;
+  }
+}
 
 export class RunInterval {
   /**
@@ -192,7 +241,7 @@ export class Music {
     this.track = track;
     this.tag = tag;
     this.duration = duration;
-    this.durationTick = duration * TicksPerSecond;
+    this.durationTick = duration * tps;
     this.origin = origin;
     this.volume = volume;
     this.pitch = pitch;
@@ -207,7 +256,7 @@ export class TimedCommand {
    */
   constructor(time, command) {
     this.time = time;
-    this.timeTick = time * TicksPerSecond;
+    this.timeTick = time * tps;
     this.command = command;
   }
 }

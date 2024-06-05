@@ -1,7 +1,8 @@
-import { MinecraftDimensionTypes, world as w, system as s } from "@minecraft/server";
+import { MinecraftDimensionTypes, world as w, system as s, TicksPerSecond } from "@minecraft/server";
 
 export const namespace = "rebo";
 export const world = w;
+export const tps = TicksPerSecond;
 export const system = s;
 export const afterEvents = w.afterEvents;
 export const beforeEvents = w.beforeEvents;
