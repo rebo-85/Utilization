@@ -2,10 +2,7 @@ import { Music } from "../Classes";
 import { world } from "../Constants";
 import { onPlayerLoad, runInterval, runTimeout } from "../Utils";
 
-const musicTrack = [
-  //   new Music("music.background", "background", 33),
-  //   new Music("music.fight", "fight", 36)
-];
+const musicTrack = [new Music("eternal.jetski_rally.bgm", "jetski_rally", 88)];
 
 function getCurrentMusic(player) {
   for (let i = musicTrack.length - 1; i >= 0; i--) {

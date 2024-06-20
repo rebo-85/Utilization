@@ -1,7 +1,30 @@
-import { afterEvents, beforeEvents, world, structureManager, overworld } from "./Constants";
-import { Dimension, ScriptEventSource } from "@minecraft/server";
-import { RunInterval, RunTimeOut, Vector3 } from "./Classes";
+import { afterEvents, beforeEvents, world, overworld, nether, end } from "./Constants";
+import { ScriptEventSource } from "@minecraft/server";
+import { RunInterval, RunTimeOut } from "./Classes";
 import { scoreboard } from "./Constants";
+
+export function ForbidSpawn(selectorList) {
+  runInterval(() => {
+    let entities = new Set([]);
+    selectorList.forEach((selector) => {
+      overworld.fetchEntities(selector).forEach((entity) => {
+        entities.add(entity);
+      });
+      nether.fetchEntities(selector).forEach((entity) => {
+        entities.add(entity);
+      });
+      end.fetchEntities(selector).forEach((entity) => {
+        entities.add(entity);
+      });
+    });
+
+    for (let entity of entities) {
+      try {
+        entity.remove();
+      } catch (error) {}
+    }
+  });
+}
 
 export function runInterval(func, interval) {
   return new RunInterval(func, interval);
@@ -112,30 +135,4 @@ export function onWorldClose(func) {
       func(event.player);
     }
   });
-}
-
-/**
- * @remarks
- * Places a structure in the world. Structures placed in
- * unloaded chunks will be queued for loading.
- *
- * This function can't be called in read-only mode.
- *
- * @param { string | Structure } structure - The structure's identifier or a Structure object.
- * @param { Vector3 } location - The location within the dimension where the Structure should
- * @param { Dimension } origin - The dimension where the Structure should be placed.
- * @param { StructurePlaceOptions } options - Additional options for Structure placement.
- * @throws
- * Throws if the integrity value is outside of the range [0,1]
- * Throws if the integrity seed is invalid.
- * Throws if the placement location contains blocks that are
- * outside the world bounds.
- * {@link minecraftcommon.ArgumentOutOfBoundsError}
- *
- * {@link minecraftcommon.InvalidArgumentError}
- *
- * {@link InvalidStructureError}
- */
-export function placeStructure(structure, location, dimension = overworld, options = undefined) {
-  structureManager.place(structure, dimension, location, options);
 }

@@ -4,8 +4,8 @@
     "name": "pack.name",
     "description": "pack.description",
     "uuid": "f6be82a8-bc86-4399-b7da-f01ff510c91b",
-    "version": [1,0,0],
-    "min_engine_version": [1,19,50]
+    "version": [1, 0, 0],
+    "min_engine_version": [1, 19, 50]
   },
   "metadata": {
     "authors": ["pack.authors"],
@@ -16,7 +16,7 @@
   "modules": [
     {
       "description": "pack.description",
-      "version": [1,0,0],
+      "version": [1, 0, 0],
       "uuid": "d65a99b4-4c85-45ce-9764-7d4c40f06e1a",
       "type": "data"
     },
@@ -31,11 +31,11 @@
   "dependencies": [
     {
       "uuid": "0d9feae7-47a6-47df-921d-dfb679f7aff5",
-      "version": [1,0,0]
+      "version": [1, 0, 0]
     },
     {
       "module_name": "@minecraft/server",
-      "version": "1.8.0"
+      "version": "1.10.0"
     }
   ]
 }

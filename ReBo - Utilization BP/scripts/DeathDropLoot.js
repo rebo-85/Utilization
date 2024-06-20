@@ -1,6 +1,6 @@
-import { EquipmentSlot, world } from "@minecraft/server";
-import { afterEvents, overworld, test, runTimeout, addScoreboard, getScore, setScore } from "./Minecraft";
-import { onWorldOpen, onWorldClose } from "./Utils";
+import { EquipmentSlot } from "@minecraft/server";
+import { afterEvents, overworld } from "./ReBo/Constants";
+import { onWorldOpen, onWorldClose, test, runTimeout, addScoreboard, getScore, setScore } from "./ReBo/Utils";
 
 const sbId = "initial_gamerules";
 const entityContainer = "rebo:loot_chest";
@@ -30,9 +30,8 @@ onWorldClose((player) => {
 
 afterEvents.entityDie.subscribe((event) => {
   const entity = event.deadEntity;
-  if (entity.typeId != "minecraft:player") {
-    return;
-  }
+  if (entity.typeId != "minecraft:player") return;
+
   const player = event.deadEntity;
 
   const dimension = player.dimension;

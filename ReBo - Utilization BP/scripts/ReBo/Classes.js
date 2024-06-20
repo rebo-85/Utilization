@@ -1,8 +1,22 @@
 import { system } from "@minecraft/server";
 import {} from "./Server";
-import { runInterval } from "./Utils";
-import { overworld, tps } from "./Constants";
+import {} from "./Javascript";
+import { runInterval, test } from "./Utils";
+import { end, nether, overworld, tps } from "./Constants";
 
+export class Fade {
+  /**
+   * Creates an instance of a Fade.
+   * @param {float} fadeIn
+   * @param {float} fadeHold
+   * @param {float} fadeOut
+   */
+  constructor(fadeIn, fadeHold, fadeOut) {
+    this.fadeIn = fadeIn;
+    this.fadeHold = fadeHold;
+    this.fadeOut = fadeOut;
+  }
+}
 export class Transform {
   /**
    * Creates an instance of a Transform.
@@ -23,15 +37,18 @@ export class Transform {
 export class Scene {
   /**
    * Creates an instance of Scene.
-   * @param {Transform} start - starting position and rotation.
-   * @param {Transform} end - ending position and rotation.
+   * @param {string} start - starting position and rotation. <x y z>
+   * @param {string} end - ending position and rotation <x y z>.
+   * @param {string} focus - the subject of which the scene will focus on. <x y z|selector>
    * @param {float} duration
    * @param {enum} [ease_type = 'linear']
    */
-  constructor(start, end, duration, ease_type = "linear") {
+  constructor(start, end, focus, duration, fade, ease_type = "linear") {
     this.start = start;
     this.end = end;
+    this.focus = focus;
     this.duration = duration;
+    this.fade = fade;
     this.ease_type = ease_type;
   }
 }
@@ -40,12 +57,14 @@ export class Cutscene {
    * Creates an instance of Cutscene.
    * @param {string} trigger_tag - Tag that starts the cutscene.
    * @param {Scene[]} scenes - Scenes to play in order.
+   * @param {TimedCommand[]} timedCommands - Commands to play along the cutscene.
    * @param {bool} [is_spectator = true] - Define if cutscene should be played in spectator mode.
    * @param {bool} [is_invisible = true] - Define if cutscene should hide the player while playing.
    */
-  constructor(trigger_tag, scenes, is_spectator = true, is_invisible = true) {
+  constructor(trigger_tag, scenes, timedCommands, is_spectator = true, is_invisible = true) {
     this.trigger_tag = trigger_tag;
     this.scenes = scenes;
+    this.timedCommands = timedCommands;
     this.is_spectator = is_spectator;
     this.is_invisible = is_invisible;
   }
@@ -195,7 +214,7 @@ export class Vector3 {
    */
   #validateNumber(value) {
     if (typeof value !== "number") {
-      throw new TypeError("Value must be a number");
+      console.error("Value must be a number");
     }
     return value;
   }
@@ -252,12 +271,12 @@ export class TimedCommand {
   /**
    * Creates an instance of TimedCommand.
    * @param {number} time - Time in seconds when to execute commands.
-   * @param {string|string[]} command - Commands to run at the specified time.
+   * @param {string|string[]} commands - Commands to run at the specified time.
    */
-  constructor(time, command) {
+  constructor(time, commands) {
     this.time = time;
     this.timeTick = time * tps;
-    this.command = command;
+    this.commands = commands;
   }
 }
 
