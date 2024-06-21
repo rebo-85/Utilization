@@ -1,0 +1,59 @@
+{
+  "namespace": "utils",
+  "empty": {
+    "type": "panel"
+  },
+  "image": {
+    "type": "image"
+  },
+  "panel": {
+    "type": "panel"
+  },
+  "stack_panel": {
+    "type": "stack_panel",
+    "orientation": "vertical"
+  },
+  "label": {
+    "type": "label"
+  },
+  "anim_wait": {
+    "anim_type": "wait",
+    "duration": 0
+  },
+  "anim_alpha_in": {
+    "anim_type": "alpha",
+    "from": 0.0,
+    "to": 1.0,
+    "duration": 1
+  },
+  "anim_alpha_out": {
+    "anim_type": "alpha",
+    "from": 1.0,
+    "to": 0.0,
+    "duration": 1
+  },
+
+  "anim_flip_book": {
+    "anim_type": "flip_book",
+    "frame_count": 1,
+    "frame_step": 1,
+    "fps": 1,
+    "duration": 1
+  },
+
+  "anim_aseprite_flip_book": {
+    "anim_type": "aseprite_flip_book",
+    "initial_uv": [0, 0],
+    "frame_count": 1,
+    "frame_step": 1,
+    "fps": 1,
+    "duration": 1
+  },
+
+  "anim_uv": {
+    "anim_type": "uv",
+    "from": [0, 0],
+    "to": [0, 0],
+    "duration": 1
+  }
+}

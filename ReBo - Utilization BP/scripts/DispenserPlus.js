@@ -211,16 +211,19 @@ async function dispenserPlaceBlock(redstoneSource) {
     const isAir = faceBlock.isAir;
 
     if (isAir) {
-      const container = dispenser.getComponent(BlockInventoryComponent.componentId).container;
-      let item;
-      while (!item) {
-        item = container.getItem(Math.randomInt(0, container.size - 1));
-      }
-      dispenser.dimension.commandRunAsync(`setblock ${faceBlock.x} ${faceBlock.y} ${faceBlock.z} hopper`);
+      // const container = dispenser.getComponent(BlockInventoryComponent.componentId).container;
+      // let item;
+      // while (!item) {
+      //   item = container.getItem(Math.randomInt(0, container.size - 1));
+      // }
+      // dispenser.dimension.commandRunAsync(`setblock ${faceBlock.x} ${faceBlock.y} ${faceBlock.z} hopper`);
       // runTimeout(() => {
       //   const item = dispenser.dimension.fetchEntities(`@e[x=${faceBlock.x},y=${faceBlock.y},z=${faceBlock.z},r=1]`)[0];
       //   test(item.nameTag);
       // }, 2);
+      const hopper = dispenser.dimension.fetchEntities(
+        `@e[type=hopper,x=${faceBlock.x},y=${faceBlock.y},z=${faceBlock.z},r=1]`
+      )[0];
     }
   });
 }
