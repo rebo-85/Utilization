@@ -2,14 +2,60 @@ import { system } from "@minecraft/server";
 import {} from "./server";
 import {} from "./javascript";
 import { runInterval } from "./utils";
-import { end, nether, overworld, tps } from "./constants";
+import { overworld, tps } from "./constants";
 
 export class CommandResult {
-  constructor() {
-    this.successCount = 0;
+  private constructor() {
   }
+  /**
+   * The number of successful commands executed.
+   */
+  successCount: number;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Edit JSDocs from here
 export class Fade {
   /**
    * Creates an instance of a Fade.
@@ -18,9 +64,6 @@ export class Fade {
    * @param {float} fadeOut
    */
   constructor(fadeIn, fadeHold, fadeOut) {
-    this.fadeIn = fadeIn;
-    this.fadeHold = fadeHold;
-    this.fadeOut = fadeOut;
   }
 }
 export class Transform {

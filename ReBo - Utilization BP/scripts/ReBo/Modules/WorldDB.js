@@ -1,52 +1,7 @@
-import { world } from "@minecraft/server";
-import { test } from "../Utils";
+import { world } from "../constants";
+
 const displayType = "chat";
-/**
- * WorldDB class to handle dynamic properties in the Minecraft world.
- *
- * @class WorldDB
- * @param {string} name - The name of the database.
- *
- * @method set(key: string, value: any): void
- * Sets a dynamic property in the world with the given key and value.
- *
- * @method get(key: string): any
- * Gets the value of a dynamic property from the world.
- *
- * @method diplay(key: string): void
- * Display a specific dynamic property from the world.
- *
- * @method remove(key: string): void
- * Remove a specific dynamic property from the world.
- *
- * @method displayAll(): void
- * Display all properties specific to this database from the world.
- *
- * @method removeAll(): void
- * Remove all properties specific to this database from the world.
- *
- * @static
- * @method displayAllProperties(): void
- * Display all dynamic properties from the world.
- *
- * @static
- * @static @method removeAllProperties(): void
- * Remove all dynamic properties from the world.
- *
- * @example
- * const db = new WorldDB("myDatabase");
- * db.set("key", { foo: "bar" });
- * const value = db.get("key");
- * db.remove("key");
- * db.clearAll();
- * db.clearAllProperties();
- */
 export class WorldDB {
-  /**
-   * Creates an instance of WorldDB.
-   * @param {string} name - The name of the database.
-   * @throws {TypeError} If the name is not a string.
-   */
   constructor(name) {
     if (typeof name !== "string") throw new TypeError("Database name must be a string");
 
@@ -62,11 +17,6 @@ export class WorldDB {
     }
   }
 
-  /**
-   * Sets a dynamic property in the world with the given name and value.
-   * @param {string} key - The key of the property.
-   * @param {*} value - The value to set.
-   */
   set(key, value) {
     const id = `${this.name}:${key}`;
     world.setDynamicProperty(id, JSON.stringify(value, null, 0));
@@ -74,11 +24,6 @@ export class WorldDB {
     if (!this.propertyIds.includes(id)) this.propertyIds.push(id);
   }
 
-  /**
-   * Gets the value of a dynamic property from the world.
-   * @param {string} key - The key of the property to retrieve.
-   * @returns {*} The value of the property, or undefined if not found.
-   */
   get(key) {
     const id = `${this.name}:${key}`;
     const value = world.getDynamicProperty(id);
@@ -91,10 +36,6 @@ export class WorldDB {
     test(`${id} = ${value}`, displayType);
   }
 
-  /**
-   * Deletes a specific dynamic property from the world.
-   * @param {string} key - The key of the property to remove.
-   */
   remove(key) {
     const id = `${this.name}:${key}`;
     const index = this.propertyIds.indexOf(id);
@@ -105,9 +46,6 @@ export class WorldDB {
     } else console.log("Property not found");
   }
 
-  /**
-   * Display all properties specific to this database from the world.
-   */
   displayAll() {
     this.propertyIds.forEach((id) => {
       const key = id.split(":")[1];
@@ -116,9 +54,6 @@ export class WorldDB {
     });
   }
 
-  /**
-   * Remove all properties specific to this database from the world.
-   */
   removeAll() {
     this.propertyIds.forEach((id) => {
       world.setDynamicProperty(id, undefined);
@@ -126,9 +61,6 @@ export class WorldDB {
     this.propertyIds = [];
   }
 
-  /**
-   * Display all dynamic properties from the world.
-   */
   static displayAllProperties() {
     const allPropertyIds = world.getDynamicPropertyIds();
     allPropertyIds.forEach((id) => {
@@ -137,9 +69,6 @@ export class WorldDB {
     });
   }
 
-  /**
-   * Remove all dynamic properties from the world.
-   */
   static removeAllProperties() {
     const allPropertyIds = world.getDynamicPropertyIds();
     allPropertyIds.forEach((id) => world.setDynamicProperty(id, undefined));

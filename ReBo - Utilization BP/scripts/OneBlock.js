@@ -1,4 +1,4 @@
-import { scriptEvent, overworld, afterEvents } from "./ReBo/Constants";
+import { scriptEvent, overworld, afterEvents } from "./ReBo/constants";
 import {
   addScore,
   addScoreboard,
@@ -8,9 +8,9 @@ import {
   test,
   runTimeout,
   runInterval,
-} from "./ReBo/Utils";
-import {} from "./ReBo/Server";
-import { Vector3 } from "./ReBo/Classes";
+} from "./ReBo/utils";
+import {} from "./ReBo/server";
+import { Vector3 } from "./ReBo/classes";
 
 const oneBlockLoc = new Vector3(0, 0, 0);
 const oneBlockOffsetLoc = new Vector3(oneBlockLoc.x, oneBlockLoc.y + 1, oneBlockLoc.z);
@@ -254,7 +254,6 @@ scriptEvent.subscribe((event) => {
 });
 
 function init() {
-  test();
   overworld.commandRunAsync(
     `setworldspawn ${oneBlockOffsetLoc.toString()}`,
     `spawnpoint @a ${oneBlockOffsetLoc.toString()}`,

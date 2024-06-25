@@ -1,6 +1,6 @@
-import { Music } from "../Classes";
-import { world } from "../Constants";
-import { onPlayerLoad, runInterval, runTimeout } from "../Utils";
+import { Music } from "../classes";
+import { world } from "../constants";
+import { onPlayerLoad, runInterval, runTimeout } from "../utils";
 
 const musicTrack = [new Music("eternal.jetski_rally.bgm", "jetski_rally", 88)];
 

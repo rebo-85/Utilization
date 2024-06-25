@@ -1,6 +1,6 @@
-import { world, tps } from "../Constants";
-import { Cutscene, Scene, Fade, TimedCommand } from "../Classes";
-import { runInterval, runTimeout, test } from "../Utils";
+import { world, tps } from "../constants";
+import { Cutscene, Scene, Fade, TimedCommand } from "../classes";
+import { runInterval, runTimeout, test } from "../utils";
 
 const elytraChallenge = new Cutscene(
   "play_elytraChallenge",

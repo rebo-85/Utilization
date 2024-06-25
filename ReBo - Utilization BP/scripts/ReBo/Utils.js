@@ -1,7 +1,38 @@
-import { afterEvents, beforeEvents, world, overworld, nether, end } from "./Constants";
+import { afterEvents, beforeEvents, world, overworld, nether, end } from "./constants";
 import { ScriptEventSource } from "@minecraft/server";
-import { RunInterval, RunTimeOut } from "./Classes";
-import { scoreboard } from "./Constants";
+import { RunInterval, RunTimeOut, CommandResult } from "./classes";
+import { scoreboard } from "./constants";
+
+export function commandRun(source, ...commands) {
+  const result = new CommandResult();
+
+  const flattenedCommands = commands.flat();
+
+  flattenedCommands.forEach((command) => {
+    const cr = source.runCommand(`${command}`);
+    if (cr.successCount > 0) {
+      result.successCount++;
+    }
+  });
+  return result;
+}
+
+export async function commandRunAsync(source, ...commands) {
+  const result = new CommandResult();
+
+  const flattenedCommands = commands.flat();
+
+  const commandPromises = flattenedCommands.map(async (command) => {
+    const cr = await source.runCommandAsync(command);
+    if (cr.successCount > 0) {
+      result.successCount++;
+    }
+  });
+
+  await Promise.all(commandPromises);
+
+  return result;
+}
 
 export function ForbidSpawn(selectorList) {
   runInterval(() => {
@@ -26,12 +57,12 @@ export function ForbidSpawn(selectorList) {
   });
 }
 
-export function runInterval(func, interval) {
-  return new RunInterval(func, interval);
+export function runInterval(callback, interval) {
+  return new RunInterval(callback, interval);
 }
 
-export function runTimeout(func, timeOut) {
-  return new RunTimeOut(func, timeOut);
+export function runTimeout(callback, timeOut) {
+  return new RunTimeOut(callback, timeOut);
 }
 
 export function getScoreboard(id) {
@@ -43,15 +74,15 @@ export function addScoreboard(id, displayName) {
   if (isObjectiveExist) return;
 
   if (!displayName) displayName = id;
-  return scoreboard.addObjective(id, displayName);
+  scoreboard.addObjective(id, displayName);
 }
 
 export function removeScoreboard(id) {
-  return scoreboard.removeObjective(id);
+  scoreboard.removeObjective(id);
 }
 
 export function addScore(id, participant, score) {
-  return getScoreboard(id).addScore(participant, score);
+  getScoreboard(id).addScore(participant, score);
 }
 
 export function getScore(id, participant) {
@@ -59,23 +90,22 @@ export function getScore(id, participant) {
 }
 
 export function setScore(id, participant, score) {
-  return getScoreboard(id).setScore(participant, score);
+  getScoreboard(id).setScore(participant, score);
 }
 
 export function removeParticipant(id, participant) {
-  try {
-    return getScoreboard(id).removeParticipant(participant);
-  } catch (error) {}
+  return getScoreboard(id).removeParticipant(participant);
 }
 
 export function removeAllParticipant(id) {
-  const allParticipants = getScoreboard(id)?.getParticipants();
-  allParticipants?.forEach((participant) => {
+  const scoreboard = getScoreboard(id);
+  if (!scoreboard) return;
+  for (const participant of scoreboard.getParticipants()) {
     removeParticipant(id, participant);
-  });
+  }
 }
 
-export function test(value, type = "chat") {
+export function display(value, type = "chat") {
   value = JSON.stringify(value, null, 0);
   switch (type) {
     case "chat":
@@ -106,33 +136,33 @@ export function getScriptEventSource(event) {
   }
 }
 
-export function onPlayerLoad(func) {
+export function onPlayerLoad(callback) {
   afterEvents.playerJoin.subscribe((event) => {
     const sys = runInterval(() => {
       const players = world.getAllPlayers();
       if (players.length > 0) {
         const player = world.getEntity(event.playerId);
-        func(player);
+        callback(player);
         sys.dispose();
       }
     }, 1);
   });
 }
 
-export function onWorldOpen(func) {
+export function onWorldOpen(callback) {
   onPlayerLoad((player) => {
     const players = world.getAllPlayers();
     if (players.length === 1) {
-      func(player);
+      callback(player);
     }
   });
 }
 
-export function onWorldClose(func) {
+export function onWorldClose(callback) {
   beforeEvents.playerLeave.subscribe((event) => {
     const players = world.getAllPlayers();
     if (players.length === 1) {
-      func(event.player);
+      callback(event.player);
     }
   });
 }
