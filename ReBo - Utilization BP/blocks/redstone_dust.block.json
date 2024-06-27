@@ -1,0 +1,18 @@
+{
+  "format_version": "1.20.40",
+  "minecraft:block": {
+    "description": {
+      "identifier": "rebo:redstone_dust",
+      "menu_category": {
+        "category": "items"
+      },
+      "traits": {
+        "minecraft:placement_position": {
+          "enabled_states": ["minecraft:block_face"]
+        }
+      },
+      "states": {}
+    },
+    "components": {}
+  }
+}

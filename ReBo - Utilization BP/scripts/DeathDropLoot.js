@@ -1,31 +1,26 @@
-import { EquipmentSlot } from "@minecraft/server";
-import { afterEvents, overworld } from "./ReBo/Constants";
-import { onWorldOpen, onWorldClose, test, runTimeout, addScoreboard, getScore, setScore } from "./ReBo/Utils";
+import { EquipmentSlot, GameRule } from "@minecraft/server";
+import { afterEvents, scriptEvent, world } from "./ReBo/constants";
+import { WorldDB } from "./ReBo/modules/worldDB";
+import { onWorldOpen, onWorldClose, display } from "./ReBo/utils";
 
-const sbId = "initial_gamerules";
 const entityContainer = "rebo:loot_chest";
-const entityGamerule = "rebo:gamerule";
 const isSeeThrough = false;
 const keepToOwner = false;
-//==================================================================================================================================//
-onWorldOpen((player) => {
-  addScoreboard(sbId);
 
-  const dimension = player.dimension;
-  const gamerule = dimension.spawnEntity(entityGamerule, player.location);
+const db = new WorldDB("ddl");
+const gamerules = world.gameRules;
+let initialKeepInventory = db.get("initialKeepInventory");
 
-  const keepInventory = gamerule.getProperty("p:keepinventory");
-  gamerule.remove();
-
-  if (keepInventory) setScore(sbId, "keepinventory", 1);
-  else setScore(sbId, "keepinventory", 0);
-
-  player.commandRunAsync(`gamerule keepinventory true`);
+onWorldOpen(() => {
+  initialKeepInventory = gamerules.keepInventory;
+  db.set("initialKeepInventory", initialKeepInventory);
+  gamerules.keepInventory = true;
 });
 
-onWorldClose((player) => {
-  const keepInventory = getScore(sbId, "keepinventory");
-  if (!keepInventory) player.dimension.commandRun(`gamerule keepinventory false`);
+onWorldClose(() => {
+  if (initialKeepInventory === false && gamerules.keepInventory === true) {
+    gamerules.keepInventory = false;
+  }
 });
 
 afterEvents.entityDie.subscribe((event) => {
@@ -76,3 +71,21 @@ afterEvents.entityDie.subscribe((event) => {
   // Despawn
   if (!hasItem) container.remove();
 });
+
+scriptEvent.subscribe((event) => {
+  const source = getScriptEventSource(event);
+  if (source.typeId != "minecraft:player") return;
+  const id = event.id;
+
+  switch (id) {
+    case "ddl:init":
+      init();
+
+    default:
+      return;
+  }
+});
+
+function init() {
+  db.removeAll();
+}
