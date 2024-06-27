@@ -1,5 +1,5 @@
-import { runInterval, runTimeout, test } from "./ReBo/Utils";
-import { afterEvents, overworld } from "./ReBo/Constants";
+import { runInterval, runTimeout, display } from "./ReBo/utils";
+import { afterEvents, overworld } from "./ReBo/constants";
 import { BlockInventoryComponent } from "@minecraft/server";
 
 afterEvents.buttonPush.subscribe((event) => {
