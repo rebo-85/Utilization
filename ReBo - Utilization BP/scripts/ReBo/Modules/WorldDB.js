@@ -1,4 +1,5 @@
 import { world } from "../constants";
+import { display } from "../utils";
 
 const displayType = "chat";
 export class WorldDB {
@@ -33,7 +34,7 @@ export class WorldDB {
   display(key) {
     const id = `${this.name}:${key}`;
     const value = this.get(key);
-    test(`${id} = ${value}`, displayType);
+    display(`${id} = ${value}`, displayType);
   }
 
   remove(key) {
@@ -50,7 +51,7 @@ export class WorldDB {
     this.propertyIds.forEach((id) => {
       const key = id.split(":")[1];
       const value = this.get(key);
-      test(`${id} = ${value}`, displayType);
+      display(`${id} = ${value}`, displayType);
     });
   }
 
@@ -65,7 +66,7 @@ export class WorldDB {
     const allPropertyIds = world.getDynamicPropertyIds();
     allPropertyIds.forEach((id) => {
       const value = JSON.parse(world.getDynamicProperty(id));
-      test(`${id} = ${value}`, displayType);
+      displaya(`${id} = ${value}`, displayType);
     });
   }
 

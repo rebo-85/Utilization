@@ -1,4 +1,4 @@
-import { afterEvents, beforeEvents, world, overworld, nether, end } from "./constants";
+import { afterEvents, beforeEvents, world, overworld, nether, end, gamerules } from "./constants";
 import { ScriptEventSource } from "@minecraft/server";
 import { RunInterval, RunTimeOut, CommandResult } from "./classes";
 import { scoreboard } from "./constants";
@@ -32,6 +32,54 @@ export async function commandRunAsync(source, ...commands) {
   await Promise.all(commandPromises);
 
   return result;
+}
+export function test() {}
+
+export function AdventureSpawnables(spawnItemList, db) {
+  let isGameruleModified = false;
+  beforeEvents.itemUseOn.subscribe((e) => {
+    const { source, itemStack } = e;
+
+    if (!spawnItemList.includes(itemStack.typeId)) return;
+
+    const gamemode = source.getGameMode();
+    if (gamemode != "adventure") return;
+    db.remove("playerGamemodes");
+
+    const playerGamemodes = [];
+
+    for (const player of world.getAllPlayers()) {
+      playerGamemodes.push({ id: player.id, gamemode: player.getGameMode() });
+    }
+
+    db.set("playerGamemodes", playerGamemodes);
+
+    source.commandRunAsync(`gamemode survival @s`);
+    if (gamerules.sendCommandFeedback) {
+      source.commandRunAsync(`gamerule sendcommandfeedback false`);
+      isGameruleModified = true;
+    }
+  });
+
+  afterEvents.itemUseOn.subscribe((e) => {
+    const { itemStack, source } = e;
+
+    if (!spawnItemList.includes(itemStack.typeId)) return;
+    const isAdventure =
+      db.get("playerGamemodes")?.find((element) => element.id === source.id).gamemode === "adventure" ? true : false;
+    if (isAdventure) {
+      source.setGameMode("adventure");
+      if (isGameruleModified) {
+        source.commandRunAsync(`gamerule sendcommandfeedback true`);
+        source.sendMessage({
+          translate: "gameMode.changed",
+          with: { rawtext: [{ translate: "createWorldScreen.gameMode.adventure" }] },
+        });
+        db.remove("playerGamemodes");
+        isGameruleModified = false;
+      }
+    }
+  });
 }
 
 export function ForbidSpawn(selectorList) {

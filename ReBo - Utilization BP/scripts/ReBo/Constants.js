@@ -2,6 +2,7 @@ import { MinecraftDimensionTypes, world as w, system as s, TicksPerSecond } from
 
 export const namespace = "rebo";
 export const world = w;
+export const gamerules = w.gameRules;
 export const tps = TicksPerSecond;
 export const system = s;
 export const afterEvents = w.afterEvents;
