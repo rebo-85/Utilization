@@ -7,7 +7,7 @@ import { RunInterval, RunTimeOut, CommandResult } from "./classes";
  * @param commands Commands to run.
  * @returns CommandResult object indicating success count.
  */
-export function commandRun(source: Dimension|Entity, ...commands: string[][]): CommandResult;
+export function runCommand(source: Dimension|Entity, ...commands: string[][]): CommandResult;
 
 /**
  * Runs asynchronous commands on a source.
@@ -15,7 +15,7 @@ export function commandRun(source: Dimension|Entity, ...commands: string[][]): C
  * @param commands Commands to run asynchronously.
  * @returns CommandResult object indicating success count.
  */
-export function commandRunAsync(source: Dimension|Entity, ...commands: string[][]): Promise<CommandResult>;
+export function runCommandAsync(source: Dimension|Entity, ...commands: string[][]): Promise<CommandResult>;
 
 /**
  * Prevents spawning of entities matching selectors across dimensions.

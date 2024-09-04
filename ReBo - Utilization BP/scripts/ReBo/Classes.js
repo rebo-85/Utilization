@@ -2,7 +2,7 @@ import { system } from "@minecraft/server";
 import {} from "./server";
 import {} from "./javascript";
 import { runInterval } from "./utils";
-import { end, nether, overworld, tps } from "./constants";
+import { overworld, tps, nether, end } from "./constants";
 
 export class CommandResult {
   constructor() {
@@ -23,6 +23,35 @@ export class Fade {
     this.fadeOut = fadeOut;
   }
 }
+
+export class EntityJumpAfterEvent {
+  constructor(entity) {
+    this.entity = entity;
+  }
+}
+
+export class EntityJumpAfterEventSignal {
+  constructor() {
+    this.eventListeners = {};
+  }
+  subscribe(cb) {
+    runInterval(() => {
+      const entities = [...overworld.getEntities(), ...nether.getEntities(), ...end.getEntities()];
+
+      for (const entity of entities) {
+        if (entity.isJumping && !entity.hasTag("isJumping")) {
+          entity.addTag("isJumping");
+          cb(new EntityJumpAfterEvent(entity));
+        } else {
+          if (entity.isOnGround) {
+            entity.removeTag("isJumping");
+          }
+        }
+      }
+    });
+  }
+}
+
 export class Transform {
   /**
    * Creates an instance of a Transform.

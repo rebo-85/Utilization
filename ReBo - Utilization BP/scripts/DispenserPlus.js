@@ -216,7 +216,7 @@ async function dispenserPlaceBlock(redstoneSource) {
       // while (!item) {
       //   item = container.getItem(Math.randomInt(0, container.size - 1));
       // }
-      // dispenser.dimension.commandRunAsync(`setblock ${faceBlock.x} ${faceBlock.y} ${faceBlock.z} hopper`);
+      // dispenser.dimension.runCommandAsync(`setblock ${faceBlock.x} ${faceBlock.y} ${faceBlock.z} hopper`);
       // runTimeout(() => {
       //   const item = dispenser.dimension.fetchEntities(`@e[x=${faceBlock.x},y=${faceBlock.y},z=${faceBlock.z},r=1]`)[0];
       //   test(item.nameTag);

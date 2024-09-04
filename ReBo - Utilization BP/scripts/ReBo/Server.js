@@ -1,7 +1,17 @@
-import { EntityInventoryComponent, EntityEquippableComponent, Dimension, Entity, Player } from "@minecraft/server";
-import { Vector3, Checkpoint, Vector2 } from "./classes";
+import {
+  EntityInventoryComponent,
+  EntityEquippableComponent,
+  EntityRideableComponent,
+  EntityRidingComponent,
+  Dimension,
+  Entity,
+  Player,
+  WorldAfterEvents,
+  EntityComponentTypes,
+} from "@minecraft/server";
+import { Vector3, Checkpoint, Vector2, EntityJumpAfterEventSignal } from "./classes";
 import { tps } from "./constants";
-import { runTimeout, commandRun, commandRunAsync } from "./utils";
+import { runTimeout, runCommand, runCommandAsync } from "./utils";
 
 // Player methods
 Player.prototype.moveEquipment = function (slot) {
@@ -21,6 +31,26 @@ Player.prototype.moveEquipment = function (slot) {
     }
   }
 };
+
+Player.prototype.doUseAnimation = function (item) {
+  runTimeout(() => {
+    const slot = this.getEquipmentSlot(EquipmentSlot.Mainhand);
+    const item = slot.getItem();
+    slot.setItem(null);
+
+    runTimeout(() => {
+      slot.setItem(item);
+    }, 2);
+  });
+};
+
+Object.defineProperty(Player.prototype, "gamemode", {
+  get: function () {
+    return this.getGameMode();
+  },
+  configurable: false,
+  enumerable: true,
+});
 
 // Entity methods
 Entity.prototype.tp = function (loc, rot) {
@@ -65,42 +95,93 @@ Entity.prototype.setEquipment = function (slot, item) {
   return this.getComponent(EntityEquippableComponent.componentId).setEquipment(slot, item);
 };
 
-Entity.prototype.commandRun = function (...commands) {
-  return commandRun(this, ...commands);
+Entity.prototype.runCommand = function (...commands) {
+  return runCommand.call(this, Entity, ...commands);
 };
 
-Entity.prototype.commandRunAsync = async function (...commands) {
-  return commandRunAsync(this, ...commands);
+Entity.prototype.runCommandAsync = function (...commands) {
+  return runCommandAsync.call(this, Entity, ...commands);
 };
 
 Entity.prototype.timedCommand = async function (time, commands) {
   runTimeout(() => {
-    this.commandRunAsync(commands);
+    this.runCommandAsync(commands);
   }, time * tps);
 };
 
+Entity.prototype.getVariant = function () {
+  return this.getComponent(EntityComponentTypes.Variant)?.value;
+};
+
+Entity.prototype.getRide = function () {
+  return this.getComponent(EntityRidingComponent.componentId)?.entityRidingOn;
+};
+
+Entity.prototype.getRiders = function () {
+  return this.getComponent(EntityRideableComponent.componentId)?.getRiders();
+};
+
+Object.defineProperty(Entity.prototype, "isTamed", {
+  get: function () {
+    if (this.getComponent(EntityComponentTypes.IsTamed)) return true;
+    else return false;
+  },
+  configurable: false,
+  enumerable: true,
+});
+
+Object.defineProperty(Entity.prototype, "x", {
+  get: function () {
+    return this.location.x;
+  },
+  configurable: false,
+  enumerable: true,
+});
+
+Object.defineProperty(Entity.prototype, "y", {
+  get: function () {
+    return this.location.y;
+  },
+  configurable: false,
+  enumerable: true,
+});
+
+Object.defineProperty(Entity.prototype, "z", {
+  get: function () {
+    return this.location.z;
+  },
+  configurable: false,
+  enumerable: true,
+});
+
 // Dimension methods
-Dimension.prototype.fetchEntities = function (filter) {
+const dimensionGetEntities = Dimension.prototype.getEntities;
+
+Dimension.prototype.getEntities = function (filter) {
   if (typeof filter === "string") {
-    const matches = filter.getSelectorMatches();
-    if (matches) {
-      return this.getEntities(filter.toEQO());
-    }
-    return [];
+    return dimensionGetEntities.call(this, filter.toEQO());
   }
-  return this.getEntities(filter);
+  return dimensionGetEntities.call(this, filter);
+};
+Dimension.prototype.runCommand = function (...commands) {
+  return runCommand.call(this, Dimension, ...commands);
 };
 
-Dimension.prototype.commandRun = function (...commands) {
-  return commandRun(this, ...commands);
-};
-
-Dimension.prototype.commandRunAsync = async function (...commands) {
-  return commandRunAsync(this, ...commands);
+Dimension.prototype.runCommandAsync = function (...commands) {
+  return runCommandAsync.call(this, Dimension, ...commands);
 };
 
 Dimension.prototype.timedCommand = async function (time, commands) {
   runTimeout(() => {
-    this.commandRunAsync(commands);
+    this.runCommandAsync(commands);
   }, time * tps);
 };
+
+// WorldAfterEvents methods
+Object.defineProperty(WorldAfterEvents.prototype, "entityStartJump", {
+  get: function () {
+    return new EntityJumpAfterEventSignal();
+  },
+  configurable: false,
+  enumerable: true,
+});

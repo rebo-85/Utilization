@@ -1,31 +1,50 @@
 import { afterEvents, beforeEvents, world, overworld, nether, end, gamerules } from "./constants";
-import { ScriptEventSource } from "@minecraft/server";
+import { Entity, Dimension, ScriptEventSource } from "@minecraft/server";
 import { RunInterval, RunTimeOut, CommandResult } from "./classes";
 import { scoreboard } from "./constants";
 
-export function commandRun(source, ...commands) {
+const entityRunCommand = Entity.prototype.runCommand;
+const dimensionRunCommand = Dimension.prototype.runCommand;
+const entityRunCommandAsync = Entity.prototype.runCommandAsync;
+const dimensionRunCommandAsync = Dimension.prototype.runCommandAsync;
+
+export function runCommand(source, ...commands) {
   const result = new CommandResult();
 
   const flattenedCommands = commands.flat();
 
   flattenedCommands.forEach((command) => {
-    const cr = source.runCommand(`${command}`);
-    if (cr.successCount > 0) {
-      result.successCount++;
+    if (source === Entity) {
+      const cr = entityRunCommand.call(this, command);
+      if (cr.successCount > 0) {
+        result.successCount++;
+      }
+    } else if (source === Dimension) {
+      const cr = dimensionRunCommand.call(this, command);
+      if (cr.successCount > 0) {
+        result.successCount++;
+      }
     }
   });
   return result;
 }
 
-export async function commandRunAsync(source, ...commands) {
+export async function runCommandAsync(source, ...commands) {
   const result = new CommandResult();
 
   const flattenedCommands = commands.flat();
 
   const commandPromises = flattenedCommands.map(async (command) => {
-    const cr = await source.runCommandAsync(command);
-    if (cr.successCount > 0) {
-      result.successCount++;
+    if (source === Entity) {
+      const cr = await entityRunCommandAsync.call(this, command);
+      if (cr.successCount > 0) {
+        result.successCount++;
+      }
+    } else if (source === Dimension) {
+      const cr = await dimensionRunCommandAsync.call(this, command);
+      if (cr.successCount > 0) {
+        result.successCount++;
+      }
     }
   });
 
@@ -35,67 +54,72 @@ export async function commandRunAsync(source, ...commands) {
 }
 export function test() {}
 
-export function AdventureSpawnables(spawnItemList, db) {
-  let isGameruleModified = false;
-  beforeEvents.itemUseOn.subscribe((e) => {
-    const { source, itemStack } = e;
+// export function AdventureSpawnables(spawnItemList, db) { // Bugged
+//   let isGameruleModified = false;
+//   beforeEvents.itemUseOn.subscribe((e) => {
+//     const { source, itemStack } = e;
+//     if (!spawnItemList.includes(itemStack.typeId)) return;
 
-    if (!spawnItemList.includes(itemStack.typeId)) return;
+//     const gamemode = source.getGameMode();
+//     if (gamemode != "adventure") return;
 
-    const gamemode = source.getGameMode();
-    if (gamemode != "adventure") return;
-    db.remove("playerGamemodes");
+//     const playerGamemodes = [];
 
-    const playerGamemodes = [];
+//     for (const player of world.getAllPlayers()) {
+//       playerGamemodes.push({ id: player.id, gamemode: player.getGameMode() });
+//     }
 
-    for (const player of world.getAllPlayers()) {
-      playerGamemodes.push({ id: player.id, gamemode: player.getGameMode() });
-    }
+//     db.set("playerGamemodes", playerGamemodes);
 
-    db.set("playerGamemodes", playerGamemodes);
+//     const isAdventure =
+//       db.get("playerGamemodes")?.find((element) => element.id === source.id).gamemode === "adventure" ? true : false;
+//     if (isAdventure) {
+//       source.runCommandAsync(`gamemode survival @s`);
+//       if (gamerules.sendCommandFeedback) {
+//         source.runCommandAsync(`gamerule sendcommandfeedback false`);
+//         isGameruleModified = true;
+//       }
+//     }
+//   });
 
-    source.commandRunAsync(`gamemode survival @s`);
-    if (gamerules.sendCommandFeedback) {
-      source.commandRunAsync(`gamerule sendcommandfeedback false`);
-      isGameruleModified = true;
-    }
+//   afterEvents.itemUseOn.subscribe((e) => {
+//     const { itemStack, source } = e;
+
+//     if (!spawnItemList.includes(itemStack.typeId)) return;
+//     const isAdventure =
+//       db.get("playerGamemodes")?.find((element) => element.id === source.id).gamemode === "adventure" ? true : false;
+//     if (isAdventure) {
+//       source.setGameMode("adventure");
+//       if (isGameruleModified) {
+//         isGameruleModified = false;
+//         source.runCommandAsync(`gamerule sendcommandfeedback true`);
+//         source.sendMessage({
+//           translate: "gameMode.changed",
+//           with: { rawtext: [{ translate: "createWorldScreen.gameMode.adventure" }] },
+//         });
+//         db.remove("playerGamemodes");
+//       }
+//     }
+//   });
+// }
+export function fetchAllEntities(selectorList) {
+  let entities = new Set([]);
+  selectorList.forEach((selector) => {
+    overworld.fetchEntities(selector).forEach((entity) => {
+      entities.add(entity);
+    });
+    nether.fetchEntities(selector).forEach((entity) => {
+      entities.add(entity);
+    });
+    end.fetchEntities(selector).forEach((entity) => {
+      entities.add(entity);
+    });
   });
-
-  afterEvents.itemUseOn.subscribe((e) => {
-    const { itemStack, source } = e;
-
-    if (!spawnItemList.includes(itemStack.typeId)) return;
-    const isAdventure =
-      db.get("playerGamemodes")?.find((element) => element.id === source.id).gamemode === "adventure" ? true : false;
-    if (isAdventure) {
-      source.setGameMode("adventure");
-      if (isGameruleModified) {
-        source.commandRunAsync(`gamerule sendcommandfeedback true`);
-        source.sendMessage({
-          translate: "gameMode.changed",
-          with: { rawtext: [{ translate: "createWorldScreen.gameMode.adventure" }] },
-        });
-        db.remove("playerGamemodes");
-        isGameruleModified = false;
-      }
-    }
-  });
+  return entities;
 }
-
 export function ForbidSpawn(selectorList) {
   runInterval(() => {
-    let entities = new Set([]);
-    selectorList.forEach((selector) => {
-      overworld.fetchEntities(selector).forEach((entity) => {
-        entities.add(entity);
-      });
-      nether.fetchEntities(selector).forEach((entity) => {
-        entities.add(entity);
-      });
-      end.fetchEntities(selector).forEach((entity) => {
-        entities.add(entity);
-      });
-    });
+    let entities = fetchAllEntities(selectorList);
 
     for (let entity of entities) {
       try {

@@ -66,7 +66,7 @@ afterEvents.entityDie.subscribe((event) => {
   }
 
   // Clear
-  player.commandRunAsync("clear @s");
+  player.runCommandAsync("clear @s");
 
   // Despawn
   if (!hasItem) container.remove();

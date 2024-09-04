@@ -87,7 +87,7 @@ runInterval(() => {
 
 function playCutscene(cutscene, player) {
   // Cutscene start
-  player.commandRunAsync(
+  player.runCommandAsync(
     `tag @s remove ${cutscene.trigger_tag}`,
     `tag @s add in_cutscene`,
     `inputpermission set @s camera disabled`,
@@ -99,9 +99,9 @@ function playCutscene(cutscene, player) {
   let gamemode = null;
   if (cutscene.is_spectator) {
     gamemode = player.getGamemode();
-    player.commandRunAsync(`gamemode spectator @s`);
+    player.runCommandAsync(`gamemode spectator @s`);
   }
-  if (cutscene.is_invisible) player.commandRunAsync(`effect @s invisibility 999999 0 true`);
+  if (cutscene.is_invisible) player.runCommandAsync(`effect @s invisibility 999999 0 true`);
   // Play all timed commands
   cutscene.timedCommands.forEach((timedCommand) => {
     player.timedCommand(timedCommand.time, timedCommand.commands);
@@ -113,7 +113,7 @@ function playCutscene(cutscene, player) {
     let fadeInTime = 0;
     if (fade) {
       runTimeout(() => {
-        player.commandRunAsync(`camera @s fade time ${fade.fadeIn} ${fade.fadeHold} ${fade.fadeOut}`);
+        player.runCommandAsync(`camera @s fade time ${fade.fadeIn} ${fade.fadeHold} ${fade.fadeOut}`);
       }, timeline);
       fadeInTime = fade.fadeIn;
     }
@@ -135,24 +135,24 @@ function playCutscene(cutscene, player) {
       const focus = temp.join(" ");
 
       runTimeout(() => {
-        player.commandRunAsync(`teleport ${player.name} ${scene.start} facing ${focus}`);
+        player.runCommandAsync(`teleport ${player.name} ${scene.start} facing ${focus}`);
       }, fadeInTime * tps);
 
       runTimeout(() => {
-        player.commandRunAsync(
+        player.runCommandAsync(
           `camera @s set minecraft:free pos ${start} facing ${scene.focus}`,
           `camera @s set minecraft:free ease ${scene.duration} ${scene.ease_type} pos ${end} facing ${scene.focus}`
         );
       }, fadeInTime * tps + 1);
 
       runTimeout(() => {
-        player.commandRunAsync(`camera @s clear`);
+        player.runCommandAsync(`camera @s clear`);
         if (i === cutscene.scenes.length - 1) {
           // Cutscene complete, do any necessary cleanup
-          if (cutscene.is_spectator && gamemode) player.commandRunAsync(`gamemode ${gamemode} @s`);
-          if (cutscene.is_invisible) player.commandRunAsync(`effect @s invisibility 0`);
+          if (cutscene.is_spectator && gamemode) player.runCommandAsync(`gamemode ${gamemode} @s`);
+          if (cutscene.is_invisible) player.runCommandAsync(`effect @s invisibility 0`);
 
-          player.commandRunAsync(
+          player.runCommandAsync(
             `tag @s remove in_cutscene`,
             `inputpermission set @s camera enabled`,
             `inputpermission set @s movement enabled`

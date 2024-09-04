@@ -254,7 +254,7 @@ scriptEvent.subscribe((event) => {
 });
 
 function init() {
-  overworld.commandRunAsync(
+  overworld.runCommandAsync(
     `setworldspawn ${oneBlockOffsetLoc.toString()}`,
     `spawnpoint @a ${oneBlockOffsetLoc.toString()}`,
     `teleport @a ${oneBlockOffsetLoc.toString()}`
@@ -264,7 +264,7 @@ function init() {
 
 function reset() {
   const initialBlock = "grass";
-  overworld.commandRunAsync(`setblock ${oneBlockLoc.toString()} ${initialBlock}`);
+  overworld.runCommandAsync(`setblock ${oneBlockLoc.toString()} ${initialBlock}`);
 
   removeAllParticipant("blocks");
 }
@@ -287,7 +287,7 @@ async function respawnBlock(location, playerScore) {
   function fetchBlock() {
     return new Promise((resolve) => {
       const respawnBlock = getRespawnBlock(playerScore);
-      overworld.commandRunAsync(`setblock ${oneBlockLoc.toString()} ${respawnBlock}`);
+      overworld.runCommandAsync(`setblock ${oneBlockLoc.toString()} ${respawnBlock}`);
       const blockFetcher = runInterval(() => {
         const block = overworld.getBlock(oneBlockLoc);
         const perm = block.permutation;
@@ -386,6 +386,6 @@ function spawnRandomMob(location, chance) {
     const mobs = [...passiveMobs, ...neutralMobs, ...hostileMobs];
     const randomMob = mobs[Math.floor(Math.random() * mobs.length)];
 
-    overworld.commandRunAsync(`summon ${randomMob} ${location.x} ${location.y} ${location.z}`);
+    overworld.runCommandAsync(`summon ${randomMob} ${location.x} ${location.y} ${location.z}`);
   }
 }

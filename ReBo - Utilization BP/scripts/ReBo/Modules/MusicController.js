@@ -1,8 +1,18 @@
 import { Music } from "../classes";
-import { world } from "../constants";
+import { world, afterEvents } from "../constants";
 import { onPlayerLoad, runInterval, runTimeout } from "../utils";
 
 const musicTrack = [new Music("eternal.jetski_rally.bgm", "jetski_rally", 88)];
+
+afterEvents.playerSpawn.subscribe((e) => {
+  const { player } = e;
+
+  runTimeout(() => {
+    for (const music of musicTrack) {
+      player.removeTag(music.tag);
+    }
+  }, 20);
+});
 
 function getCurrentMusic(player) {
   for (let i = musicTrack.length - 1; i >= 0; i--) {
@@ -27,14 +37,14 @@ onPlayerLoad((player) => {
 });
 
 function stopAllMusic(player) {
-  player.commandRunAsync(`stopsound @s`);
+  player.runCommandAsync(`stopsound @s`);
   musicTrack.forEach((music) => {
     player.removeTag(`playing_${music.tag}`);
   });
 }
 
 function playMusic(player, music) {
-  player.commandRunAsync(`playsound ${music.track}`);
+  player.runCommandAsync(`playsound ${music.track}`);
   player.addTag(`playing_${music.tag}`);
 
   const stopMusicTimeout = runTimeout(() => {
@@ -44,7 +54,7 @@ function playMusic(player, music) {
   const checkTagInterval = runInterval(() => {
     if (!player.hasTag(music.tag)) {
       player.removeTag(`playing_${music.tag}`);
-      player.commandRunAsync(`stopsound @s ${music.track}`);
+      player.runCommandAsync(`stopsound @s ${music.track}`);
       stopMusicTimeout.dispose();
       checkTagInterval.dispose();
     }

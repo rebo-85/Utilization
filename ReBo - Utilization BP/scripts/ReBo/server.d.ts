@@ -71,13 +71,13 @@ interface Entity {
    * Runs a series of commands on the entity.
    * @param {...string[]} commands - The commands to run.
    */
-  commandRun(...commands: string[]): CommandResult;
+  runCommand(...commands: string[]): CommandResult;
 
   /**
    * Runs a series of commands asynchronously on the entity.
    * @param {...string[]} commands - The commands to run.
    */
-  commandRunAsync(...commands: string[]):  Promise<CommandResult>;
+  runCommandAsync(...commands: string[]):  Promise<CommandResult>;
 
   /**
    * Run command to the Entity in specified time.
@@ -99,13 +99,13 @@ interface Dimension {
    * Runs a series of commands in the dimension.
    * @param {...string[]} commands - The commands to run.
    */
-  commandRun(...commands: string[]): CommandResult;
+  runCommand(...commands: string[]): CommandResult;
 
   /**
    * Runs a series of commands asynchronously in the dimension.
    * @param {...string[]} commands - The commands to run.
    */
-  commandRunAsync(...commands: string[]):  Promise<CommandResult>;
+  runCommandAsync(...commands: string[]):  Promise<CommandResult>;
 
   /**
    * Run command to the dimension in specified time.
