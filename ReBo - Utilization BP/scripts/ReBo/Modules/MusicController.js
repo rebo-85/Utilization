@@ -25,14 +25,16 @@ function getCurrentMusic(player) {
 
 onPlayerLoad((player) => {
   const checkMovement = runInterval(() => {
-    const { x, y, z } = player.getVelocity();
-    if (x !== 0 || y !== 0 || z !== 0) {
-      const currentMusic = getCurrentMusic(player);
-      if (currentMusic) {
-        player.removeTag(`playing_${currentMusic.tag}`);
-        checkMovement.dispose();
+    try {
+      const { x, y, z } = player.getVelocity();
+      if (x !== 0 || y !== 0 || z !== 0) {
+        const currentMusic = getCurrentMusic(player);
+        if (currentMusic) {
+          player.removeTag(`playing_${currentMusic.tag}`);
+          checkMovement.dispose();
+        }
       }
-    }
+    } catch (error) {}
   });
 });
 

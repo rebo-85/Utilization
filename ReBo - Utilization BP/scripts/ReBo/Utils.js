@@ -1,12 +1,25 @@
-import { afterEvents, beforeEvents, world, overworld, nether, end, gamerules } from "./constants";
+import { afterEvents, beforeEvents, world, overworld, nether, end, scoreboard } from "./constants";
 import { Entity, Dimension, ScriptEventSource } from "@minecraft/server";
 import { RunInterval, RunTimeOut, CommandResult } from "./classes";
-import { scoreboard } from "./constants";
 
 const entityRunCommand = Entity.prototype.runCommand;
 const dimensionRunCommand = Dimension.prototype.runCommand;
 const entityRunCommandAsync = Entity.prototype.runCommandAsync;
 const dimensionRunCommandAsync = Dimension.prototype.runCommandAsync;
+
+export function forceSpawn(dimension, id, location, teleportOptions) {
+  return new Promise((resolve, reject) => {
+    const ec = runInterval(() => {
+      const entity = dimension.spawnEntity(id, location);
+
+      if (entity) {
+        entity.teleport(location, teleportOptions);
+        ec.dispose();
+        resolve(entity);
+      }
+    });
+  });
+}
 
 export function runCommand(source, ...commands) {
   const result = new CommandResult();
@@ -105,13 +118,13 @@ export function test() {}
 export function fetchAllEntities(selectorList) {
   let entities = new Set([]);
   selectorList.forEach((selector) => {
-    overworld.fetchEntities(selector).forEach((entity) => {
+    overworld.getEntities(selector).forEach((entity) => {
       entities.add(entity);
     });
-    nether.fetchEntities(selector).forEach((entity) => {
+    nether.getEntities(selector).forEach((entity) => {
       entities.add(entity);
     });
-    end.fetchEntities(selector).forEach((entity) => {
+    end.getEntities(selector).forEach((entity) => {
       entities.add(entity);
     });
   });

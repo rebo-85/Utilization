@@ -1,12 +1,15 @@
-import { world } from "@minecraft/server";
+import { world } from "./ReBo/constants";
 import {} from "./ReBo/server";
-import { overworld } from "./ReBo/constants";
+import { CountDownTimer } from "./ReBo/modules/countDownTimer";
 import { display } from "./ReBo/utils";
+const player = world.getAllPlayers()[0];
 
-// Example usage:
-async function name() {
-  const asd = overworld.getEntities({ type: "minecraft:player" })[0];
-  display(asd);
-}
+const onTick = (min, sec) => {
+  player.runCommandAsync(`say ${min}:${sec}`);
+};
+const onEnd = () => {
+  player.runCommandAsync(`say finished`);
+};
+const timer = new CountDownTimer(60, onTick, onEnd);
 
-name();
+timer.start();

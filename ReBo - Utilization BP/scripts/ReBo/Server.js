@@ -11,7 +11,7 @@ import {
 } from "@minecraft/server";
 import { Vector3, Checkpoint, Vector2, EntityJumpAfterEventSignal } from "./classes";
 import { tps } from "./constants";
-import { runTimeout, runCommand, runCommandAsync } from "./utils";
+import { runTimeout, runCommand, runCommandAsync, runInterval } from "./utils";
 
 // Player methods
 Player.prototype.moveEquipment = function (slot) {
@@ -163,6 +163,7 @@ Dimension.prototype.getEntities = function (filter) {
   }
   return dimensionGetEntities.call(this, filter);
 };
+
 Dimension.prototype.runCommand = function (...commands) {
   return runCommand.call(this, Dimension, ...commands);
 };
