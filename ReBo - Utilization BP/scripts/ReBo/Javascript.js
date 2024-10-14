@@ -43,22 +43,25 @@ String.prototype.toEQO = function () {
     options.location = { x: 0, y: 0, z: 0 }; // Initialize location object with default values
 
     attributes.forEach((attribute) => {
-      const [key, value] = attribute.split("=");
-      const trimmedKey = key.trim();
-      const trimmedValue = value.trim();
+      const [key, value] = attribute.split("=").map((part) => part.trim());
+      let trimmedValue = value;
 
-      switch (trimmedKey) {
+      // Handle values wrapped in quotes
+      const quotedMatch = value.match(/^"(.+)"$/);
+      if (quotedMatch) {
+        trimmedValue = quotedMatch[1]; // Extract the value inside the quotes
+      }
+
+      switch (key) {
         case "c":
           options.closest = parseInt(trimmedValue, 10);
-
-          // If @p, @s, @r, or @initiator is present, override closest to 1
-          if (matches[1] === "p" || matches[1] === "r" || matches[1] === "s" || matches[1] === "initiator") {
+          if (["p", "r", "s", "initiator"].includes(matches[1])) {
             options.closest = 1;
           }
           break;
         case "family":
-          if (trimmedValue.includes("!")) {
-            excludeFamilies.push(trimmedValue.replace(/!/g, ""));
+          if (trimmedValue.startsWith("!")) {
+            excludeFamilies.push(trimmedValue.replace(/^!/, ""));
             options.excludeFamilies = excludeFamilies;
           } else {
             families.push(trimmedValue);
@@ -72,20 +75,11 @@ String.prototype.toEQO = function () {
           options.minLevel = parseInt(trimmedValue, 10);
           break;
         case "m":
-          if (trimmedValue.includes("!")) {
-            if (!isNaN(trimmedValue.replace(/!/g, ""))) {
-              excludeGameModes.push(parseInt(trimmedValue.replace(/!/g, ""), 10));
-              options.excludeGameModes = excludeGameModes;
-            } else {
-              excludeGameModes.push(trimmedValue);
-              options.excludeGameModes = excludeGameModes;
-            }
+          if (trimmedValue.startsWith("!")) {
+            excludeGameModes.push(trimmedValue.replace(/^!/, ""));
+            options.excludeGameModes = excludeGameModes;
           } else {
-            if (!isNaN(trimmedValue)) {
-              options.gameMode = parseInt(trimmedValue, 10);
-            } else {
-              options.gameMode = trimmedValue;
-            }
+            options.gameMode = parseInt(trimmedValue, 10) || trimmedValue;
           }
           break;
         case "name":
@@ -110,8 +104,8 @@ String.prototype.toEQO = function () {
           options.minVerticalRotation = parseInt(trimmedValue, 10);
           break;
         case "tag":
-          if (trimmedValue.includes("!")) {
-            excludeTags.push(trimmedValue.replace(/!/g, ""));
+          if (trimmedValue.startsWith("!")) {
+            excludeTags.push(trimmedValue.replace(/^!/, ""));
             options.excludeTags = excludeTags;
           } else {
             tags.push(trimmedValue);
@@ -119,20 +113,13 @@ String.prototype.toEQO = function () {
           }
           break;
         case "type":
-          if (trimmedValue.includes("!")) {
-            excludeTypes.push(trimmedValue.replace(/!/g, ""));
+          if (trimmedValue.startsWith("!")) {
+            excludeTypes.push(trimmedValue.replace(/^!/, ""));
             options.excludeTypes = excludeTypes;
           } else {
             options.type = trimmedValue;
           }
-          // If @a, @p, @s, @r, or @initiator is present, override type to 'minecraft:player'
-          if (
-            matches[1] === "a" ||
-            matches[1] === "p" ||
-            matches[1] === "r" ||
-            matches[1] === "s" ||
-            matches[1] === "initiator"
-          ) {
+          if (["a", "p", "r", "s", "initiator"].includes(matches[1])) {
             options.type = "minecraft:player";
           }
           break;
@@ -146,28 +133,22 @@ String.prototype.toEQO = function () {
           options.location.z = parseInt(trimmedValue, 10);
           break;
         default:
-          // Handle unknown keys
-          console.warn(`'${trimmedKey}' cannot be converted to EntityQueryOptions property.`);
+          console.warn(`'${key}' cannot be converted to EntityQueryOptions property.`);
           break;
       }
     });
 
-    if (
-      matches[1] === "a" ||
-      matches[1] === "p" ||
-      matches[1] === "r" ||
-      matches[1] === "s" ||
-      matches[1] === "initiator"
-    ) {
+    if (["a", "p", "r", "s", "initiator"].includes(matches[1])) {
       options.type = "minecraft:player";
-
-      if (!(matches[1] === "a")) {
+      if (matches[1] !== "a") {
         options.closest = 1;
       }
     }
 
     return options;
-  } else return console.error(`"${this}" is not a valid selector.`);
+  } else {
+    return console.error(`"${this}" is not a valid selector.`);
+  }
 };
 
 String.prototype.toVector3 = function () {

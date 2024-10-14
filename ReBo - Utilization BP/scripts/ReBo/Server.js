@@ -6,6 +6,7 @@ import {
   Dimension,
   Entity,
   Player,
+  Container,
   WorldAfterEvents,
   EntityComponentTypes,
 } from "@minecraft/server";
@@ -18,7 +19,7 @@ Player.prototype.moveEquipment = function (slot) {
   const item = this.getEquipment(slot);
   if (!item) return;
 
-  const inventory = this.getInventory();
+  const inventory = this.inventory;
   if (inventory.emptySlotsCount === 0) return;
 
   for (let slotIndex = 0; slotIndex < inventory.size; slotIndex++) {
@@ -79,10 +80,6 @@ Entity.prototype.getCheckpoint = function () {
   return new Checkpoint(this);
 };
 
-Entity.prototype.getInventory = function () {
-  return this.getComponent(EntityInventoryComponent.componentId).container;
-};
-
 Entity.prototype.getEquipment = function (slot) {
   return this.getComponent(EntityEquippableComponent.componentId).getEquipment(slot);
 };
@@ -120,6 +117,14 @@ Entity.prototype.getRide = function () {
 Entity.prototype.getRiders = function () {
   return this.getComponent(EntityRideableComponent.componentId)?.getRiders();
 };
+
+Object.defineProperty(Entity.prototype, "inventory", {
+  get: function () {
+    return this.getComponent(EntityInventoryComponent.componentId).container;
+  },
+  configurable: false,
+  enumerable: true,
+});
 
 Object.defineProperty(Entity.prototype, "isTamed", {
   get: function () {
@@ -186,3 +191,16 @@ Object.defineProperty(WorldAfterEvents.prototype, "entityStartJump", {
   configurable: false,
   enumerable: true,
 });
+
+// Container methods
+
+Container.prototype.getItemCount = function (itemId) {
+  let count = 0;
+  for (let i = 0; i < this.size; i++) {
+    const slot = this.getSlot(i);
+    try {
+      if (slot.isValid() && slot.typeId === itemId) count = count + slot.amount;
+    } catch (error) {}
+  }
+  return count;
+};

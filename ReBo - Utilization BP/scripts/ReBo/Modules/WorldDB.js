@@ -31,7 +31,7 @@ export class WorldDB {
       .map((data) => {
         const entity = world.getEntity(data.id);
         if (entity) return entity;
-        return;
+        return undefined;
       })
       .filter((entity) => entity !== undefined);
   }
