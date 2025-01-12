@@ -5,3 +5,5 @@ tips.game.1=You can only see this add-on in MCPEDL. Please §l§cREPORT§r it if
 tips.game.2=Check out my other MCPEDL contents!
 tips.game.3=Encountered a bug? DM me in Discord: §brebo_85§r. 
 tips.game.72=Subscribe to my Youtube channel: §bReBo§r
+entity.rebo:custom_minecart.name=custom_minecart
+item.spawn_egg.entity.rebo:custom_minecart.name=Spawn custom_minecart

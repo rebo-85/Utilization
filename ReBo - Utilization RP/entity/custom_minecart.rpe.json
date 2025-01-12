@@ -1,0 +1,30 @@
+{
+	"format_version": "1.19.0",
+	"minecraft:client_entity": {
+		"description": {
+			"identifier": "rebo:custom_minecart",
+			"materials": {
+				"default": "entity_alphatest"
+			},
+			"textures": {
+				"default": "textures/entity/custom_minecart"
+			},
+			"geometry": {
+				"default": "geometry.custom_minecart"
+			},
+			"render_controllers": ["controller.render.default"],
+			"animations": {
+				"drive": "animation.custom_minecart.drive"
+			},
+			"scripts": {
+				"initialize": ["variable.steering = 0;"],
+				"pre_animation": ["query.has_rider ? (variable.steering = Math.lerp(variable.steering, query.yaw_speed, 0.15));"],
+				"animate": ["drive"]
+			},
+			"spawn_egg": {
+				"base_color": "#3fcc6b",
+				"overlay_color": "#ae3a3b"
+			}
+		}
+	}
+}
