@@ -100,7 +100,7 @@ beforeEvents.worldInitialize.subscribe(() => {
   });
 
   // Entity methods
-  Object.defineProperty(Player.prototype, "health", {
+  Object.defineProperty(Entity.prototype, "health", {
     get: function () {
       return this.getComponent(EntityHealthComponent.componentId)?.currentValue;
     },
@@ -108,7 +108,7 @@ beforeEvents.worldInitialize.subscribe(() => {
     enumerable: true,
   });
 
-  Object.defineProperty(Player.prototype, "maxHealth", {
+  Object.defineProperty(Entity.prototype, "maxHealth", {
     get: function () {
       return this.getComponent(EntityHealthComponent.componentId)?.effectiveMax;
     },
