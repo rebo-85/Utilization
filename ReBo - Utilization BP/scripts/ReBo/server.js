@@ -3,6 +3,7 @@ import {
   EntityEquippableComponent,
   EntityRideableComponent,
   EntityRidingComponent,
+  EntityHealthComponent,
   Dimension,
   Entity,
   BlockPermutation,
@@ -39,6 +40,14 @@ Object.defineProperty(World.prototype, "getEntities", {
   },
   configurable: false,
   enumerable: false,
+});
+
+Object.defineProperty(World.prototype, "players", {
+  get: function () {
+    return this.getAllPlayers();
+  },
+  configurable: false,
+  enumerable: true,
 });
 
 beforeEvents.worldInitialize.subscribe(() => {
@@ -91,6 +100,24 @@ beforeEvents.worldInitialize.subscribe(() => {
   });
 
   // Entity methods
+  Object.defineProperty(Player.prototype, "health", {
+    get: function () {
+      return this.getComponent(EntityHealthComponent.componentId)?.currentValue;
+    },
+    configurable: false,
+    enumerable: true,
+  });
+
+  Object.defineProperty(Player.prototype, "maxHealth", {
+    get: function () {
+      return this.getComponent(EntityHealthComponent.componentId)?.effectiveMax;
+    },
+    configurable: false,
+    enumerable: true,
+  });
+  Entity.prototype.setHealth = function (value) {
+    return this.getComponent(EntityHealthComponent.componentId)?.setCurrentValue(value);
+  };
 
   Entity.prototype.tp = function (loc, rot) {
     if (typeof loc === "string") loc = loc.toVector3();
