@@ -14,6 +14,7 @@ import {
   ItemStack,
   World,
   Block,
+  ItemDurabilityComponent,
 } from "@minecraft/server";
 import { Vector3, Checkpoint, Vector2, EntityJumpAfterEventSignal } from "./classes";
 import { beforeEvents, tps, overworld, nether, end } from "./constants";
@@ -51,6 +52,36 @@ Object.defineProperty(World.prototype, "players", {
 });
 
 beforeEvents.worldInitialize.subscribe(() => {
+  // ItemStack methods
+  Object.defineProperty(ItemStack.prototype, "durability", {
+    get: function () {
+      const component = this.getComponent(ItemDurabilityComponent.componentId);
+      if (!component) throw new Error("Item does not have a durability component.");
+
+      return component.maxDurability - component.damage;
+    },
+    set: function (durability) {
+      const component = this.getComponent(ItemDurabilityComponent.componentId);
+      if (!component) throw new Error("Item does not have a durability component.");
+
+      const newDamage = component.maxDurability - durability;
+      if (newDamage < 0 || newDamage > component.maxDurability) {
+        throw new RangeError(`Invalid durability value. Valid range is 0 to ${component.maxDurability}.`);
+      }
+
+      component.damage = newDamage;
+    },
+    configurable: true,
+    enumerable: true,
+  });
+  Object.defineProperty(ItemStack.prototype, "maxDurability", {
+    get: function () {
+      return this.getComponent(ItemDurabilityComponent.componentId).maxDurability;
+    },
+    configurable: false,
+    enumerable: true,
+  });
+
   // Block methods
   Object.defineProperty(Block.prototype, "getState", {
     value: function (state) {
@@ -100,11 +131,23 @@ beforeEvents.worldInitialize.subscribe(() => {
   });
 
   // Entity methods
-  Object.defineProperty(Entity.prototype, "health", {
+
+  Object.defineProperty(Entity.prototype, "isPlayer", {
     get: function () {
-      return this.getComponent(EntityHealthComponent.componentId)?.currentValue;
+      return this.typeId === "minecraft:player";
     },
     configurable: false,
+    enumerable: true,
+  });
+
+  Object.defineProperty(Entity.prototype, "health", {
+    get: function () {
+      return this.getComponent(EntityHealthComponent.componentId).currentValue;
+    },
+    set: function (value) {
+      return this.getComponent(EntityHealthComponent.componentId).setCurrentValue(value);
+    },
+    configurable: true,
     enumerable: true,
   });
 
@@ -115,9 +158,6 @@ beforeEvents.worldInitialize.subscribe(() => {
     configurable: false,
     enumerable: true,
   });
-  Entity.prototype.setHealth = function (value) {
-    return this.getComponent(EntityHealthComponent.componentId)?.setCurrentValue(value);
-  };
 
   Entity.prototype.tp = function (loc, rot) {
     if (typeof loc === "string") loc = loc.toVector3();

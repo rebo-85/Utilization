@@ -7,6 +7,13 @@ const dimensionRunCommand = Dimension.prototype.runCommand;
 const entityRunCommandAsync = Entity.prototype.runCommandAsync;
 const dimensionRunCommandAsync = Dimension.prototype.runCommandAsync;
 
+export function idTranslate(id) {
+  return id
+    .split(":")[1]
+    .split("_")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
 export function forceSpawn(dimension, id, location, teleportOptions) {
   return new Promise((resolve, reject) => {
     const ec = runInterval(() => {
