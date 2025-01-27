@@ -188,6 +188,16 @@ beforeEvents.worldInitialize.subscribe(() => {
     enumerable: true,
   });
 
+  Object.defineProperty(Entity.prototype, "getEntities", {
+    value: function (filter) {
+      if (typeof filter === "string") {
+        filter = filter.toEQO();
+      }
+      filter.location = this.location;
+      return this.dimension.getEntities(filter);
+    },
+  });
+
   Object.defineProperty(Entity.prototype, "getEquipment", {
     value: function (slot) {
       return this.equippableComponent.getEquipment(slot);

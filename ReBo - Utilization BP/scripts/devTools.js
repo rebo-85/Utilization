@@ -1,8 +1,11 @@
-import { world } from "./ReBo/constants";
-import { runInterval } from "./ReBo/utils";
+import { scriptEvent, world, namespace as ns } from "./constants";
+import { runInterval } from "./utils";
 
 runInterval(() => {
   for (const player of world.getAllPlayers()) {
+    const eq = player.getEquipment("Mainhand");
+    if (eq?.typeId != "minecraft:debug_stick") return;
+
     let obj = player.getEntitiesFromViewDirection({ includeLiquidBlocks: true, includePassableBlocks: true })[0];
 
     if (!obj) {
@@ -48,5 +51,20 @@ runInterval(() => {
       };
     }
     player.onScreenDisplay.setActionBar(rawtext);
+  }
+});
+
+scriptEvent.subscribe((e) => {
+  const { source, id } = e;
+
+  switch (id) {
+    case `${ns}:clear_tags`:
+      for (const tag of source.getTags()) {
+        source.removeTag(tag);
+      }
+      break;
+
+    default:
+      break;
   }
 });
