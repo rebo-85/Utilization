@@ -51,6 +51,32 @@ Object.defineProperty(World.prototype, "players", {
   enumerable: true,
 });
 
+// Entity methods (needs to be outside the event)
+Object.defineProperty(Entity.prototype, "runCommand", {
+  value: function (...commands) {
+    return runCommand.call(this, Entity, ...commands);
+  },
+});
+
+Object.defineProperty(Entity.prototype, "runCommandAsync", {
+  value: function (...commands) {
+    return runCommandAsync.call(this, Entity, ...commands);
+  },
+});
+
+// Dimension methods (needs to be outside the event)
+Object.defineProperty(Dimension.prototype, "runCommand", {
+  value: function (...commands) {
+    return runCommand.call(this, Dimension, ...commands);
+  },
+});
+
+Object.defineProperty(Dimension.prototype, "runCommandAsync", {
+  value: function (...commands) {
+    return runCommandAsync.call(this, Dimension, ...commands);
+  },
+});
+
 beforeEvents.worldInitialize.subscribe(() => {
   // ItemStack methods
   Object.defineProperty(ItemStack.prototype, "durabilityComponent", {
@@ -216,18 +242,6 @@ beforeEvents.worldInitialize.subscribe(() => {
     },
   });
 
-  Object.defineProperty(Entity.prototype, "runCommand", {
-    value: function (...commands) {
-      return runCommand.call(this, Entity, ...commands);
-    },
-  });
-
-  Object.defineProperty(Entity.prototype, "runCommandAsync", {
-    value: function (...commands) {
-      return runCommandAsync.call(this, Entity, ...commands);
-    },
-  });
-
   Object.defineProperty(Entity.prototype, "variantComponent", {
     get: function () {
       const component = this.getComponent(EntityComponentTypes.Variant);
@@ -333,18 +347,6 @@ beforeEvents.worldInitialize.subscribe(() => {
         return dimensionGetEntities.call(this, filter.toEQO());
       }
       return dimensionGetEntities.call(this, filter);
-    },
-  });
-
-  Object.defineProperty(Dimension.prototype, "runCommand", {
-    value: function (...commands) {
-      return runCommand.call(this, Dimension, ...commands);
-    },
-  });
-
-  Object.defineProperty(Dimension.prototype, "runCommandAsync", {
-    value: function (...commands) {
-      return runCommandAsync.call(this, Dimension, ...commands);
     },
   });
 
