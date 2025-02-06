@@ -3,6 +3,8 @@ import {} from "./ReBo/server";
 import { runTimeout } from "./ReBo/utils";
 import keyframes from "./exportedCameraKeyframes";
 
+keyframes.sort((a, b) => a.time - b.time);
+
 const positions = [];
 const rotations = [];
 for (const keyframe of keyframes) {
@@ -37,14 +39,22 @@ function runScene() {
     player.runCommandAsync("inputpermission set @s camera disabled", "inputpermission set @s movement disabled");
     let prevPos = positions[0].points;
     let prevRot = rotations[0].points;
-    let prevPosTime = 0;
-    for (const position of positions) {
-      const { x, y, z } = position.points;
+    let prevTime = 0;
+    for (const keyframe of keyframes) {
+      const { x, y, z } = prevPos;
+      const { x: rx, y: ry } = prevRot;
       runTimeout(() => {
-        console.warn(JSON.stringify(position.time, null, 0));
-        player.runCommandAsync(`camera @s set minecraft:free ease ${position.time - prevPosTime} linear pos ${x} ${y} ${z}`);
-        prevPosTime = position.time;
-      }, position.time * 20);
+        const command = `camera @s set minecraft:free ease ${parseFloat((keyframe.time - prevTime).toFixed(4))} linear pos ${x} ${y} ${z} rot ${rx} ${ry}`;
+        console.warn(JSON.stringify(command, null, 0));
+        player.runCommandAsync(command);
+        prevTime = keyframe.time;
+      }, keyframe.time * 20);
+
+      if (keyframe.interpolation === "position") {
+        prevPos = keyframe.data_points[0];
+      } else if (keyframe.interpolation === "rotation") {
+        prevRot = keyframe.data_points[0];
+      }
     }
   }
 }

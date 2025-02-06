@@ -42,6 +42,9 @@ runInterval(() => {
             text: `§bEntity§r: §f${entity.typeId}\n§r`,
           },
           {
+            text: `§bFamilies§r: §f[${entity.getTypeFamilies()}]\n§r`,
+          },
+          {
             text: `§bHealth§r: §f${entity.health}/${entity.maxHealth}\n§r`,
           },
           {

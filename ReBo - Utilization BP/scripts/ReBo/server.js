@@ -13,7 +13,7 @@ import {
   ScriptEventCommandMessageAfterEvent,
   ScriptEventSource,
 } from "@minecraft/server";
-import { Vector2, EntityJumpAfterEventSignal } from "./classes";
+import { Vector2, EntityJumpAfterEventSignal, PlayerCollectItemAfterEventSignal } from "./classes";
 import { beforeEvents, overworld, nether, end } from "./constants";
 import { runTimeout, runCommand, runCommandAsync } from "./utils";
 
@@ -25,6 +25,7 @@ const errors = {
   EQUIPPABLE_MISSING: `Entity must have 'minecraft:wearable' component.`,
   VARIANT_MISSING: `Entity must have 'minecraft:variant' component.`,
   RIDING_MISSING: `Entity must have 'minecraft:rideable' component.`,
+  TYPE_FAMILY_MISSING: `Entity must have 'minecraft:type_family' component.`,
 };
 
 // World methods
@@ -49,32 +50,6 @@ Object.defineProperty(World.prototype, "players", {
     return this.getAllPlayers();
   },
   enumerable: true,
-});
-
-// Entity methods (needs to be outside the event)
-Object.defineProperty(Entity.prototype, "runCommand", {
-  value: function (...commands) {
-    return runCommand.call(this, Entity, ...commands);
-  },
-});
-
-Object.defineProperty(Entity.prototype, "runCommandAsync", {
-  value: function (...commands) {
-    return runCommandAsync.call(this, Entity, ...commands);
-  },
-});
-
-// Dimension methods (needs to be outside the event)
-Object.defineProperty(Dimension.prototype, "runCommand", {
-  value: function (...commands) {
-    return runCommand.call(this, Dimension, ...commands);
-  },
-});
-
-Object.defineProperty(Dimension.prototype, "runCommandAsync", {
-  value: function (...commands) {
-    return runCommandAsync.call(this, Dimension, ...commands);
-  },
 });
 
 beforeEvents.worldInitialize.subscribe(() => {
@@ -110,6 +85,20 @@ beforeEvents.worldInitialize.subscribe(() => {
   });
 
   // Block methods
+  const blockCenter = Block.prototype.center;
+  const blockBottomCenter = Block.prototype.bottomCenter;
+  Object.defineProperty(Block.prototype, "center", {
+    get: function () {
+      return blockCenter.call(this);
+    },
+  });
+
+  Object.defineProperty(Block.prototype, "bottomCenter", {
+    get: function () {
+      return blockBottomCenter.call(this);
+    },
+  });
+
   Object.defineProperty(Block.prototype, "getState", {
     value: function (state) {
       return this.permutation.getState(state);
@@ -117,6 +106,11 @@ beforeEvents.worldInitialize.subscribe(() => {
   });
 
   // Player methods
+  Object.defineProperty(Player.prototype, "stopSound", {
+    value: function (id) {
+      this.runCommandAsync(`stopsound @s ${id}`);
+    },
+  });
   Object.defineProperty(Player.prototype, "doUseAnimation", {
     value: function () {
       runTimeout(() => {
@@ -142,6 +136,19 @@ beforeEvents.worldInitialize.subscribe(() => {
   });
 
   // Entity methods
+
+  Object.defineProperty(Entity.prototype, "runCommand", {
+    value: function (...commands) {
+      return runCommand.call(this, Entity, ...commands);
+    },
+  });
+
+  Object.defineProperty(Entity.prototype, "runCommandAsync", {
+    value: function (...commands) {
+      return runCommandAsync.call(this, Entity, ...commands);
+    },
+  });
+
   Object.defineProperty(Entity.prototype, "isPlayer", {
     get: function () {
       return this.typeId === "minecraft:player";
@@ -237,7 +244,7 @@ beforeEvents.worldInitialize.subscribe(() => {
   });
 
   Object.defineProperty(Entity.prototype, "setEquipment", {
-    value: function (slot) {
+    value: function (slot, item) {
       return this.equippableComponent.setEquipment(slot, item);
     },
   });
@@ -254,6 +261,26 @@ beforeEvents.worldInitialize.subscribe(() => {
   Object.defineProperty(Entity.prototype, "getVariant", {
     value: function () {
       return this.variantComponent.value;
+    },
+  });
+
+  Object.defineProperty(Entity.prototype, "typeFamilyComponent", {
+    get: function () {
+      const component = this.getComponent(EntityComponentTypes.TypeFamily);
+      if (!component) throw new Error(errors.TYPE_FAMILY_MISSING);
+      return component;
+    },
+    enumerable: true,
+  });
+
+  Object.defineProperty(Entity.prototype, "getTypeFamilies", {
+    value: function () {
+      return this.typeFamilyComponent.getTypeFamilies();
+    },
+  });
+  Object.defineProperty(Entity.prototype, "hasTypeFamily", {
+    value: function (typeFamily) {
+      return this.typeFamilyComponent.hasTypeFamily(typeFamily);
     },
   });
 
@@ -341,6 +368,18 @@ beforeEvents.worldInitialize.subscribe(() => {
   // Dimension methods
   const dimensionGetEntities = Dimension.prototype.getEntities;
 
+  Object.defineProperty(Dimension.prototype, "runCommand", {
+    value: function (...commands) {
+      return runCommand.call(this, Dimension, ...commands);
+    },
+  });
+
+  Object.defineProperty(Dimension.prototype, "runCommandAsync", {
+    value: function (...commands) {
+      return runCommandAsync.call(this, Dimension, ...commands);
+    },
+  });
+
   Object.defineProperty(Dimension.prototype, "getEntities", {
     value: function (filter) {
       if (typeof filter === "string") {
@@ -355,7 +394,11 @@ beforeEvents.worldInitialize.subscribe(() => {
     get: function () {
       return new EntityJumpAfterEventSignal();
     },
-    enumerable: true,
+  });
+  Object.defineProperty(WorldAfterEvents.prototype, "playerCollectItem", {
+    get: function () {
+      return new PlayerCollectItemAfterEventSignal();
+    },
   });
 
   // Container methods

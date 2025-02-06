@@ -1,8 +1,8 @@
-import { system } from "@minecraft/server";
+import { system, BlockComponentPlayerInteractEvent, world } from "@minecraft/server";
 import {} from "./server";
 import {} from "./javascript";
 import { runInterval } from "./utils";
-import { overworld, tps, nether, end } from "./constants";
+import { overworld, tps, nether, end, namespace as ns } from "./constants";
 
 export class CommandResult {
   constructor() {
@@ -30,23 +30,38 @@ export class EntityJumpAfterEvent {
   }
 }
 
-export class EntityJumpAfterEventSignal {
-  constructor() {
-    this.eventListeners = {};
+export class playerCollectItemAfterEvent {
+  constructor(entity, itemStack) {
+    this.entity = entity;
+    this.collectedItem = itemStack;
   }
+}
+
+export class EntityJumpAfterEventSignal {
+  constructor() {}
   subscribe(cb) {
     runInterval(() => {
-      const entities = [...overworld.getEntities(), ...nether.getEntities(), ...end.getEntities()];
+      const entities = world.getEntities();
 
       for (const entity of entities) {
-        if (entity.isJumping && !entity.hasTag("isJumping")) {
-          entity.addTag("isJumping");
+        if (entity.isJumping && !entity.hasTag(`${ns}:is_jumping`)) {
+          entity.addTag(`${ns}:is_jumping`);
           cb(new EntityJumpAfterEvent(entity));
         } else {
           if (entity.isOnGround) {
-            entity.removeTag("isJumping");
+            entity.removeTag(`${ns}:is_jumping`);
           }
         }
+      }
+    });
+  }
+}
+
+export class PlayerCollectItemAfterEventSignal {
+  constructor() {}
+  subscribe(cb) {
+    runInterval(() => {
+      for (const player of world.players) {
       }
     });
   }
