@@ -14,6 +14,7 @@ export function idTranslate(id) {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 }
+
 export function forceSpawn(dimension, id, location, teleportOptions) {
   return new Promise((resolve, reject) => {
     const ec = runInterval(() => {
@@ -71,6 +72,81 @@ export async function runCommandAsync(source, ...commands) {
   await Promise.all(commandPromises);
 
   return result;
+}
+
+// export function AdventureSpawnables(spawnItemList, db) { // Bugged
+//   let isGameruleModified = false;
+//   beforeEvents.itemUseOn.subscribe((e) => {
+//     const { source, itemStack } = e;
+//     if (!spawnItemList.includes(itemStack.typeId)) return;
+
+//     const gamemode = source.getGameMode();
+//     if (gamemode != "adventure") return;
+
+//     const playerGamemodes = [];
+
+//     for (const player of world.getAllPlayers()) {
+//       playerGamemodes.push({ id: player.id, gamemode: player.getGameMode() });
+//     }
+
+//     db.set("playerGamemodes", playerGamemodes);
+
+//     const isAdventure =
+//       db.get("playerGamemodes")?.find((element) => element.id === source.id).gamemode === "adventure" ? true : false;
+//     if (isAdventure) {
+//       source.runCommandAsync(`gamemode survival @s`);
+//       if (gamerules.sendCommandFeedback) {
+//         source.runCommandAsync(`gamerule sendcommandfeedback false`);
+//         isGameruleModified = true;
+//       }
+//     }
+//   });
+
+//   afterEvents.itemUseOn.subscribe((e) => {
+//     const { itemStack, source } = e;
+
+//     if (!spawnItemList.includes(itemStack.typeId)) return;
+//     const isAdventure =
+//       db.get("playerGamemodes")?.find((element) => element.id === source.id).gamemode === "adventure" ? true : false;
+//     if (isAdventure) {
+//       source.setGameMode("adventure");
+//       if (isGameruleModified) {
+//         isGameruleModified = false;
+//         source.runCommandAsync(`gamerule sendcommandfeedback true`);
+//         source.sendMessage({
+//           translate: "gameMode.changed",
+//           with: { rawtext: [{ translate: "createWorldScreen.gameMode.adventure" }] },
+//         });
+//         db.remove("playerGamemodes");
+//       }
+//     }
+//   });
+// }
+export function fetchAllEntities(selectorList) {
+  let entities = new Set([]);
+  selectorList.forEach((selector) => {
+    overworld.getEntities(selector).forEach((entity) => {
+      entities.add(entity);
+    });
+    nether.getEntities(selector).forEach((entity) => {
+      entities.add(entity);
+    });
+    end.getEntities(selector).forEach((entity) => {
+      entities.add(entity);
+    });
+  });
+  return entities;
+}
+export function ForbidSpawn(selectorList) {
+  runInterval(() => {
+    let entities = fetchAllEntities(selectorList);
+
+    for (let entity of entities) {
+      try {
+        entity.remove();
+      } catch (error) {}
+    }
+  });
 }
 
 export function runInterval(callback, interval) {
@@ -137,4 +213,76 @@ export function display(value, type = "chat") {
       world.sendMessage(`${value}`);
       break;
   }
+}
+
+export function arraysEqual(arr1, arr2) {
+  if (arr1 === arr2) return true;
+  if (arr1 == null || arr2 == null) return false;
+  if (arr1.length !== arr2.length) return false;
+
+  for (let i = 0; i < arr1.length; ++i) {
+    if (typeof arr1[i] === "object" && typeof arr2[i] === "object") {
+      if (!objectsEqual(arr1[i], arr2[i])) return false;
+    } else if (arr1[i] !== arr2[i]) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function objectsEqual(obj1, obj2) {
+  const keys1 = Object.keys(obj1);
+  const keys2 = Object.keys(obj2);
+
+  if (keys1.length !== keys2.length) return false;
+
+  for (const key of keys1) {
+    if (obj1[key] !== obj2[key]) return false;
+  }
+
+  return true;
+}
+
+export function getScriptEventSource(event) {
+  switch (event.sourceType) {
+    case ScriptEventSource.Block:
+      return event.sourceBlock;
+    case ScriptEventSource.Entity:
+      return event.sourceEntity;
+    case ScriptEventSource.NPCDialogue:
+      return event.initiator;
+    default:
+      return;
+  }
+}
+
+export function onPlayerLoad(callback) {
+  afterEvents.playerJoin.subscribe((event) => {
+    const sys = runInterval(() => {
+      const players = world.getAllPlayers();
+      if (players.length > 0) {
+        const player = world.getEntity(event.playerId);
+        callback(player);
+        sys.dispose();
+      }
+    }, 1);
+  });
+}
+
+export function onWorldOpen(callback) {
+  onPlayerLoad((player) => {
+    const players = world.getAllPlayers();
+    if (players.length === 1) {
+      callback(player);
+    }
+  });
+}
+
+export function onWorldClose(callback) {
+  beforeEvents.playerLeave.subscribe((event) => {
+    const players = world.getAllPlayers();
+    if (players.length === 1) {
+      callback(event.player);
+    }
+  });
 }

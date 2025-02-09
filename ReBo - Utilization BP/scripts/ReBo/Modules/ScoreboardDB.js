@@ -1,4 +1,5 @@
 import { addScoreboard, getScoreboard, removeParticipant, setScore, removeScoreboard } from "../utils";
+
 export class ScoreboardDB {
   constructor(id) {
     this.id = id;
@@ -8,23 +9,57 @@ export class ScoreboardDB {
   }
 
   set(key, value) {
-    const displayName = `${key} = ${JSON.stringify(value, null, 0)}`;
+    let displayValue;
 
+    if (value instanceof Map) {
+      displayValue = JSON.stringify({
+        isMap: true,
+        data: Array.from(value.entries()),
+      });
+    } else if (value instanceof Set) {
+      displayValue = JSON.stringify({
+        isSet: true,
+        data: Array.from(value),
+      });
+    } else if (value && value.id && value.typeId) {
+      displayValue = JSON.stringify({
+        isEntity: true,
+        id: value.id,
+        entityType: value.typeId,
+      });
+    } else {
+      displayValue = JSON.stringify(value);
+    }
+
+    const displayName = `${key} = ${displayValue}`;
     const existingParticipant = this.#getParticipant(key);
     if (existingParticipant) removeParticipant(this.id, existingParticipant);
 
     setScore(this.id, displayName, 0);
   }
+
   get(key) {
     const participant = this.#getParticipant(key);
 
     if (!participant) return null;
 
     const match = participant.displayName.match(/^\s*[\w$]+\s*=\s*(.*)\s*$/);
+    // console.warn(JSON.stringify(participant.displayName, null, 0));
     if (match) {
-      let valueStr = match[1].trim();
+      const valueStr = match[1].trim();
       try {
-        return JSON.parse(valueStr);
+        const parsedValue = JSON.parse(valueStr);
+
+        if (parsedValue && parsedValue.isMap) {
+          return new Map(parsedValue.data);
+        } else if (parsedValue && parsedValue.isSet) {
+          return new Set(parsedValue.data);
+        } else if (parsedValue && parsedValue.isEntity) {
+          const entity = world.getEntity(parsedValue.id);
+          return entity && entity.typeId === parsedValue.entityType ? entity : null;
+        } else {
+          return parsedValue;
+        }
       } catch {
         return valueStr;
       }

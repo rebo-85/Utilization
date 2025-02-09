@@ -13,25 +13,79 @@ import {
   ScriptEventCommandMessageAfterEvent,
   ScriptEventSource,
 } from "@minecraft/server";
-import { Vector2, EntityJumpAfterEventSignal, PlayerCollectItemAfterEventSignal } from "./classes";
+import {
+  Vector2,
+  PlayerJumpAfterEventSignal,
+  PlayerCollectItemAfterEventSignal,
+  PlayerStartJumpingAfterEventSignal,
+  PlayerStopJumpingAfterEventSignal,
+  PlayerOnAirJumpAfterEventSignal,
+  PlayerOnLandAfterEventSignal,
+  PlayerOnEquipAfterEventSignal,
+  PlayerOnUnequipAfterEventSignal,
+} from "./classes";
 import { beforeEvents, overworld, nether, end } from "./constants";
-import { runTimeout, runCommand, runCommandAsync } from "./utils";
+import { runTimeout, runCommand, runCommandAsync, arraysEqual } from "./utils";
 
 const errors = {
+  ENCHANTABLE_MISSING: `Item must have 'minecraft:enchantable' component.`,
+  DURABILITY_MISSING: `Item must have 'minecraft:durability' component.`,
   INVENTORY_MISSING: `No container found in the entity. Expected to have 'minecraft:inventory' component.`,
   INVALID_HEALTH: `Entity has no valid health component.`,
-  SELECTOR_MISSING: `Selector is required to fetch entities.`,
-  DURABILITY_MISSING: `Item must have 'minecraft:durability' component.`,
   EQUIPPABLE_MISSING: `Entity must have 'minecraft:wearable' component.`,
   VARIANT_MISSING: `Entity must have 'minecraft:variant' component.`,
   RIDING_MISSING: `Entity must have 'minecraft:rideable' component.`,
   TYPE_FAMILY_MISSING: `Entity must have 'minecraft:type_family' component.`,
+  MOVEMENT_MISSING: `Entity must have 'minecraft:movement' component.`,
 };
+
+// WorldAfterEvents methods
+Object.defineProperty(WorldAfterEvents.prototype, "playerJump", {
+  get: function () {
+    return new PlayerJumpAfterEventSignal();
+  },
+});
+Object.defineProperty(WorldAfterEvents.prototype, "playerStartJumping", {
+  get: function () {
+    return new PlayerStartJumpingAfterEventSignal();
+  },
+});
+Object.defineProperty(WorldAfterEvents.prototype, "playerStopJumping", {
+  get: function () {
+    return new PlayerStopJumpingAfterEventSignal();
+  },
+});
+Object.defineProperty(WorldAfterEvents.prototype, "playerOnAirJump", {
+  get: function () {
+    return new PlayerOnAirJumpAfterEventSignal();
+  },
+});
+Object.defineProperty(WorldAfterEvents.prototype, "playerOnLand", {
+  get: function () {
+    return new PlayerOnLandAfterEventSignal();
+  },
+});
+
+Object.defineProperty(WorldAfterEvents.prototype, "playerOnUnequip", {
+  get: function () {
+    return new PlayerOnUnequipAfterEventSignal();
+  },
+});
+
+Object.defineProperty(WorldAfterEvents.prototype, "playerOnEquip", {
+  get: function () {
+    return new PlayerOnEquipAfterEventSignal();
+  },
+});
+Object.defineProperty(WorldAfterEvents.prototype, "playerCollectItem", {
+  get: function () {
+    return new PlayerCollectItemAfterEventSignal();
+  },
+});
 
 // World methods
 Object.defineProperty(World.prototype, "getEntities", {
   value: function (selector) {
-    if (!selector) throw new Error(errors.SELECTOR_MISSING);
     const dimensions = [overworld, nether, end];
 
     const entities = new Set();
@@ -54,6 +108,88 @@ Object.defineProperty(World.prototype, "players", {
 
 beforeEvents.worldInitialize.subscribe(() => {
   // ItemStack methods
+  Object.defineProperty(ItemStack.prototype, "compare", {
+    value: function (itemStack) {
+      if (itemStack === null || itemStack === undefined) return false;
+      if (
+        this.amount === itemStack.amount &&
+        this.isStackable === itemStack.isStackable &&
+        this.keepOnDeath === itemStack.keepOnDeath &&
+        this.lockMode === itemStack.lockMode &&
+        this.maxAmount === itemStack.maxAmount &&
+        this.nameTag === itemStack.nameTag &&
+        this.type === itemStack.type &&
+        this.typeId === itemStack.typeId &&
+        arraysEqual(this.getCanDestroy(), itemStack.getCanDestroy()) &&
+        arraysEqual(this.getComponents(), itemStack.getComponents()) &&
+        arraysEqual(this.getComponents(), itemStack.getComponents()) &&
+        arraysEqual(this.getLore(), itemStack.getLore()) &&
+        arraysEqual(this.getTags(), itemStack.getTags()) &&
+        this.getDynamicPropertyTotalByteCount() === itemStack.getDynamicPropertyTotalByteCount()
+      ) {
+        return true;
+      }
+      return false;
+    },
+  });
+
+  Object.defineProperty(ItemStack.prototype, "enchantableComponent", {
+    get: function () {
+      const component = this.getComponent(ItemComponentTypes.Enchantable);
+      if (!component) throw new Error(errors.ENCHANTABLE_MISSING);
+      return component;
+    },
+    enumerable: true,
+  });
+
+  Object.defineProperty(ItemStack.prototype, "enchantmentSlots", {
+    get: function () {
+      return this.enchantableComponent.slots;
+    },
+    enumerable: true,
+  });
+
+  Object.defineProperty(ItemStack.prototype, "addEnchantments", {
+    value: function (...enchantments) {
+      const enchantmentList = enchantments.flat();
+
+      enchantmentList.forEach((ench) => this.enchantableComponent.addEnchantments(ench));
+    },
+  });
+
+  Object.defineProperty(ItemStack.prototype, "canAddEnchantment", {
+    value: function (enchantment) {
+      return this.enchantableComponent.canAddEnchantment(enchantment);
+    },
+  });
+
+  Object.defineProperty(ItemStack.prototype, "getEnchantment", {
+    value: function (enchantmentType) {
+      return this.enchantableComponent.getEnchantment(enchantmentType);
+    },
+  });
+  Object.defineProperty(ItemStack.prototype, "hasEnchantment", {
+    value: function (enchantmentType) {
+      try {
+        return this.enchantableComponent.hasEnchantment(enchantmentType);
+      } catch (e) {
+        return false;
+      }
+    },
+  });
+
+  Object.defineProperty(ItemStack.prototype, "removeEnchantment", {
+    value: function (enchantmentType) {
+      return this.enchantableComponent.removeEnchantment(enchantmentType);
+    },
+  });
+
+  Object.defineProperty(ItemStack.prototype, "removeEnchantments", {
+    value: function () {
+      return this.enchantableComponent.removeAllEnchantments();
+    },
+  });
+
   Object.defineProperty(ItemStack.prototype, "durabilityComponent", {
     get: function () {
       const component = this.getComponent(ItemComponentTypes.Durability);
@@ -136,7 +272,6 @@ beforeEvents.worldInitialize.subscribe(() => {
   });
 
   // Entity methods
-
   Object.defineProperty(Entity.prototype, "runCommand", {
     value: function (...commands) {
       return runCommand.call(this, Entity, ...commands);
@@ -152,6 +287,25 @@ beforeEvents.worldInitialize.subscribe(() => {
   Object.defineProperty(Entity.prototype, "isPlayer", {
     get: function () {
       return this.typeId === "minecraft:player";
+    },
+    enumerable: true,
+  });
+
+  Object.defineProperty(Entity.prototype, "movementComponent", {
+    get: function () {
+      const component = this.getComponent(EntityComponentTypes.Movement);
+      if (!component) throw new Error(errors.MOVEMENT_MISSING);
+      return component;
+    },
+    enumerable: true,
+  });
+
+  Object.defineProperty(Entity.prototype, "speed", {
+    get: function () {
+      return this.movementComponent.currentValue;
+    },
+    set: function (value) {
+      return this.movementComponent.setCurrentValue(value);
     },
     enumerable: true,
   });
@@ -365,6 +519,26 @@ beforeEvents.worldInitialize.subscribe(() => {
     enumerable: true,
   });
 
+  Object.defineProperty(Entity.prototype, "rx", {
+    get: function () {
+      return this.rotation.x;
+    },
+    set: function (rx) {
+      this.setRotation({ x: rx, y: this.rotation.y });
+    },
+    enumerable: true,
+  });
+
+  Object.defineProperty(Entity.prototype, "ry", {
+    get: function () {
+      return this.rotation.y;
+    },
+    set: function (ry) {
+      this.setRotation({ x: this.rotation.x, y: ry });
+    },
+    enumerable: true,
+  });
+
   // Dimension methods
   const dimensionGetEntities = Dimension.prototype.getEntities;
 
@@ -386,18 +560,6 @@ beforeEvents.worldInitialize.subscribe(() => {
         return dimensionGetEntities.call(this, filter.toEQO());
       }
       return dimensionGetEntities.call(this, filter);
-    },
-  });
-
-  // WorldAfterEvents methods
-  Object.defineProperty(WorldAfterEvents.prototype, "entityStartJump", {
-    get: function () {
-      return new EntityJumpAfterEventSignal();
-    },
-  });
-  Object.defineProperty(WorldAfterEvents.prototype, "playerCollectItem", {
-    get: function () {
-      return new PlayerCollectItemAfterEventSignal();
     },
   });
 

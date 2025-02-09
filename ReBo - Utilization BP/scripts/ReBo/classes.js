@@ -1,8 +1,8 @@
-import { system, BlockComponentPlayerInteractEvent, world } from "@minecraft/server";
+import { EquipmentSlot, ItemComponentTypes, system, world } from "@minecraft/server";
 import {} from "./server";
 import {} from "./javascript";
 import { runInterval } from "./utils";
-import { overworld, tps, nether, end, namespace as ns } from "./constants";
+import { overworld, tps, namespace as ns } from "./constants";
 
 export class CommandResult {
   constructor() {
@@ -24,33 +24,338 @@ export class Fade {
   }
 }
 
-export class EntityJumpAfterEvent {
-  constructor(entity) {
-    this.entity = entity;
-  }
-}
-
-export class playerCollectItemAfterEvent {
-  constructor(entity, itemStack) {
-    this.entity = entity;
-    this.collectedItem = itemStack;
-  }
-}
-
-export class EntityJumpAfterEventSignal {
+export class Event {
   constructor() {}
-  subscribe(cb) {
-    runInterval(() => {
-      const entities = world.getEntities();
+}
 
-      for (const entity of entities) {
-        if (entity.isJumping && !entity.hasTag(`${ns}:is_jumping`)) {
-          entity.addTag(`${ns}:is_jumping`);
-          cb(new EntityJumpAfterEvent(entity));
+export class AfterEvent extends Event {
+  constructor() {
+    super();
+  }
+}
+
+export class BeforeEvent extends Event {
+  constructor() {
+    super();
+    this.cancel = false;
+  }
+}
+export class EntityAfterEvent extends AfterEvent {
+  constructor(entity) {
+    super();
+    this.entity = entity;
+  }
+}
+export class EntityOnAirAfterEvent extends EntityAfterEvent {
+  constructor(entity) {
+    super(entity);
+  }
+}
+
+export class EntityOnGroundAfterEvent extends EntityAfterEvent {
+  constructor(entity) {
+    super(entity);
+  }
+}
+export class PlayerAfterEvent extends AfterEvent {
+  constructor(player) {
+    super();
+    this.player = player;
+  }
+}
+export class PlayerJumpAfterEvent extends PlayerAfterEvent {
+  constructor(player) {
+    super(player);
+  }
+}
+export class PlayerStartJumpingAfterEvent extends PlayerJumpAfterEvent {
+  constructor(player) {
+    super(player);
+  }
+}
+
+export class PlayerStopJumpingAfterEvent extends PlayerJumpAfterEvent {
+  constructor(player) {
+    super(player);
+  }
+}
+export class PlayerOnAirJumpAfterEvent extends PlayerJumpAfterEvent {
+  constructor(player) {
+    super(player);
+  }
+}
+
+export class PlayerOnLandAfterEvent extends PlayerAfterEvent {
+  constructor(player) {
+    super(player);
+  }
+}
+
+export class ItemAfterEvent extends PlayerAfterEvent {
+  constructor(player, itemStack) {
+    super(player);
+    this.itemStack = itemStack;
+  }
+}
+export class PlayerOnEquipAfterEvent extends ItemAfterEvent {
+  constructor(player, itemStack) {
+    super(player, itemStack);
+  }
+}
+
+export class PlayerOnUnequipAfterEvent extends ItemAfterEvent {
+  constructor(player, itemStack) {
+    super(player, itemStack);
+  }
+}
+
+export class playerCollectItemAfterEvent extends ItemAfterEvent {
+  constructor(player, itemStack) {
+    super(player, itemStack);
+  }
+}
+
+export class EventSignal {
+  constructor() {
+    this._events = new Map();
+    this._process = null;
+  }
+  subscribe(cb) {
+    cb();
+  }
+  unsubscribe() {
+    this._process.dispose();
+  }
+}
+
+export class EntityEventSignal extends EventSignal {
+  constructor() {
+    super();
+    this._entityIds = new Set();
+  }
+}
+
+export class EntityOnAirAfterEventSignal extends EntityEventSignal {
+  constructor() {
+    super();
+  }
+  subscribe(cb) {
+    this._process = runInterval(() => {
+      for (const entity of world.getEntities()) {
+        if (!entity.isOnGround && !this._entityIds.has(entity.id)) {
+          this._entityIds.add(entity.id);
+          this._events.set(entity.id, new EntityOnAirAfterEvent(entity));
+          cb(this._events.get(entity.id));
+        } else if (entity.isOnGround && this._entityIds.has(entity.id)) {
+          this._events.delete(entity.id);
+          this._entityIds.delete(entity);
+        }
+      }
+    });
+  }
+}
+
+export class EntityOnGroundAfterEventSignal extends EntityEventSignal {
+  constructor() {
+    super();
+  }
+  subscribe(cb) {
+    this._process = runInterval(() => {
+      for (const entity of world.getEntities()) {
+        if (entity.isOnGround && !this._entityIds.has(entity.id)) {
+          this._entityIds.add(entity);
+        } else if (!entity.isJumping && this._entityIds.has(entity.id)) {
+          this._events.set(entity.id, new EntityOnGroundAfterEvent(entity));
+          cb(this._events.get(entity.id));
+          this._events.delete(entity.id);
+          this._entityIds.delete(entity.id);
+        }
+      }
+    });
+  }
+}
+
+export class PlayerJumpAfterEventSignal extends EntityEventSignal {
+  constructor() {
+    super();
+  }
+  subscribe(cb) {
+    this._process = runInterval(() => {
+      for (const player of world.players) {
+        if (player.isJumping && !player.isOnGround && !this._entityIds.has(player.id)) {
+          this._entityIds.add(player.id);
+          this._events.set(player.id, new PlayerJumpAfterEvent(player));
+          cb(this._events.get(player.id));
+        } else if (player.isOnGround && this._entityIds.has(player.id)) {
+          this._entityIds.delete(player.id);
+          this._events.delete(player.id);
+        }
+      }
+    });
+  }
+}
+
+export class PlayerStartJumpingAfterEventSignal extends EntityEventSignal {
+  constructor() {
+    super();
+  }
+  subscribe(cb) {
+    this._process = runInterval(() => {
+      for (const player of world.players) {
+        if (player.isJumping && !player.isOnGround && !this._entityIds.has(player.id)) {
+          this._entityIds.add(player.id);
+          this._events.set(player.id, new PlayerJumpAfterEvent(player));
+          cb(this._events.get(player.id));
+        } else if (!player.isJumping && this._entityIds.has(player.id)) {
+          this._entityIds.delete(player.id);
+          this._events.delete(player.id);
+        }
+      }
+    });
+  }
+}
+
+export class PlayerStopJumpingAfterEventSignal extends EntityEventSignal {
+  constructor() {
+    super();
+  }
+  subscribe(cb) {
+    this._process = runInterval(() => {
+      for (const player of world.players) {
+        if (player.isJumping && !player.isOnGround && !this._entityIds.has(player.id)) {
+          this._entityIds.add(player.id);
+        } else if (!player.isJumping && this._entityIds.has(player.id)) {
+          this._events.set(player.id, new PlayerJumpAfterEvent(player));
+          cb(this._events.get(player.id));
+          this._events.delete(player.id);
+          this._entityIds.delete(player.id);
+        }
+      }
+    });
+  }
+}
+
+export class PlayerOnAirJumpAfterEventSignal extends EntityEventSignal {
+  constructor() {
+    super();
+    this._onAir = new Set();
+  }
+
+  subscribe(cb) {
+    this._process = runInterval(() => {
+      for (const player of world.players) {
+        if (!player.isJumping && !player.isOnGround) {
+          if (this._onAir.has(player.id)) {
+            this._entityIds.add(player.id);
+          } else this._onAir.add(player.id);
+        } else if (player.isJumping && !player.isOnGround && this._entityIds.has(player.id) && !this._events.has(player.id)) {
+          this._events.set(player.id, new PlayerOnAirJumpAfterEvent(player));
+          cb(this._events.get(player.id));
         } else {
-          if (entity.isOnGround) {
-            entity.removeTag(`${ns}:is_jumping`);
+          this._events.delete(player.id);
+          this._entityIds.delete(player.id);
+          this._onAir.delete(player.id);
+        }
+      }
+    });
+  }
+}
+
+export class PlayerOnEquipAfterEventSignal extends EntityEventSignal {
+  constructor() {
+    super();
+    this._previousEquipments = new Map();
+  }
+
+  subscribe(cb) {
+    this._process = runInterval(() => {
+      for (const player of world.players) {
+        const currentEquipments = {
+          mainHand: player.getEquipment(EquipmentSlot.Mainhand),
+          offHand: player.getEquipment(EquipmentSlot.Offhand),
+          head: player.getEquipment(EquipmentSlot.Head),
+          chest: player.getEquipment(EquipmentSlot.Chest),
+          legs: player.getEquipment(EquipmentSlot.Legs),
+          feet: player.getEquipment(EquipmentSlot.Feet),
+        };
+
+        const previousEquipments = this._previousEquipments.get(player.id) || currentEquipments;
+        for (const slot in currentEquipments) {
+          const itemStack = currentEquipments[slot];
+          const prevItemStack = previousEquipments[slot];
+          if (itemStack) {
+            if (!itemStack.compare(prevItemStack) && !this._entityIds.has(player.id)) {
+              this._entityIds.add(player.id);
+              this._events.set(player.id, new PlayerOnEquipAfterEvent(player, itemStack));
+              cb(this._events.get(player.id));
+            } else if (itemStack.compare(prevItemStack) && this._entityIds.has(player.id)) {
+              this._events.delete(player.id);
+              this._entityIds.delete(player.id);
+            }
           }
+        }
+
+        this._previousEquipments.set(player.id, currentEquipments);
+      }
+    });
+  }
+}
+
+export class PlayerOnUnequipAfterEventSignal extends EntityEventSignal {
+  constructor() {
+    super();
+    this._previousEquipments = new Map();
+  }
+
+  subscribe(cb) {
+    this._process = runInterval(() => {
+      for (const player of world.players) {
+        const currentEquipments = {
+          mainHand: player.getEquipment(EquipmentSlot.Mainhand),
+          offHand: player.getEquipment(EquipmentSlot.Offhand),
+          head: player.getEquipment(EquipmentSlot.Head),
+          chest: player.getEquipment(EquipmentSlot.Chest),
+          legs: player.getEquipment(EquipmentSlot.Legs),
+          feet: player.getEquipment(EquipmentSlot.Feet),
+        };
+
+        const previousEquipments = this._previousEquipments.get(player.id) || currentEquipments;
+        for (const slot in currentEquipments) {
+          const itemStack = currentEquipments[slot];
+          const prevItemStack = previousEquipments[slot];
+          if (prevItemStack) {
+            if (!prevItemStack.compare(itemStack) && !this._entityIds.has(player.id)) {
+              this._entityIds.add(player.id);
+              this._events.set(player.id, new PlayerOnUnequipAfterEvent(player, prevItemStack));
+              cb(this._events.get(player.id));
+            } else if (prevItemStack.compare(itemStack) && this._entityIds.has(player.id)) {
+              this._events.delete(player.id);
+              this._entityIds.delete(player.id);
+            }
+          }
+        }
+
+        this._previousEquipments.set(player.id, currentEquipments);
+      }
+    });
+  }
+}
+
+export class PlayerOnLandAfterEventSignal extends EntityEventSignal {
+  constructor() {
+    super();
+  }
+
+  subscribe(cb) {
+    this._process = runInterval(() => {
+      for (const player of world.players) {
+        if (!player.isOnGround && !this._entityIds.has(player.id)) {
+          this._entityIds.add(player.id);
+        } else if (player.isOnGround && this._entityIds.has(player.id)) {
+          this._events.set(player.id, new PlayerOnLandAfterEvent(player));
+          cb(this._events.get(player.id));
+          this._events.delete(player.id);
+          this._entityIds.delete(player.id);
         }
       }
     });
@@ -120,39 +425,25 @@ export class Cutscene {
   }
 }
 
-export class RunInterval {
-  /**
-   * Creates an instance of RunInterval.
-   * @param {Function} func - The function to be executed at each interval.
-   * @param {number} interval - The interval in ticks between executions.
-   */
-  constructor(func, interval) {
-    this.process = system.runInterval(func, interval);
+export class Run {
+  constructor() {
+    this._process = null;
   }
-
-  /**
-   * Disposes of the interval process.
-   */
   dispose() {
-    system.clearRun(this.process);
+    system.clearRun(this._process);
+  }
+}
+export class RunInterval extends Run {
+  constructor(cb, interval) {
+    super();
+    this._process = system.runInterval(cb, interval);
   }
 }
 
-export class RunTimeOut {
-  /**
-   * Creates an instance of RunTimeOut.
-   * @param {Function} func - The function to be executed after the timeout.
-   * @param {number} timeOut - The time in ticks to wait before execution.
-   */
-  constructor(func, timeOut) {
-    this.process = system.runTimeout(func, timeOut);
-  }
-
-  /**
-   * Disposes of the timeout process.
-   */
-  dispose() {
-    system.clearRun(this.process);
+export class RunTimeOut extends Run {
+  constructor(cb, timeOut) {
+    super();
+    this._process = system.runTimeout(cb, timeOut);
   }
 }
 

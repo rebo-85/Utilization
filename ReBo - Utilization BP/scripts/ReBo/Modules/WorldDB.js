@@ -40,24 +40,18 @@ export class WorldDB {
     const id = `${this.name}:${key}`;
 
     if (Array.isArray(value)) {
-      const serializedArray = value.map((item) =>
-        item && item.id && item.typeId ? { isEntity: true, ...WorldDB.serializeEntities([item])[0] } : item
-      );
+      const serializedArray = value.map((item) => (item && item.id && item.typeId ? { isEntity: true, ...WorldDB.serializeEntities([item])[0] } : item));
       world.setDynamicProperty(id, JSON.stringify(serializedArray));
     } else if (value instanceof Map) {
       const mapObject = {
         isMap: true,
-        data: Array.from(value.entries()).map(([k, v]) =>
-          v && v.id && v.typeId ? [k, { isEntity: true, ...WorldDB.serializeEntities([v])[0] }] : [k, v]
-        ),
+        data: Array.from(value.entries()).map(([k, v]) => (v && v.id && v.typeId ? [k, { isEntity: true, ...WorldDB.serializeEntities([v])[0] }] : [k, v])),
       };
       world.setDynamicProperty(id, JSON.stringify(mapObject));
     } else if (value instanceof Set) {
       const setObject = {
         isSet: true,
-        data: Array.from(value).map((v) =>
-          v && v.id && v.typeId ? { isEntity: true, ...WorldDB.serializeEntities([v])[0] } : v
-        ),
+        data: Array.from(value).map((v) => (v && v.id && v.typeId ? { isEntity: true, ...WorldDB.serializeEntities([v])[0] } : v)),
       };
       world.setDynamicProperty(id, JSON.stringify(setObject));
     } else {

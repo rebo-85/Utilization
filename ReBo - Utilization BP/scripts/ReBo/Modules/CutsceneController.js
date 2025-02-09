@@ -14,7 +14,7 @@ const elytraChallenge = new Cutscene(
   [
     new TimedCommand(0.05, [
       "title @s title eternal.elytra_challenge.main",
-      `execute as @p positioned 201 -7.9 337 run event entity @e[type=eternal:particle_circle,c=1] e:add-instant_despawn`,
+      `execute as @p positioned 201 -7.9 337 run event entity @e[type=ecbl_bc:particle_circle,c=1] e:add-instant_despawn`,
       `teleport @s 201 -8 337 facing 204 -8 337`,
       `particle effect_tp_01`,
       `particle effect_tp_02`,
@@ -25,15 +25,15 @@ const elytraChallenge = new Cutscene(
     new TimedCommand(4.5, [
       "gamemode spectator @s",
       "effect @s invisibility 999999 0 true",
-      "execute as @s positioned 202 177 361 as @e[type=eternal:elytra_ring,r=1] run event entity @s e:add-instant_despawn",
-      "summon eternal:elytra_ring 202 177 361",
+      "execute as @s positioned 202 177 361 as @e[type=ecbl_bc:elytra_ring,r=1] run event entity @s e:add-instant_despawn",
+      "summon ecbl_bc:elytra_ring 202 177 361",
     ]),
     new TimedCommand(7.1, [`titleraw @s actionbar {"rawtext": [{"translate": "translate.elytra_challenge.text1"}]}`]),
     new TimedCommand(17.25, [`teleport @s 224 201 338 facing 225 201 338`]),
     new TimedCommand(17.5, [
       `replaceitem entity @s slot.armor.chest 0 minecraft:elytra 1 0 {  "item_lock": { "mode": "lock_in_slot" } , "keep_on_death": {} }`,
       `title @s actionbar eternal.`,
-      "execute as @s positioned 202 177 361 as @e[type=eternal:elytra_ring,r=1] run event entity @s e:add-instant_despawn",
+      "execute as @s positioned 202 177 361 as @e[type=ecbl_bc:elytra_ring,r=1] run event entity @s e:add-instant_despawn",
       "gamemode default @s",
       "effect @s invisibility 0 0 true",
     ]),
@@ -56,7 +56,7 @@ const football = new Cutscene(
   [
     new TimedCommand(0.05, [
       "title @s title eternal.elytra_challenge.main",
-      `execute as @p positioned 430 -7.9 212 run event entity @e[type=eternal:particle_circle,c=1] e:add-instant_despawn`,
+      `execute as @p positioned 430 -7.9 212 run event entity @e[type=ecbl_bc:particle_circle,c=1] e:add-instant_despawn`,
       `teleport @s 430 -8 212 facing 431 -8 212`,
       `particle effect_tp_01`,
       `particle effect_tp_02`,
