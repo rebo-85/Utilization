@@ -1,11 +1,20 @@
 import { afterEvents, beforeEvents, world, overworld, nether, end, scoreboard } from "./constants";
 import { Entity, Dimension, ScriptEventSource } from "@minecraft/server";
-import { RunInterval, RunTimeOut, CommandResult } from "./classes";
+import { RunInterval, RunTimeOut, CommandResult, Vector3 } from "./classes";
 
 const entityRunCommand = Entity.prototype.runCommand;
 const dimensionRunCommand = Dimension.prototype.runCommand;
 const entityRunCommandAsync = Entity.prototype.runCommandAsync;
 const dimensionRunCommandAsync = Dimension.prototype.runCommandAsync;
+
+export function addVectors(...vecs) {
+  return vecs.reduce((acc, vec) => {
+    acc.x += vec.x;
+    acc.y += vec.y;
+    acc.z += vec.z;
+    return acc;
+  }, new Vector3(0, 0, 0));
+}
 
 export function idTranslate(id) {
   return id

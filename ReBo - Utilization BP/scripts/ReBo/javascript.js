@@ -153,7 +153,12 @@ String.prototype.toEQO = function () {
 
 String.prototype.toVector3 = function () {
   const coordinates = this.split(" ").map(parseFloat);
-  if (coordinates.some(isNaN) || coordinates.length !== 3)
-    return console.error('Invalid string format. It should be "x y z"');
+  if (coordinates.some(isNaN) || coordinates.length !== 3) return console.error('Invalid string format. It should be "x y z"');
   return new Vector3(coordinates[0], coordinates[1], coordinates[2]);
+};
+
+Map.prototype.display = function () {
+  this.forEach((value, key) => {
+    console.warn(`${key}, ${JSON.stringify(value)}`);
+  });
 };

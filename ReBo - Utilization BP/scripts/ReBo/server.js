@@ -12,6 +12,10 @@ import {
   ItemComponentTypes,
   ScriptEventCommandMessageAfterEvent,
   ScriptEventSource,
+  EquipmentSlot,
+  GameMode,
+  DimensionTypes,
+  BlockComponentTypes,
 } from "@minecraft/server";
 import {
   Vector2,
@@ -25,14 +29,11 @@ import {
   PlayerOnUnequipAfterEventSignal,
 } from "./classes";
 import { beforeEvents, overworld, nether, end } from "./constants";
-import { runTimeout, runCommand, runCommandAsync, arraysEqual } from "./utils";
+import { runTimeout, runCommand, runCommandAsync, arraysEqual, addVectors } from "./utils";
 
 const errors = {
-  ENCHANTABLE_MISSING: `Item must have 'minecraft:enchantable' component.`,
   DURABILITY_MISSING: `Item must have 'minecraft:durability' component.`,
-  INVENTORY_MISSING: `No container found in the entity. Expected to have 'minecraft:inventory' component.`,
   INVALID_HEALTH: `Entity has no valid health component.`,
-  EQUIPPABLE_MISSING: `Entity must have 'minecraft:wearable' component.`,
   VARIANT_MISSING: `Entity must have 'minecraft:variant' component.`,
   RIDING_MISSING: `Entity must have 'minecraft:rideable' component.`,
   TYPE_FAMILY_MISSING: `Entity must have 'minecraft:type_family' component.`,
@@ -86,15 +87,18 @@ Object.defineProperty(WorldAfterEvents.prototype, "playerCollectItem", {
 // World methods
 Object.defineProperty(World.prototype, "getEntities", {
   value: function (selector) {
-    const dimensions = [overworld, nether, end];
+    const dimensionTypes = DimensionTypes.getAll();
 
     const entities = new Set();
+    for (const type of dimensionTypes) {
+      const dimension = this.getDimension(type.typeId);
+      if (dimension) {
+        dimension.getEntities(selector).forEach((entity) => {
+          entities.add(entity);
+        });
+      }
+    }
 
-    dimensions.forEach((dimension) => {
-      dimension.getEntities(selector).forEach((entity) => {
-        entities.add(entity);
-      });
-    });
     return Array.from(entities);
   },
 });
@@ -107,6 +111,7 @@ Object.defineProperty(World.prototype, "players", {
 });
 
 beforeEvents.worldInitialize.subscribe(() => {
+  // ContainerSlot methods
   // ItemStack methods
   Object.defineProperty(ItemStack.prototype, "compare", {
     value: function (itemStack) {
@@ -135,16 +140,14 @@ beforeEvents.worldInitialize.subscribe(() => {
 
   Object.defineProperty(ItemStack.prototype, "enchantableComponent", {
     get: function () {
-      const component = this.getComponent(ItemComponentTypes.Enchantable);
-      if (!component) throw new Error(errors.ENCHANTABLE_MISSING);
-      return component;
+      return this.getComponent(ItemComponentTypes.Enchantable);
     },
     enumerable: true,
   });
 
   Object.defineProperty(ItemStack.prototype, "enchantmentSlots", {
     get: function () {
-      return this.enchantableComponent.slots;
+      return this.enchantableComponent?.slots;
     },
     enumerable: true,
   });
@@ -153,25 +156,25 @@ beforeEvents.worldInitialize.subscribe(() => {
     value: function (...enchantments) {
       const enchantmentList = enchantments.flat();
 
-      enchantmentList.forEach((ench) => this.enchantableComponent.addEnchantments(ench));
+      enchantmentList.forEach((ench) => this.enchantableComponent?.addEnchantments(ench));
     },
   });
 
   Object.defineProperty(ItemStack.prototype, "canAddEnchantment", {
     value: function (enchantment) {
-      return this.enchantableComponent.canAddEnchantment(enchantment);
+      return this.enchantableComponent?.canAddEnchantment(enchantment);
     },
   });
 
   Object.defineProperty(ItemStack.prototype, "getEnchantment", {
     value: function (enchantmentType) {
-      return this.enchantableComponent.getEnchantment(enchantmentType);
+      return this.enchantableComponent?.getEnchantment(enchantmentType);
     },
   });
   Object.defineProperty(ItemStack.prototype, "hasEnchantment", {
     value: function (enchantmentType) {
       try {
-        return this.enchantableComponent.hasEnchantment(enchantmentType);
+        return this.enchantableComponent?.hasEnchantment(enchantmentType);
       } catch (e) {
         return false;
       }
@@ -180,13 +183,13 @@ beforeEvents.worldInitialize.subscribe(() => {
 
   Object.defineProperty(ItemStack.prototype, "removeEnchantment", {
     value: function (enchantmentType) {
-      return this.enchantableComponent.removeEnchantment(enchantmentType);
+      return this.enchantableComponent?.removeEnchantment(enchantmentType);
     },
   });
 
   Object.defineProperty(ItemStack.prototype, "removeEnchantments", {
     value: function () {
-      return this.enchantableComponent.removeAllEnchantments();
+      return this.enchantableComponent?.removeAllEnchantments();
     },
   });
 
@@ -204,9 +207,11 @@ beforeEvents.worldInitialize.subscribe(() => {
       return this.durabilityComponent.maxDurability - this.durabilityComponent.damage;
     },
     set: function (durability) {
-      const newDamage = this.durabilityComponent.maxDurability - durability;
-      if (newDamage < 0 || newDamage > this.durabilityComponent.maxDurability) {
-        throw new RangeError(`Invalid durability value. Valid range is 0 to ${this.durabilityComponent.maxDurability}.`);
+      let newDamage = this.durabilityComponent.maxDurability - durability;
+      if (newDamage < 0) {
+        newDamage = 0;
+      } else if (newDamage > this.durabilityComponent.maxDurability) {
+        newDamage = this.durabilityComponent.maxDurability;
       }
 
       this.durabilityComponent.damage = newDamage;
@@ -241,7 +246,89 @@ beforeEvents.worldInitialize.subscribe(() => {
     },
   });
 
+  Object.defineProperty(Block.prototype, "inventoryComponent", {
+    get: function () {
+      return this.getComponent(BlockComponentTypes.Inventory);
+    },
+    enumerable: true,
+  });
+
+  Object.defineProperty(Block.prototype, "inventory", {
+    get: function () {
+      return this.inventoryComponent.container;
+    },
+  });
+
+  Object.defineProperty(Block.prototype, "getItems", {
+    value: function (typeId) {
+      const map = new Map();
+      const inv = this.inventory;
+      for (let i = 0; i < inv.size; i++) {
+        const item = inv.getItem(i);
+        if (item) {
+          if (typeId) {
+            if (item.typeId === typeId) map.set(i, item);
+          } else map.set(i, item);
+        }
+      }
+
+      return map;
+    },
+  });
+
   // Player methods
+  Object.defineProperty(Player.prototype, "getItems", {
+    value: function (typeId) {
+      const eMap = new Map();
+      const equipmentSlots = Object.values(EquipmentSlot).filter((value) => typeof value === "string");
+
+      for (const slot of equipmentSlots) {
+        const item = this.getEquipment(slot);
+        if (item) {
+          if (typeId) {
+            if (item.typeId === typeId) eMap.set(slot, item);
+          } else eMap.set(slot, item);
+        }
+      }
+
+      const iMap = new Map();
+
+      const inv = this.inventory;
+      for (let i = 0; i < inv.size; i++) {
+        const item = inv.getItem(i);
+        if (item) {
+          if (typeId) {
+            if (item.typeId === typeId) iMap.set(i, item);
+          } else iMap.set(i, item);
+        }
+      }
+
+      return { equipments: eMap, inventory: iMap };
+    },
+  });
+  Object.defineProperty(Player.prototype, "damageItem", {
+    value: function (slot, damage = 1) {
+      const eqSlot = this.getEquipmentSlot(slot);
+      const item = eqSlot.getItem();
+      if (!item) return;
+
+      const unbreaking = item.getEnchantment("unbreaking");
+      const unbreakingLevel = unbreaking ? unbreaking.level : 0;
+      const unbreakingChance = 1 / (unbreakingLevel + 1);
+
+      if (Math.random() < unbreakingChance && this.gamemode !== GameMode.creative) {
+        item.durability -= damage;
+        if (item.durability <= 0) {
+          eqSlot.setItem(null);
+          this.dimension.playSound("random.break", this.location);
+        } else {
+          eqSlot.setItem(item);
+        }
+      }
+      return item;
+    },
+  });
+
   Object.defineProperty(Player.prototype, "stopSound", {
     value: function (id) {
       this.runCommandAsync(`stopsound @s ${id}`);
@@ -272,6 +359,23 @@ beforeEvents.worldInitialize.subscribe(() => {
   });
 
   // Entity methods
+
+  Object.defineProperty(Entity.prototype, "getFacingOffset", {
+    value: function (offsetValue) {
+      const vd = this.viewDirection;
+      const offset = { x: vd.x * offsetValue, y: vd.y * offsetValue, z: vd.z * offsetValue };
+      return addVectors(this.location, offset);
+    },
+  });
+  Object.defineProperty(Entity.prototype, "viewDirection", {
+    get: function () {
+      return this.getViewDirection();
+    },
+    set: function (direction) {
+      this.rotation = { x: direction.x, y: direction.y };
+    },
+    enumerable: true,
+  });
   Object.defineProperty(Entity.prototype, "runCommand", {
     value: function (...commands) {
       return runCommand.call(this, Entity, ...commands);
@@ -356,20 +460,9 @@ beforeEvents.worldInitialize.subscribe(() => {
     },
   });
 
-  Object.defineProperty(Entity.prototype, "rotation", {
-    get: function () {
-      return new Vector2(this.getRotation().x, this.getRotation().y);
-    },
-    set: function (rotation) {
-      this.setRotation(rotation);
-    },
-    enumerable: true,
-  });
-
   Object.defineProperty(Entity.prototype, "equippableComponent", {
     get: function () {
       const component = this.getComponent(EntityComponentTypes.Equippable);
-      if (!component) throw new Error(errors.EQUIPPABLE_MISSING);
       return component;
     },
     enumerable: true,
@@ -387,19 +480,19 @@ beforeEvents.worldInitialize.subscribe(() => {
 
   Object.defineProperty(Entity.prototype, "getEquipment", {
     value: function (slot) {
-      return this.equippableComponent.getEquipment(slot);
+      return this.equippableComponent?.getEquipment(slot);
     },
   });
 
   Object.defineProperty(Entity.prototype, "getEquipmentSlot", {
     value: function (slot) {
-      return this.equippableComponent.getEquipmentSlot(slot);
+      return this.equippableComponent?.getEquipmentSlot(slot);
     },
   });
 
   Object.defineProperty(Entity.prototype, "setEquipment", {
     value: function (slot, item) {
-      return this.equippableComponent.setEquipment(slot, item);
+      return this.equippableComponent?.setEquipment(slot, item);
     },
   });
 
@@ -461,9 +554,7 @@ beforeEvents.worldInitialize.subscribe(() => {
 
   Object.defineProperty(Entity.prototype, "inventoryComponent", {
     get: function () {
-      const component = this.getComponent(EntityComponentTypes.Inventory);
-      if (!component) throw new Error(errors.INVENTORY_MISSING);
-      return component;
+      return this.getComponent(EntityComponentTypes.Inventory);
     },
     enumerable: true,
   });
@@ -479,6 +570,23 @@ beforeEvents.worldInitialize.subscribe(() => {
     get: function () {
       if (this.getComponent(EntityComponentTypes.IsTamed)) return true;
       else return false;
+    },
+    enumerable: true,
+  });
+
+  Object.defineProperty(Entity.prototype, "rotation", {
+    get: function () {
+      return new Vector2(this.getRotation().x, this.getRotation().y);
+    },
+    set: function (rotation) {
+      this.setRotation(rotation);
+    },
+    enumerable: true,
+  });
+
+  Object.defineProperty(Entity.prototype, "velocity", {
+    get: function () {
+      return this.getVelocity();
     },
     enumerable: true,
   });
@@ -539,6 +647,25 @@ beforeEvents.worldInitialize.subscribe(() => {
     enumerable: true,
   });
 
+  Object.defineProperty(Entity.prototype, "vx", {
+    get: function () {
+      return this.velocity.x;
+    },
+    enumerable: true,
+  });
+  Object.defineProperty(Entity.prototype, "vy", {
+    get: function () {
+      return this.velocity.y;
+    },
+    enumerable: true,
+  });
+  Object.defineProperty(Entity.prototype, "vz", {
+    get: function () {
+      return this.velocity.z;
+    },
+    enumerable: true,
+  });
+
   // Dimension methods
   const dimensionGetEntities = Dimension.prototype.getEntities;
 
@@ -566,10 +693,36 @@ beforeEvents.worldInitialize.subscribe(() => {
   // Container methods
   Object.defineProperty(Container.prototype, "forEachSlot", {
     value: function (cb) {
-      for (let i = 0; i < this.size; i++) {
-        const slot = this.getSlot(i);
-        cb(slot, i);
+      for (let slotId = 0; slotId < this.size; slotId++) {
+        const slotObj = this.getSlot(slotId);
+        cb(slotObj, slotId);
       }
+    },
+  });
+
+  Object.defineProperty(Container.prototype, "sort", {
+    value: function (cb) {
+      // Retrieve all items from the container
+      const items = [];
+      for (let i = 0; i < this.size; i++) {
+        const item = this.getItem(i);
+        if (item) {
+          items.push({ slot: i, item });
+        }
+      }
+
+      // Sort the items based on the provided callback function
+      items.sort((a, b) => cb(a.item, b.item));
+
+      // Clear the container
+      for (let i = 0; i < this.size; i++) {
+        this.setItem(i, null);
+      }
+
+      // Reinsert the sorted items
+      items.forEach(({ slot, item }, index) => {
+        this.setItem(index, item);
+      });
     },
   });
 

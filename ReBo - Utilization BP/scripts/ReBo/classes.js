@@ -1,7 +1,7 @@
 import { EquipmentSlot, ItemComponentTypes, system, world } from "@minecraft/server";
 import {} from "./server";
 import {} from "./javascript";
-import { runInterval } from "./utils";
+import { runInterval, runTimeout } from "./utils";
 import { overworld, tps, namespace as ns } from "./constants";
 
 export class CommandResult {
@@ -132,6 +132,13 @@ export class EntityEventSignal extends EventSignal {
   constructor() {
     super();
     this._entityIds = new Set();
+  }
+}
+
+export class EntityItemEventSignal extends EntityEventSignal {
+  constructor() {
+    super();
+    this._items = new Set();
   }
 }
 
@@ -362,11 +369,97 @@ export class PlayerOnLandAfterEventSignal extends EntityEventSignal {
   }
 }
 
-export class PlayerCollectItemAfterEventSignal {
-  constructor() {}
+export class PlayerCollectItemAfterEventSignal extends EntityEventSignal {
+  constructor() {
+    super();
+    this._previousInventories = new Map();
+  }
+
   subscribe(cb) {
-    runInterval(() => {
+    this._process = runInterval(() => {
       for (const player of world.players) {
+        const itemEntities = player.dimension.getEntities({ type: "minecraft:item", maxDistance: 3, location: player.location });
+
+        for (const itemEntity of itemEntities) {
+          runTimeout(() => {
+            const newItemEntity = world.getEntity(itemEntity.id);
+
+            const currentInventory = this._getInventory(player);
+            const previousInventory = this._previousInventories.get(player.id) || currentInventory;
+
+            if (!newItemEntity) {
+              for (const [slot, itemStack] of currentInventory.entries()) {
+                const prevItemStack = previousInventory.get(slot);
+                if (!prevItemStack || !itemStack.compare(prevItemStack)) {
+                  this._events.set(player.id, new playerCollectItemAfterEvent(player, itemStack));
+                  cb(this._events.get(player.id));
+                  this._entityIds;
+                }
+              }
+            }
+            this._previousInventories.set(player.id, currentInventory);
+          }, 1);
+        }
+      }
+    });
+  }
+
+  _getInventory(player) {
+    const inventory = new Map();
+    for (let i = 0; i < player.inventory.size; i++) {
+      const itemStack = player.inventory.getItem(i);
+      if (itemStack) {
+        inventory.set(i, itemStack);
+      }
+    }
+    return inventory;
+  }
+}
+
+export class PlayerDropItemAfterEventSignal extends PlayerCollectItemAfterEventSignal {
+  constructor() {
+    super();
+  }
+
+  subscribe(cb) {
+    this._process = runInterval(() => {
+      const currentInventory = this._getInventory(player);
+      const previousInventory = this._previousInventories.get(player.id) || currentInventory;
+
+      for (const [slot, itemStack] of currentInventory.entries()) {
+        const prevItemStack = previousInventory.get(slot);
+        if (!prevItemStack || !itemStack.compare(prevItemStack)) {
+          const itemEntities = player.dimension.getEntities({ type: "minecraft:item", maxDistance: 3, location: player.location });
+
+          // this._events.set(player.id, new playerCollectItemAfterEvent(player, itemStack));
+          // cb(this._events.get(player.id));
+        }
+      }
+
+      this._previousInventories.set(player.id, currentInventory);
+
+      for (const player of world.players) {
+        const itemEntities = player.dimension.getEntities({ type: "minecraft:item", maxDistance: 3, location: player.location });
+
+        for (const itemEntity of itemEntities) {
+          runTimeout(() => {
+            const newItemEntity = world.getEntity(itemEntity.id);
+
+            const currentInventory = this._getInventory(player);
+            const previousInventory = this._previousInventories.get(player.id) || currentInventory;
+
+            if (!newItemEntity) {
+              for (const [slot, itemStack] of currentInventory.entries()) {
+                const prevItemStack = previousInventory.get(slot);
+                if (!prevItemStack || !itemStack.compare(prevItemStack)) {
+                  this._events.set(player.id, new playerCollectItemAfterEvent(player, itemStack));
+                  cb(this._events.get(player.id));
+                }
+              }
+            }
+            this._previousInventories.set(player.id, currentInventory);
+          }, 1);
+        }
       }
     });
   }
@@ -493,9 +586,9 @@ export class Vector3 {
    * @param {number} [z=0] - The z-coordinate.
    */
   constructor(x = 0, y = 0, z = 0) {
-    this.x = this.#validateNumber(x);
-    this.y = this.#validateNumber(y);
-    this.z = this.#validateNumber(z);
+    this.x = this._validateNumber(x);
+    this.y = this._validateNumber(y);
+    this.z = this._validateNumber(z);
   }
 
   /**
@@ -519,9 +612,9 @@ export class Vector3 {
    * @returns {Vector3} A new Vector3 instance with centered x and z coordinates.
    */
   toCenterXZ() {
-    const x = this.#roundToNearestHalf(this.x);
+    const x = this._roundToNearestHalf(this.x);
     const y = this.y;
-    const z = this.#roundToNearestHalf(this.z);
+    const z = this._roundToNearestHalf(this.z);
     return new Vector3(x, y, z);
   }
 
@@ -530,9 +623,9 @@ export class Vector3 {
    * @returns {Vector3} A new Vector3 instance with centered x, y, and z coordinates.
    */
   toCenterXYZ() {
-    const x = this.#roundToNearestHalf(this.x);
-    const y = this.#roundToNearestHalf(this.y);
-    const z = this.#roundToNearestHalf(this.z);
+    const x = this._roundToNearestHalf(this.x);
+    const y = this._roundToNearestHalf(this.y);
+    const z = this._roundToNearestHalf(this.z);
     return new Vector3(x, y, z);
   }
 
@@ -542,7 +635,7 @@ export class Vector3 {
    * @param {number} value - The value to round.
    * @returns {number} The value rounded to the nearest half.
    */
-  #roundToNearestHalf(value) {
+  _roundToNearestHalf(value) {
     return Math.round(value * 2) / 2;
   }
 
@@ -553,7 +646,7 @@ export class Vector3 {
    * @returns {number} The validated number.
    * @throws {TypeError} If the value is not a number.
    */
-  #validateNumber(value) {
+  _validateNumber(value) {
     if (typeof value !== "number") {
       console.error("Value must be a number");
     }

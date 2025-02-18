@@ -221,9 +221,7 @@ async function dispenserPlaceBlock(redstoneSource) {
       //   const item = dispenser.dimension.fetchEntities(`@e[x=${faceBlock.x},y=${faceBlock.y},z=${faceBlock.z},r=1]`)[0];
       //   test(item.nameTag);
       // }, 2);
-      const hopper = dispenser.dimension.fetchEntities(
-        `@e[type=hopper,x=${faceBlock.x},y=${faceBlock.y},z=${faceBlock.z},r=1]`
-      )[0];
+      const hopper = dispenser.dimension.fetchEntities(`@e[type=hopper,x=${faceBlock.x},y=${faceBlock.y},z=${faceBlock.z},r=1]`)[0];
     }
   });
 }
