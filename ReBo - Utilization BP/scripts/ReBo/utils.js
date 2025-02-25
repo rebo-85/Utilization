@@ -1,11 +1,19 @@
 import { afterEvents, beforeEvents, world, overworld, nether, end, scoreboard } from "./constants";
 import { Entity, Dimension, ScriptEventSource } from "@minecraft/server";
-import { RunInterval, RunTimeOut, CommandResult, Vector3 } from "./classes";
+import { RunInterval, RunTimeOut, Vector3, CommandResult } from "./classes";
 
 const entityRunCommand = Entity.prototype.runCommand;
 const dimensionRunCommand = Dimension.prototype.runCommand;
 const entityRunCommandAsync = Entity.prototype.runCommandAsync;
 const dimensionRunCommandAsync = Dimension.prototype.runCommandAsync;
+
+export function generateUUIDv4() {
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+    const r = (Math.random() * 16) | 0;
+    const v = c === "x" ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
 
 export function addVectors(...vecs) {
   return vecs.reduce((acc, vec) => {
@@ -83,54 +91,6 @@ export async function runCommandAsync(source, ...commands) {
   return result;
 }
 
-// export function AdventureSpawnables(spawnItemList, db) { // Bugged
-//   let isGameruleModified = false;
-//   beforeEvents.itemUseOn.subscribe((e) => {
-//     const { source, itemStack } = e;
-//     if (!spawnItemList.includes(itemStack.typeId)) return;
-
-//     const gamemode = source.getGameMode();
-//     if (gamemode != "adventure") return;
-
-//     const playerGamemodes = [];
-
-//     for (const player of world.getAllPlayers()) {
-//       playerGamemodes.push({ id: player.id, gamemode: player.getGameMode() });
-//     }
-
-//     db.set("playerGamemodes", playerGamemodes);
-
-//     const isAdventure =
-//       db.get("playerGamemodes")?.find((element) => element.id === source.id).gamemode === "adventure" ? true : false;
-//     if (isAdventure) {
-//       source.runCommandAsync(`gamemode survival @s`);
-//       if (gamerules.sendCommandFeedback) {
-//         source.runCommandAsync(`gamerule sendcommandfeedback false`);
-//         isGameruleModified = true;
-//       }
-//     }
-//   });
-
-//   afterEvents.itemUseOn.subscribe((e) => {
-//     const { itemStack, source } = e;
-
-//     if (!spawnItemList.includes(itemStack.typeId)) return;
-//     const isAdventure =
-//       db.get("playerGamemodes")?.find((element) => element.id === source.id).gamemode === "adventure" ? true : false;
-//     if (isAdventure) {
-//       source.setGameMode("adventure");
-//       if (isGameruleModified) {
-//         isGameruleModified = false;
-//         source.runCommandAsync(`gamerule sendcommandfeedback true`);
-//         source.sendMessage({
-//           translate: "gameMode.changed",
-//           with: { rawtext: [{ translate: "createWorldScreen.gameMode.adventure" }] },
-//         });
-//         db.remove("playerGamemodes");
-//       }
-//     }
-//   });
-// }
 export function fetchAllEntities(selectorList) {
   let entities = new Set([]);
   selectorList.forEach((selector) => {

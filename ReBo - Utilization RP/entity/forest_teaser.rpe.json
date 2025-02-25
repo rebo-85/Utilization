@@ -1,0 +1,16 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "rebo:forest_teaser",
+      "materials": { "default": "entity_alphatest" },
+      "textures": {
+        "default": "textures/entity/se_forest_teaser_texture"
+      },
+      "geometry": {
+        "default": "geometry.se_forest_teaser"
+      },
+      "render_controllers": ["controller.render.default"]
+    }
+  }
+}

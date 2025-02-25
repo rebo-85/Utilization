@@ -1,4 +1,4 @@
-import { scriptEvent, world, namespace as ns } from "./constants";
+import { scriptEvent, ns, world } from "./constants";
 import { runInterval } from "./utils";
 
 runInterval(() => {

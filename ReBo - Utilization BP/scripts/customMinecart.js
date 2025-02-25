@@ -5,6 +5,8 @@ import { runInterval } from "./ReBo/utils";
 
 const customMinecartIDs = ["rebo:custom_minecart"];
 
+// WIP: make the custom entity behave like vanilla minecart without runtime_identifier
+
 // Utility to normalize yaw (-180 to 180)
 const normalizeYaw = (yaw) => {
   while (yaw > 180) yaw -= 360;
