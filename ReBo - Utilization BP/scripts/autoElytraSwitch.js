@@ -20,8 +20,8 @@ runInterval(() => {
       const elytras = player.getItems("minecraft:elytra").inventory;
 
       if ((isOnHighs || mainHandItem?.typeId === "minecraft:firework_rocket") && chestItem?.typeId !== "minecraft:elytra" && elytras.size > 0) {
-        let elytra = elytras.keys().next().value;
-        player.setEquipmentFromInventory(EquipmentSlot.Chest, elytra);
+        let elytraSlotId = elytras.keys().next().value;
+        player.setEquipmentFromInventory(EquipmentSlot.Chest, elytraSlotId);
         prevChestItem.set(player.id, chestItem);
       }
     } else if (prevChestItem.has(player.id) && (player.isOnGround || player.isInWater)) {
