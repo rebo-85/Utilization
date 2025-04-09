@@ -45,12 +45,6 @@ export class EntityAfterEvent extends AfterEvent {
     this.entity = entity;
   }
 }
-export class EntityOnAirAfterEvent extends EntityAfterEvent {
-  constructor(entity) {
-    super(entity);
-  }
-}
-
 export class EntityOnGroundAfterEvent extends EntityAfterEvent {
   constructor(entity) {
     super(entity);
@@ -62,23 +56,23 @@ export class PlayerAfterEvent extends AfterEvent {
     this.player = player;
   }
 }
-export class PlayerJumpAfterEvent extends PlayerAfterEvent {
-  constructor(player) {
-    super(player);
+export class EntityJumpAfterEvent extends EntityAfterEvent {
+  constructor(entity) {
+    super(entity);
   }
 }
-export class PlayerStartJumpingAfterEvent extends PlayerJumpAfterEvent {
+export class PlayerStartJumpingAfterEvent extends EntityJumpAfterEvent {
   constructor(player) {
     super(player);
   }
 }
 
-export class PlayerStopJumpingAfterEvent extends PlayerJumpAfterEvent {
+export class PlayerStopJumpingAfterEvent extends EntityJumpAfterEvent {
   constructor(player) {
     super(player);
   }
 }
-export class PlayerOnAirJumpAfterEvent extends PlayerJumpAfterEvent {
+export class PlayerOnAirJumpAfterEvent extends EntityJumpAfterEvent {
   constructor(player) {
     super(player);
   }
@@ -109,22 +103,23 @@ export class PlayerOnUnequipAfterEvent extends PlayerOnEquipAfterEvent {
   }
 }
 
-export class playerCollectItemAfterEvent extends ItemAfterEvent {
-  constructor(player, itemStack) {
-    super(player, itemStack);
-  }
-}
-
 export class EventSignal {
   constructor() {
     this._events = new Map();
     this._process = null;
+    this._isDisposed = false;
   }
   subscribe(cb) {
-    cb();
+    const process = () => {
+      this._run(cb);
+
+      if (!this._isDisposed) this._process = system.run(process);
+    };
+    this._process = system.run(process);
   }
   unsubscribe() {
-    this._process.dispose();
+    this._isDisposed = true;
+    system.clearRun(this._process);
   }
 }
 
@@ -142,103 +137,60 @@ export class EntityItemEventSignal extends EntityEventSignal {
   }
 }
 
-export class EntityOnAirAfterEventSignal extends EntityEventSignal {
+export class EntityJumpAfterEventSignal extends EntityEventSignal {
   constructor() {
     super();
   }
-  subscribe(cb) {
-    this._process = runInterval(() => {
-      for (const entity of world.getEntities()) {
-        if (!entity.isOnGround && !this._entityIds.has(entity.id)) {
-          this._entityIds.add(entity.id);
-          this._events.set(entity.id, new EntityOnAirAfterEvent(entity));
-          cb(this._events.get(entity.id));
-        } else if (entity.isOnGround && this._entityIds.has(entity.id)) {
-          this._events.delete(entity.id);
-          this._entityIds.delete(entity);
-        }
+
+  _run(cb) {
+    for (const entity of world.getEntities()) {
+      if (entity.isJumping && !entity.isOnGround && !this._entityIds.has(entity.id)) {
+        this._entityIds.add(entity.id);
+        this._events.set(entity.id, new EntityJumpAfterEvent(entity));
+        cb(this._events.get(entity.id));
+      } else if (entity.isOnGround && this._entityIds.has(entity.id)) {
+        this._entityIds.delete(entity.id);
+        this._events.delete(entity.id);
       }
-    });
+    }
   }
 }
 
-export class EntityOnGroundAfterEventSignal extends EntityEventSignal {
+export class EntityStartJumpingAfterEventSignal extends EntityEventSignal {
   constructor() {
     super();
   }
-  subscribe(cb) {
-    this._process = runInterval(() => {
-      for (const entity of world.getEntities()) {
-        if (entity.isOnGround && !this._entityIds.has(entity.id)) {
-          this._entityIds.add(entity);
-        } else if (!entity.isJumping && this._entityIds.has(entity.id)) {
-          this._events.set(entity.id, new EntityOnGroundAfterEvent(entity));
-          cb(this._events.get(entity.id));
-          this._events.delete(entity.id);
-          this._entityIds.delete(entity.id);
-        }
+
+  _run(cb) {
+    for (const entity of world.getEntities()) {
+      if (entity.isJumping && !entity.isOnGround && !this._entityIds.has(entity.id)) {
+        this._entityIds.add(entity.id);
+        this._events.set(entity.id, new EntityJumpAfterEvent(entity));
+        cb(this._events.get(entity.id));
+      } else if (!entity.isJumping && this._entityIds.has(entity.id)) {
+        this._entityIds.delete(entity.id);
+        this._events.delete(entity.id);
       }
-    });
+    }
   }
 }
 
-export class PlayerJumpAfterEventSignal extends EntityEventSignal {
+export class EntityStopJumpingAfterEventSignal extends EntityEventSignal {
   constructor() {
     super();
   }
-  subscribe(cb) {
-    this._process = runInterval(() => {
-      for (const player of world.players) {
-        if (player.isJumping && !player.isOnGround && !this._entityIds.has(player.id)) {
-          this._entityIds.add(player.id);
-          this._events.set(player.id, new PlayerJumpAfterEvent(player));
-          cb(this._events.get(player.id));
-        } else if (player.isOnGround && this._entityIds.has(player.id)) {
-          this._entityIds.delete(player.id);
-          this._events.delete(player.id);
-        }
-      }
-    });
-  }
-}
 
-export class PlayerStartJumpingAfterEventSignal extends EntityEventSignal {
-  constructor() {
-    super();
-  }
-  subscribe(cb) {
-    this._process = runInterval(() => {
-      for (const player of world.players) {
-        if (player.isJumping && !player.isOnGround && !this._entityIds.has(player.id)) {
-          this._entityIds.add(player.id);
-          this._events.set(player.id, new PlayerJumpAfterEvent(player));
-          cb(this._events.get(player.id));
-        } else if (!player.isJumping && this._entityIds.has(player.id)) {
-          this._entityIds.delete(player.id);
-          this._events.delete(player.id);
-        }
+  _run(cb) {
+    for (const entity of world.getEntities()) {
+      if (entity.isJumping && !entity.isOnGround && !this._entityIds.has(entity.id)) {
+        this._entityIds.add(entity.id);
+      } else if (!entity.isJumping && this._entityIds.has(entity.id)) {
+        this._events.set(entity.id, new EntityJumpAfterEvent(entity));
+        cb(this._events.get(entity.id));
+        this._events.delete(entity.id);
+        this._entityIds.delete(entity.id);
       }
-    });
-  }
-}
-
-export class PlayerStopJumpingAfterEventSignal extends EntityEventSignal {
-  constructor() {
-    super();
-  }
-  subscribe(cb) {
-    this._process = runInterval(() => {
-      for (const player of world.players) {
-        if (player.isJumping && !player.isOnGround && !this._entityIds.has(player.id)) {
-          this._entityIds.add(player.id);
-        } else if (!player.isJumping && this._entityIds.has(player.id)) {
-          this._events.set(player.id, new PlayerJumpAfterEvent(player));
-          cb(this._events.get(player.id));
-          this._events.delete(player.id);
-          this._entityIds.delete(player.id);
-        }
-      }
-    });
+    }
   }
 }
 
@@ -248,28 +200,26 @@ export class PlayerOnAirJumpAfterEventSignal extends EntityEventSignal {
     this._onAir = new Set();
   }
 
-  subscribe(cb) {
-    this._process = runInterval(() => {
-      for (const player of world.players) {
-        if (!player.isJumping && !player.isOnGround) {
-          if (this._onAir.has(player.id)) {
-            this._entityIds.add(player.id);
-          } else this._onAir.add(player.id);
-        } else if (
-          player.isJumping &&
-          !player.isOnGround &&
-          this._entityIds.has(player.id) &&
-          !this._events.has(player.id)
-        ) {
-          this._events.set(player.id, new PlayerOnAirJumpAfterEvent(player));
-          cb(this._events.get(player.id));
-        } else {
-          this._events.delete(player.id);
-          this._entityIds.delete(player.id);
-          this._onAir.delete(player.id);
-        }
+  _run(cb) {
+    for (const player of world.players) {
+      if (!player.isJumping && !player.isOnGround) {
+        if (this._onAir.has(player.id)) {
+          this._entityIds.add(player.id);
+        } else this._onAir.add(player.id);
+      } else if (
+        player.isJumping &&
+        !player.isOnGround &&
+        this._entityIds.has(player.id) &&
+        !this._events.has(player.id)
+      ) {
+        this._events.set(player.id, new PlayerOnAirJumpAfterEvent(player));
+        cb(this._events.get(player.id));
+      } else {
+        this._events.delete(player.id);
+        this._entityIds.delete(player.id);
+        this._onAir.delete(player.id);
       }
-    });
+    }
   }
 }
 
@@ -279,32 +229,30 @@ export class PlayerOnEquipAfterEventSignal extends EntityEventSignal {
     this._previousEquipments = new Map();
   }
 
-  subscribe(cb) {
-    this._process = runInterval(() => {
-      for (const player of world.players) {
-        let slots = Object.values(EquipmentSlot);
-        const currentEquipments = new Map();
-        for (const slot of slots) {
-          const item = player.getEquipment(slot);
-          if (item) currentEquipments.set(slot, item);
-        }
-
-        const previousEquipments = this._previousEquipments.get(player.id) || currentEquipments;
-        for (const [slot, itemStack] of currentEquipments) {
-          const prevItemStack = previousEquipments.get(slot);
-          if (!itemStack.compare(prevItemStack) && !this._entityIds.has(player.id)) {
-            this._entityIds.add(player.id);
-            this._events.set(player.id, new PlayerOnEquipAfterEvent(player, itemStack, slot));
-            cb(this._events.get(player.id));
-          } else if (itemStack.compare(prevItemStack) && this._entityIds.has(player.id)) {
-            this._events.delete(player.id);
-            this._entityIds.delete(player.id);
-          }
-        }
-
-        this._previousEquipments.set(player.id, currentEquipments);
+  _run(cb) {
+    for (const player of world.players) {
+      let slots = Object.values(EquipmentSlot);
+      const currentEquipments = new Map();
+      for (const slot of slots) {
+        const item = player.getEquipment(slot);
+        if (item) currentEquipments.set(slot, item);
       }
-    });
+
+      const previousEquipments = this._previousEquipments.get(player.id) || currentEquipments;
+      for (const [slot, itemStack] of currentEquipments) {
+        const prevItemStack = previousEquipments.get(slot);
+        if (!itemStack.compare(prevItemStack) && !this._entityIds.has(player.id)) {
+          this._entityIds.add(player.id);
+          this._events.set(player.id, new PlayerOnEquipAfterEvent(player, itemStack, slot));
+          cb(this._events.get(player.id));
+        } else if (itemStack.compare(prevItemStack) && this._entityIds.has(player.id)) {
+          this._events.delete(player.id);
+          this._entityIds.delete(player.id);
+        }
+      }
+
+      this._previousEquipments.set(player.id, currentEquipments);
+    }
   }
 }
 
@@ -314,34 +262,32 @@ export class PlayerOnUnequipAfterEventSignal extends EntityEventSignal {
     this._previousEquipments = new Map();
   }
 
-  subscribe(cb) {
-    this._process = runInterval(() => {
-      for (const player of world.players) {
-        let slots = Object.values(EquipmentSlot);
-        const currentEquipments = new Map();
-        for (const slot of slots) {
-          const item = player.getEquipment(slot);
-          currentEquipments.set(slot, item);
-        }
+  _run(cb) {
+    for (const player of world.players) {
+      let slots = Object.values(EquipmentSlot);
+      const currentEquipments = new Map();
+      for (const slot of slots) {
+        const item = player.getEquipment(slot);
+        currentEquipments.set(slot, item);
+      }
 
-        const previousEquipments = this._previousEquipments.get(player.id) || currentEquipments;
-        for (const [slot, itemStack] of currentEquipments) {
-          const prevItemStack = previousEquipments.get(slot);
-          if (prevItemStack) {
-            if (!prevItemStack.compare(itemStack) && !this._entityIds.has(player.id)) {
-              this._entityIds.add(player.id);
-              this._events.set(player.id, new PlayerOnUnequipAfterEvent(player, prevItemStack, slot));
-              cb(this._events.get(player.id));
-            } else if (prevItemStack.compare(itemStack) && this._entityIds.has(player.id)) {
-              this._events.delete(player.id);
-              this._entityIds.delete(player.id);
-            }
+      const previousEquipments = this._previousEquipments.get(player.id) || currentEquipments;
+      for (const [slot, itemStack] of currentEquipments) {
+        const prevItemStack = previousEquipments.get(slot);
+        if (prevItemStack) {
+          if (!prevItemStack.compare(itemStack) && !this._entityIds.has(player.id)) {
+            this._entityIds.add(player.id);
+            this._events.set(player.id, new PlayerOnUnequipAfterEvent(player, prevItemStack, slot));
+            cb(this._events.get(player.id));
+          } else if (prevItemStack.compare(itemStack) && this._entityIds.has(player.id)) {
+            this._events.delete(player.id);
+            this._entityIds.delete(player.id);
           }
         }
-
-        this._previousEquipments.set(player.id, currentEquipments);
       }
-    });
+
+      this._previousEquipments.set(player.id, currentEquipments);
+    }
   }
 }
 
@@ -350,127 +296,17 @@ export class PlayerOnLandAfterEventSignal extends EntityEventSignal {
     super();
   }
 
-  subscribe(cb) {
-    this._process = runInterval(() => {
-      for (const player of world.players) {
-        if (!player.isOnGround && !this._entityIds.has(player.id)) {
-          this._entityIds.add(player.id);
-        } else if (player.isOnGround && this._entityIds.has(player.id)) {
-          this._events.set(player.id, new PlayerOnLandAfterEvent(player));
-          cb(this._events.get(player.id));
-          this._events.delete(player.id);
-          this._entityIds.delete(player.id);
-        }
-      }
-    });
-  }
-}
-
-export class PlayerCollectItemAfterEventSignal extends EntityEventSignal {
-  constructor() {
-    super();
-    this._previousInventories = new Map();
-  }
-
-  subscribe(cb) {
-    this._process = runInterval(() => {
-      for (const player of world.players) {
-        const itemEntities = player.dimension.getEntities({
-          type: "minecraft:item",
-          maxDistance: 3,
-          location: player.location,
-        });
-
-        for (const itemEntity of itemEntities) {
-          runTimeout(() => {
-            const newItemEntity = world.getEntity(itemEntity.id);
-
-            const currentInventory = this._getInventory(player);
-            const previousInventory = this._previousInventories.get(player.id) || currentInventory;
-
-            if (!newItemEntity) {
-              for (const [slot, itemStack] of currentInventory.entries()) {
-                const prevItemStack = previousInventory.get(slot);
-                if (!prevItemStack || !itemStack.compare(prevItemStack)) {
-                  this._events.set(player.id, new playerCollectItemAfterEvent(player, itemStack));
-                  cb(this._events.get(player.id));
-                  this._entityIds;
-                }
-              }
-            }
-            this._previousInventories.set(player.id, currentInventory);
-          }, 1);
-        }
-      }
-    });
-  }
-
-  _getInventory(player) {
-    const inventory = new Map();
-    for (let i = 0; i < player.inventory.size; i++) {
-      const itemStack = player.inventory.getItem(i);
-      if (itemStack) {
-        inventory.set(i, itemStack);
+  _run(cb) {
+    for (const player of world.players) {
+      if (!player.isOnGround && !this._entityIds.has(player.id)) {
+        this._entityIds.add(player.id);
+      } else if (player.isOnGround && this._entityIds.has(player.id)) {
+        this._events.set(player.id, new PlayerOnLandAfterEvent(player));
+        cb(this._events.get(player.id));
+        this._events.delete(player.id);
+        this._entityIds.delete(player.id);
       }
     }
-    return inventory;
-  }
-}
-
-export class PlayerDropItemAfterEventSignal extends PlayerCollectItemAfterEventSignal {
-  constructor() {
-    super();
-  }
-
-  subscribe(cb) {
-    this._process = runInterval(() => {
-      const currentInventory = this._getInventory(player);
-      const previousInventory = this._previousInventories.get(player.id) || currentInventory;
-
-      for (const [slot, itemStack] of currentInventory.entries()) {
-        const prevItemStack = previousInventory.get(slot);
-        if (!prevItemStack || !itemStack.compare(prevItemStack)) {
-          const itemEntities = player.dimension.getEntities({
-            type: "minecraft:item",
-            maxDistance: 3,
-            location: player.location,
-          });
-
-          // this._events.set(player.id, new playerCollectItemAfterEvent(player, itemStack));
-          // cb(this._events.get(player.id));
-        }
-      }
-
-      this._previousInventories.set(player.id, currentInventory);
-
-      for (const player of world.players) {
-        const itemEntities = player.dimension.getEntities({
-          type: "minecraft:item",
-          maxDistance: 3,
-          location: player.location,
-        });
-
-        for (const itemEntity of itemEntities) {
-          runTimeout(() => {
-            const newItemEntity = world.getEntity(itemEntity.id);
-
-            const currentInventory = this._getInventory(player);
-            const previousInventory = this._previousInventories.get(player.id) || currentInventory;
-
-            if (!newItemEntity) {
-              for (const [slot, itemStack] of currentInventory.entries()) {
-                const prevItemStack = previousInventory.get(slot);
-                if (!prevItemStack || !itemStack.compare(prevItemStack)) {
-                  this._events.set(player.id, new playerCollectItemAfterEvent(player, itemStack));
-                  cb(this._events.get(player.id));
-                }
-              }
-            }
-            this._previousInventories.set(player.id, currentInventory);
-          }, 1);
-        }
-      }
-    });
   }
 }
 

@@ -1,23 +1,90 @@
-import { scriptEvent, world, namespace as ns } from "./ReBo/constants";
-import {} from "./ReBo/server";
-import { runTimeout } from "./ReBo/utils";
-import keyframes from "./exportedCameraKeyframes";
+import { scriptEvent, world, namespace as ns } from "./ReBo/Constants";
+import { system } from "@minecraft/server";
+import {} from "./ReBo/Server";
+import keyframes from "./Keyframes";
+import { Vector2, Vector3 } from "./ReBo/Classes";
 
-keyframes.sort((a, b) => a.time - b.time);
-
-const positions = [];
-const rotations = [];
-for (const keyframe of keyframes) {
-  const obj = { time: keyframe.time, interpolation: keyframe.interpolation, points: keyframe.data_points[0] };
-  if (keyframe.channel === "position") {
-    positions.push(obj);
-  } else if (keyframe.channel === "rotation") {
-    rotations.push(obj);
+function load() {
+  for (const player of world.players) {
+    player.commandRunAsync(
+      "camera @s clear",
+      "inputpermission set @s camera enabled",
+      "inputpermission set @s movement enabled"
+    );
   }
 }
 
-positions.sort((a, b) => a.time - b.time);
-rotations.sort((a, b) => a.time - b.time);
+load();
+
+function runScene() {
+  const { positions, rotations, times } = keyframes;
+  let previousPosition = positions[0].data_points;
+  let previousRotation = rotations[0].data_points;
+
+  let previousTime = 0;
+  let completedTimeouts = 0;
+  const cameraOffset = 1.62001; // Y-offset of the camera from the player's feet
+  const player = world.getAllPlayers()[0]; // Assuming there's only one player
+  const entity = player.dimension.getEntities({ type: "rebo:forest_teaser" })[0]; // Assuming there's only one entity
+
+  player.commandRunAsync(
+    "camera @s clear",
+    "inputpermission set @s camera disabled",
+    "inputpermission set @s movement disabled",
+    "effect @s invisibility infinite 1 true",
+    "teleport @s 0 0 0"
+  );
+  entity.rotation = new Vector2(0, 0);
+  entity.playAnimation("animation.player.forest_teaser_animation");
+
+  for (const time of times) {
+    system.runTimeout(() => {
+      if (player) {
+        const position = positions.find((v) => v.time === time);
+        const rotation = rotations.find((v) => v.time === time);
+
+        if (position) {
+          const newDataPoints = new Vector3(position.data_points).offset(entity.cx, entity.cy, -entity.cz);
+          previousPosition = newDataPoints;
+          previousPosition = previousPosition.offset(0, cameraOffset, 0);
+          player.teleport(newDataPoints);
+        }
+
+        if (rotation) previousRotation = rotation.data_points;
+
+        const { x, y, z } = previousPosition;
+        const { x: rx, y: ry } = previousRotation;
+        const command = `camera @s set minecraft:free ease ${time - previousTime} linear pos ${addDecimal(
+          x
+        )} ${addDecimal(y)} ${addDecimal(-z)} rot ${rx} ${ry}`;
+
+        player.commandRunAsync(command);
+        previousTime = time;
+      }
+
+      completedTimeouts++;
+      if (completedTimeouts === times.length) {
+        system.runTimeout(() => {
+          player.commandRunAsync(
+            "camera @s clear",
+            "inputpermission set @s camera enabled",
+            "inputpermission set @s movement enabled",
+            "effect @s invisibility 0 1 true"
+          );
+
+          previousPosition = positions[0].data_points;
+          previousRotation = rotations[0].data_points;
+          previousTime = 0;
+          completedTimeouts = 0;
+        }, time - previousTime + 1);
+      }
+    }, time * 20);
+  }
+}
+
+function addDecimal(num) {
+  return num % 1 === 0 ? `${num}.0` : `${num}`;
+}
 
 scriptEvent.subscribe(({ id }) => {
   switch (id) {
@@ -29,32 +96,3 @@ scriptEvent.subscribe(({ id }) => {
       break;
   }
 });
-
-for (const player of world.players) {
-  player.runCommandAsync("camera @s clear", "inputpermission set @s camera enabled", "inputpermission set @s movement enabled");
-}
-
-function runScene() {
-  for (const player of world.players) {
-    player.runCommandAsync("inputpermission set @s camera disabled", "inputpermission set @s movement disabled");
-    let prevPos = positions[0].points;
-    let prevRot = rotations[0].points;
-    let prevTime = 0;
-    for (const keyframe of keyframes) {
-      const { x, y, z } = prevPos;
-      const { x: rx, y: ry } = prevRot;
-      runTimeout(() => {
-        const command = `camera @s set minecraft:free ease ${parseFloat((keyframe.time - prevTime).toFixed(4))} linear pos ${x} ${y} ${z} rot ${rx} ${ry}`;
-        console.warn(JSON.stringify(command, null, 0));
-        player.runCommandAsync(command);
-        prevTime = keyframe.time;
-      }, keyframe.time * 20);
-
-      if (keyframe.interpolation === "position") {
-        prevPos = keyframe.data_points[0];
-      } else if (keyframe.interpolation === "rotation") {
-        prevRot = keyframe.data_points[0];
-      }
-    }
-  }
-}

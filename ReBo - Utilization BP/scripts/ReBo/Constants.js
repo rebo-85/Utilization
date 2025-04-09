@@ -1,6 +1,6 @@
 import { MinecraftDimensionTypes, world as w, system as s, TicksPerSecond } from "@minecraft/server";
 
-export const namespace = "ecbl_bs";
+export const namespace = "rebo";
 export const ns = namespace;
 export const world = w;
 export const gamerules = w.gameRules;

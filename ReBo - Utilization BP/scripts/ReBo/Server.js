@@ -21,10 +21,9 @@ import {
 } from "@minecraft/server";
 import {
   Vector2,
-  PlayerJumpAfterEventSignal,
-  PlayerCollectItemAfterEventSignal,
-  PlayerStartJumpingAfterEventSignal,
-  PlayerStopJumpingAfterEventSignal,
+  EntityJumpAfterEventSignal,
+  EntityStartJumpingAfterEventSignal,
+  EntityStopJumpingAfterEventSignal,
   PlayerOnAirJumpAfterEventSignal,
   PlayerOnLandAfterEventSignal,
   PlayerOnEquipAfterEventSignal,
@@ -44,19 +43,20 @@ const errors = {
 };
 
 // WorldAfterEvents methods
-Object.defineProperty(WorldAfterEvents.prototype, "playerJump", {
+
+Object.defineProperty(WorldAfterEvents.prototype, "entityJump", {
   get: function () {
-    return new PlayerJumpAfterEventSignal();
+    return new EntityJumpAfterEventSignal();
   },
 });
-Object.defineProperty(WorldAfterEvents.prototype, "playerStartJumping", {
+Object.defineProperty(WorldAfterEvents.prototype, "entityStartJumping", {
   get: function () {
-    return new PlayerStartJumpingAfterEventSignal();
+    return new EntityStartJumpingAfterEventSignal();
   },
 });
-Object.defineProperty(WorldAfterEvents.prototype, "playerStopJumping", {
+Object.defineProperty(WorldAfterEvents.prototype, "entityStopJumping", {
   get: function () {
-    return new PlayerStopJumpingAfterEventSignal();
+    return new EntityStopJumpingAfterEventSignal();
   },
 });
 Object.defineProperty(WorldAfterEvents.prototype, "playerOnAirJump", {
@@ -79,11 +79,6 @@ Object.defineProperty(WorldAfterEvents.prototype, "playerOnUnequip", {
 Object.defineProperty(WorldAfterEvents.prototype, "playerOnEquip", {
   get: function () {
     return new PlayerOnEquipAfterEventSignal();
-  },
-});
-Object.defineProperty(WorldAfterEvents.prototype, "playerCollectItem", {
-  get: function () {
-    return new PlayerCollectItemAfterEventSignal();
   },
 });
 
@@ -114,7 +109,6 @@ Object.defineProperty(World.prototype, "players", {
 });
 
 // ItemStack methods
-
 Object.defineProperty(ItemStack.prototype, "isVanillaBlock", {
   get: function () {
     if (BlockTypes.get(this.typeId)) return true;
@@ -422,6 +416,18 @@ Object.defineProperty(Player.prototype, "gamemode", {
 });
 
 // Entity methods
+Object.defineProperty(Entity.prototype, "commandRun", {
+  value: function (...commands) {
+    return runCommand.call(this, Entity, ...commands);
+  },
+});
+
+Object.defineProperty(Entity.prototype, "commandRunAsync", {
+  value: function (...commands) {
+    return runCommandAsync.call(this, Entity, ...commands);
+  },
+});
+
 Object.defineProperty(Entity.prototype, "chunk", {
   get: function () {
     const chunkSize = 16;
@@ -649,12 +655,12 @@ Object.defineProperty(Entity.prototype, "typeFamilyComponent", {
 
 Object.defineProperty(Entity.prototype, "getTypeFamilies", {
   value: function () {
-    return this.typeFamilyComponent.getTypeFamilies();
+    return this.typeFamilyComponent?.getTypeFamilies();
   },
 });
 Object.defineProperty(Entity.prototype, "hasTypeFamily", {
   value: function (typeFamily) {
-    return this.typeFamilyComponent.hasTypeFamily(typeFamily);
+    return this.typeFamilyComponent?.hasTypeFamily(typeFamily);
   },
 });
 
@@ -728,6 +734,34 @@ Object.defineProperty(Entity.prototype, "rotation", {
 Object.defineProperty(Entity.prototype, "velocity", {
   get: function () {
     return this.getVelocity();
+  },
+  enumerable: true,
+});
+
+Object.defineProperty(Entity.prototype, "coordinates", {
+  get: function () {
+    return new Vector3(Math.floor(this.x), Math.floor(this.y), Math.floor(this.z));
+  },
+  enumerable: true,
+});
+
+Object.defineProperty(Entity.prototype, "cx", {
+  get: function () {
+    return this.coordinates.x;
+  },
+  enumerable: true,
+});
+
+Object.defineProperty(Entity.prototype, "cy", {
+  get: function () {
+    return this.coordinates.y;
+  },
+  enumerable: true,
+});
+
+Object.defineProperty(Entity.prototype, "cz", {
+  get: function () {
+    return this.coordinates.z;
   },
   enumerable: true,
 });
@@ -941,64 +975,16 @@ Object.defineProperty(Dimension.prototype, "weather", {
   },
 });
 
-beforeEvents.worldInitialize.subscribe(() => {
-  // Block methods
-  const blockCenter = Block.prototype.center;
-  Object.defineProperty(Block.prototype, "center", {
-    get: function () {
-      return blockCenter.call(this);
-    },
-  });
+Object.defineProperty(Dimension.prototype, "commandRun", {
+  value: function (...commands) {
+    return runCommand.call(this, Dimension, ...commands);
+  },
+});
 
-  const blockBottomCenter = Block.prototype.bottomCenter;
-  Object.defineProperty(Block.prototype, "bottomCenter", {
-    get: function () {
-      return blockBottomCenter.call(this);
-    },
-  });
-
-  // Entity methods
-
-  Object.defineProperty(Entity.prototype, "location", {
-    set: function (location) {
-      this.teleport(location);
-    },
-  });
-  Object.defineProperty(Entity.prototype, "runCommand", {
-    value: function (...commands) {
-      return runCommand.call(this, Entity, ...commands);
-    },
-  });
-
-  Object.defineProperty(Entity.prototype, "runCommandAsync", {
-    value: function (...commands) {
-      return runCommandAsync.call(this, Entity, ...commands);
-    },
-  });
-
-  // Dimension methods
-  const dimensionGetEntities = Dimension.prototype.getEntities;
-
-  Object.defineProperty(Dimension.prototype, "runCommand", {
-    value: function (...commands) {
-      return runCommand.call(this, Dimension, ...commands);
-    },
-  });
-
-  Object.defineProperty(Dimension.prototype, "runCommandAsync", {
-    value: function (...commands) {
-      return runCommandAsync.call(this, Dimension, ...commands);
-    },
-  });
-
-  Object.defineProperty(Dimension.prototype, "getEntities", {
-    value: function (filter) {
-      if (typeof filter === "string") {
-        return dimensionGetEntities.call(this, filter.toEQO());
-      }
-      return dimensionGetEntities.call(this, filter);
-    },
-  });
+Object.defineProperty(Dimension.prototype, "commandRunAsync", {
+  value: function (...commands) {
+    return runCommandAsync.call(this, Dimension, ...commands);
+  },
 });
 
 const playersUsingItem = new Set();
