@@ -2368,5 +2368,23 @@ export default {
     25.9,
     25.95,
     26
-  ]
+  ],
+  sceneId: "namespace:scene_name",
+  entityOption: {
+    location: {
+      x: 0,
+      y: 0,
+      z: 0
+    },
+    type: "rebo:forest_teaser"
+  },
+  playerOption: {
+    location: {
+      x: 0,
+      y: 0,
+      z: 0
+    },
+    type: "minecraft:player"
+  },
+  animationId: "animation.player.forest_teaser_animation"
 };
