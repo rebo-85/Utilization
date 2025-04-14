@@ -1,200 +1,105 @@
+import { Vector2, Vector3, lerpVector, applyEasing } from "./Utils";
 import { system, world, ScriptEventSource } from "@minecraft/server";
 import content from "./Content";
 
 function load() {
   // On script load
+
   for (const player of world.getAllPlayers()) {
     player.runCommand("camera @s clear");
     player.inputPermissions.cameraEnabled = true;
     player.inputPermissions.movementEnabled = true;
-
-    // player.runCommand("camera @s set minecraft:free ease 10 linear pos 0 0 10");
-
-    // system.runTimeout(() => {
-    //   player.runCommand("camera @s set minecraft:free ease 10 linear pos 0 0 1");
-    // }, 100);
   }
 }
 load();
 
 function runScene(source) {
-  const { positions, rotations, times } = content;
+  const { positions, rotations } = content;
   const dimension = source.dimension;
-  let previousPosition = positions[0].data_points;
-  let previousRotation = rotations[0].data_points;
-
-  let previousTime = 0;
-  let completedTimeouts = 0;
-  const cameraOffset = 1.62001; // Y-offset of the camera from the player's feet
   const players = dimension.getEntities(content.playerOption);
   const entities = dimension.getEntities(content.entityOption);
 
-  if (entities.length === 0) {
-    world.sendMessage("§cCannot find model entity, skipping the scene.");
-    return;
-  } else if (entities.length > 1) {
-    world.sendMessage("§cMultiple model entities found, skipping the scene.");
+  if (entities.length !== 1) {
+    world.sendMessage(`§cExpected 1 model entity, found ${entities.length}. Skipping scene.`);
     return;
   }
 
   const entity = entities[0];
+  const cameraOffset = 1.62001;
 
   for (const player of players) {
-    // On scene start
     player.runCommand("camera @s clear");
     player.runCommand("effect @s invisibility infinite 1 true");
     player.inputPermissions.cameraEnabled = false;
     player.inputPermissions.movementEnabled = false;
 
-    entity.rotation = new Vector2(0, 0);
     entity.playAnimation(content.animationId);
 
-    for (const time of times) {
-      system.runTimeout(() => {
-        if (player) {
-          const position = positions.find((v) => v.time === time);
-          const rotation = rotations.find((v) => v.time === time);
+    let time = 0;
+    const tps = 20;
+    const intervalId = system.runInterval(() => {
+      time += 1 / tps;
 
-          if (position) {
-            const newDataPoints = new Vector3(position.data_points).offset(entity.cx, entity.cy, -entity.cz);
-            previousPosition = newDataPoints;
-            previousPosition = previousPosition.offset(0, cameraOffset, 0);
-            player.teleport(newDataPoints);
+      const getKeyframePair = (frames, t) => {
+        let left = 0,
+          right = frames.length - 1;
+        while (left < right) {
+          const mid = Math.floor((left + right) / 2);
+          if (frames[mid].time < t) {
+            left = mid + 1;
+          } else {
+            right = mid;
           }
-
-          if (rotation) previousRotation = rotation.data_points;
-
-          const { x, y, z } = previousPosition;
-          const { x: rx, y: ry } = previousRotation;
-          const addDecimal = (num) => (num % 1 === 0 ? `${num}.0` : `${num}`);
-
-          const command = `camera @s set minecraft:free ease ${time - previousTime} linear pos ${addDecimal(
-            x
-          )} ${addDecimal(y)} ${addDecimal(-z)} rot ${rx} ${ry}`;
-
-          console.log(command);
-
-          player.runCommand(command);
-          previousTime = time;
         }
+        return [frames[left - 1] || frames[left], frames[left]];
+      };
 
-        completedTimeouts++;
-        if (completedTimeouts === times.length) {
-          system.runTimeout(() => {
-            // On scene end
-            player.runCommand("camera @s clear");
-            player.runCommand("effect @s invisibility 0");
-            player.inputPermissions.cameraEnabled = true;
-            player.inputPermissions.movementEnabled = true;
+      // -- POSITION INTERPOLATION --
+      const [posA, posB] = getKeyframePair(positions, time);
+      const posT = (time - posA.time) / (posB.time - posA.time);
+      const easedPosT = applyEasing(Math.min(posT, 1), posA.interpolation);
 
-            previousPosition = positions[0].data_points;
-            previousRotation = rotations[0].data_points;
-            previousTime = 0;
-            completedTimeouts = 0;
-          }, time - previousTime + 1);
-        }
-      }, time * 20);
-    }
-  }
-}
+      const { x: cx, y: cy, z: cz } = entity.coordinates;
+      const posStart = new Vector3(posA.data_points).offset(cx, cy, -cz).offset(0, cameraOffset, 0);
+      const posEnd = new Vector3(posB.data_points).offset(cx, cy, -cz).offset(0, cameraOffset, 0);
 
-class Vector2 {
-  constructor(x, y) {
-    if (typeof x === "object" && x !== null && "x" in x && "y" in x) {
-      this.x = x.x;
-      this._y = x.y;
-      this.z = x.z !== undefined ? x.z : x.y;
-    } else {
-      this.x = x;
-      this._y = y;
-      this.z = y;
-    }
-  }
+      const finalPos = posA.interpolation === "step" ? posStart : lerpVector(posStart, posEnd, easedPosT);
 
-  set y(value) {
-    this._y = value;
-    this.z = value;
-  }
+      // -- ROTATION INTERPOLATION --
+      const [rotA, rotB] = getKeyframePair(rotations, time);
+      const rotT = (time - rotA.time) / (rotB.time - rotA.time);
+      const easedRotT = applyEasing(Math.min(rotT, 1), rotA.interpolation);
 
-  get y() {
-    return this._y;
-  }
-  toString() {
-    return `${this.x} ${this.y}`;
-  }
+      const rotStart = new Vector2(+rotA.data_points.x, +rotA.data_points.y);
+      const rotEnd = new Vector2(+rotB.data_points.x, +rotB.data_points.y);
+      let finalRot = rotA.interpolation === "step" ? rotStart : lerpVector(rotStart, rotEnd, easedRotT);
 
-  offset(x, y) {
-    if (typeof x === "object" && x !== null && "x" in x && "y" in x) {
-      return new Vector2(this.x + x.x, this.y + x.y);
-    }
-    return new Vector2(this.x + x, this.y + y);
-  }
+      const threshold = 1e-6; // Small threshold for rounding
+      finalRot.x = Math.abs(finalRot.x) < threshold ? 0 : finalRot.x;
+      finalRot.y = Math.abs(finalRot.y) < threshold ? 0 : finalRot.y;
 
-  check(x, y) {
-    return this.x === x && this.y === y;
-  }
-}
+      if (Math.abs(finalRot.x) < threshold) finalRot.x = 0;
+      if (Math.abs(finalRot.y) < threshold) finalRot.y = 0;
 
-class Vector3 extends Vector2 {
-  constructor(x, y, z) {
-    if (typeof x === "object" && x !== null && "x" in x && "y" in x) {
-      super(x.x, x.y);
-      this.z = x.z !== undefined ? x.z : x.y; // Initialize z if provided, otherwise use y
-    } else {
-      super(x, y);
-      this.z = z;
-    }
-  }
+      // -- APPLY TO PLAYER --
+      player.teleport(finalPos);
 
-  offset(x, y, z) {
-    if (typeof x === "object" && x !== null && "x" in x && "y" in x) {
-      return new Vector3(this.x + x.x, this.y + x.y, this.z + (x.z !== undefined ? x.z : x.y));
-    }
-    return new Vector3(this.x + x, this.y + y, this.z + z);
-  }
+      const cmd = `camera @s set minecraft:free ease 0.05 linear pos ${finalPos.x} ${finalPos.y} ${-finalPos.z} rot ${
+        finalRot.x
+      } ${finalRot.y}`;
+      player.runCommand(cmd);
 
-  check(x, y, z) {
-    return this.x === x && this.y === y && this.z === z;
-  }
-
-  toVector2() {
-    return new Vector2(this.x, this.y);
-  }
-
-  toString() {
-    return `${this.x} ${this.y} ${this.z}`;
-  }
-
-  belowCenter() {
-    const x = this._roundToNearestHalf(this.x);
-    const y = this.y;
-    const z = this._roundToNearestHalf(this.z);
-    return new Vector3(x, y, z);
-  }
-
-  center() {
-    const x = this._roundToNearestHalf(this.x);
-    const y = this._roundToNearestHalf(this.y);
-    const z = this._roundToNearestHalf(this.z);
-    return new Vector3(x, y, z);
-  }
-
-  sizeCenter() {
-    const x = Math.floor(this.x / 2);
-    const y = Math.floor(this.z / 2);
-    const z = Math.floor(this.z / 2);
-    return new Vector3(x, y, z);
-  }
-
-  sizeBelowCenter() {
-    const x = Math.floor(this.x / 2);
-    const y = 0;
-    const z = Math.floor(this.z / 2);
-    return new Vector3(x, y, z);
-  }
-
-  _roundToNearestHalf(value) {
-    return Math.round(value * 2) / 2;
+      // -- END --
+      if (time > positions.at(-1).time && time > rotations.at(-1).time) {
+        system.runTimeout(() => {
+          system.clearRun(intervalId);
+          player.runCommand("camera @s clear");
+          player.runCommand("effect @s invisibility 0");
+          player.inputPermissions.cameraEnabled = true;
+          player.inputPermissions.movementEnabled = true;
+        }, 1);
+      }
+    }, 1); // 1 tick = 20 FPS
   }
 }
 
