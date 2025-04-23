@@ -403,6 +403,12 @@ export class Vector2 {
   check(x, y) {
     return this.x === x && this.y === y;
   }
+
+  normalized() {
+    const length = Math.sqrt(this.x * this.x + this.y * this.y);
+    if (length === 0) return new Vector2(0, 0);
+    return new Vector2(this.x / length, this.y / length);
+  }
 }
 
 export class Vector3 extends Vector2 {
@@ -465,6 +471,11 @@ export class Vector3 extends Vector2 {
 
   _roundToNearestHalf(value) {
     return Math.round(value * 2) / 2;
+  }
+  normalized() {
+    const length = Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+    if (length === 0) return new Vector3(0, 0, 0);
+    return new Vector3(this.x / length, this.y / length, this.z / length);
   }
 }
 

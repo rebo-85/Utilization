@@ -1,6 +1,139 @@
-import { Entity, Player } from "@minecraft/server";
+import { system, world, ScriptEventSource, Player, Entity } from "@minecraft/server";
+import content from "./Content";
 
-export function getKeyframePair(frames, t) {
+function load() {
+  for (const player of world.getAllPlayers()) {
+    player.commandRun(
+      "camera @s clear",
+      "hud @s reset",
+      "inputpermission set @s camera enabled",
+      "inputpermission set @s movement enabled"
+    );
+  }
+}
+
+function runScene(source) {
+  const { positions, rotations } = content;
+  const dimension = source.dimension;
+  const players = dimension.getEntities(content.playerOption);
+  const entities = dimension.getEntities(content.entityOption);
+
+  if (entities.length !== 1) {
+    world.sendMessage(
+      `§cExpected 1 model entity: '${content.entityOption.type}', found ${entities.length}. Skipping scene.`
+    );
+    return;
+  }
+
+  const entity = entities[0];
+
+  const gamemodes = new Map();
+  for (const player of players) {
+    gamemodes.set(player.id, player.gamemode);
+    player.commandRun(
+      "camera @s clear",
+      "effect @s invisibility infinite 1 true",
+      "hud @s hide all",
+      "inputpermission set @s camera disabled",
+      "inputpermission set @s movement disabled",
+      "gamemode spectator @s"
+    );
+
+    entity.playAnimation(content.animationId);
+
+    let time = 0;
+    const tps = 20;
+    const intervalId = system.runInterval(() => {
+      time += 1 / tps;
+
+      // -- POSITION INTERPOLATION --
+      const [posA, posB] = getKeyframePair(positions, time);
+      const posT = (time - posA.time) / (posB.time - posA.time);
+      const easedPosT = applyEasing(Math.min(posT, 1), posA.interpolation);
+
+      const coords = entity.coordinates;
+      const posStart = new Vector3(posA.data_points).offset(coords);
+      const posEnd = new Vector3(posB.data_points).offset(coords);
+
+      const finalPos = posA.interpolation === "step" ? posStart : lerpVector(posStart, posEnd, easedPosT);
+
+      // -- ROTATION INTERPOLATION --
+      const [rotA, rotB] = getKeyframePair(rotations, time);
+      const rotT = (time - rotA.time) / (rotB.time - rotA.time);
+      const easedRotT = applyEasing(Math.min(rotT, 1), rotA.interpolation);
+
+      const rotStart = new Vector2(+rotA.data_points.x, +rotA.data_points.y);
+      const rotEnd = new Vector2(+rotB.data_points.x, +rotB.data_points.y);
+      let finalRot = rotA.interpolation === "step" ? rotStart : lerpVector(rotStart, rotEnd, easedRotT);
+
+      const threshold = 1e-6; // Small threshold for rounding
+      finalRot.x = Math.abs(finalRot.x) < threshold ? 0 : finalRot.x;
+      finalRot.y = Math.abs(finalRot.y) < threshold ? 0 : finalRot.y;
+
+      if (Math.abs(finalRot.x) < threshold) finalRot.x = 0;
+      if (Math.abs(finalRot.y) < threshold) finalRot.y = 0;
+
+      // -- APPLY TO PLAYER --
+      player.teleport(finalPos);
+
+      const toCommandDecimal = (value) => {
+        const num = Number(value);
+        return num % 1 === 0 ? num.toFixed(1) : num.toFixed(4);
+      };
+
+      const cmd = `camera @s set minecraft:free ease 0.05 linear pos ${toCommandDecimal(finalPos.x)} ${toCommandDecimal(
+        finalPos.y
+      )} ${toCommandDecimal(finalPos.z)} rot ${finalRot.x} ${finalRot.y}`;
+
+      player.runCommand(cmd);
+
+      // -- END --
+      if (time > positions.at(-1).time && time > rotations.at(-1).time) {
+        system.runTimeout(() => {
+          system.clearRun(intervalId);
+          const gamemode = gamemodes.get(player.id);
+          player.commandRun(
+            "camera @s clear",
+            "effect @s invisibility 0",
+            "hud @s reset",
+            "inputpermission set @s camera enabled",
+            "inputpermission set @s movement enabled",
+            `gamemode ${gamemode} @s`
+          );
+        }, 1);
+      }
+    }, 1);
+  }
+}
+
+system.afterEvents.scriptEventReceive.subscribe((e) => {
+  let source;
+  switch (e.sourceType) {
+    case ScriptEventSource.Block:
+      source = e.sourceBlock;
+      break;
+    case ScriptEventSource.Entity:
+      source = e.sourceEntity;
+      break;
+    case ScriptEventSource.NPCDialogue:
+      source = e.initiator;
+      break;
+    default:
+      return;
+  }
+
+  switch (e.id) {
+    case content.sceneId:
+      runScene(source);
+      break;
+
+    default:
+      break;
+  }
+});
+
+// -- UTILITY FUNCTIONS --
+function getKeyframePair(frames, t) {
   let left = 0,
     right = frames.length - 1;
   while (left < right) {
@@ -11,7 +144,7 @@ export function getKeyframePair(frames, t) {
   return [frames[left - 1] || frames[left], frames[left]];
 }
 
-export function lerpVector(a, b, t) {
+function lerpVector(a, b, t) {
   if (a instanceof Vector3 && b instanceof Vector3) {
     return lerpVector3(a, b, t); // Use 3D lerp
   } else if (a instanceof Vector2 && b instanceof Vector2) {
@@ -37,26 +170,7 @@ function lerpVector2(a, b, t) {
   return new Vector2(x, y);
 }
 
-function normalizeVector3(vec) {
-  const length = Math.sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
-  if (length === 0) return { x: 0, y: 0, z: 0 };
-  return {
-    x: vec.x / length,
-    y: vec.y / length,
-    z: vec.z / length,
-  };
-}
-
-export function directionToYawPitch(vec) {
-  const dir = normalizeVector3(vec);
-
-  const yaw = Math.atan2(-dir.x, -dir.z) * (180 / Math.PI);
-  const pitch = Math.asin(-dir.y) * (180 / Math.PI);
-
-  return new Vector2(pitch, yaw); // x = pitch, y = yaw
-}
-
-export function applyEasing(t, mode = "linear") {
+function applyEasing(t, mode = "linear") {
   switch (mode) {
     case "easeIn":
       return t * t;
@@ -69,7 +183,7 @@ export function applyEasing(t, mode = "linear") {
   }
 }
 
-export class Vector2 {
+class Vector2 {
   constructor(x, y) {
     if (typeof x === "object" && x !== null && "x" in x && "y" in x) {
       this.x = x.x;
@@ -111,7 +225,7 @@ export class Vector2 {
   }
 }
 
-export class Vector3 extends Vector2 {
+class Vector3 extends Vector2 {
   constructor(x, y, z) {
     if (typeof x === "object" && x !== null && "x" in x && "y" in x) {
       super(x.x, x.y);
@@ -211,3 +325,5 @@ Object.defineProperty(Player.prototype, "gamemode", {
   },
   enumerable: true,
 });
+
+load();

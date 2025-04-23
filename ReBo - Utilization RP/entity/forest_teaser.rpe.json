@@ -8,7 +8,7 @@
         "default": "textures/entity/se_forest_teaser_texture"
       },
       "geometry": {
-        "default": "geometry.se_forest_teaser"
+        "default": "geometry.forest_teaser"
       },
       "render_controllers": ["controller.render.default"]
     }

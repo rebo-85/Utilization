@@ -1,1 +1,1 @@
-import "./CameraTranslator";
+import "./translator";

@@ -1,2390 +1,1545 @@
 export default {
   positions: [
     {
-      channel: "position",
       data_points: {
-        x: -6.5625,
-        y: -0.5625,
-        z: 11
+        x: -5.0625,
+        y: 1.0575,
+        z: -9.7,
       },
+      channel: "position",
       time: 0,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -6.5625,
-        y: -0.5625,
-        z: 11.159375
+        x: -5.0625,
+        y: 1.0575,
+        z: -10.515625,
       },
-      time: 0.4,
-      interpolation: "linear"
-    },
-    {
       channel: "position",
-      data_points: {
-        x: -6.5625,
-        y: -0.5625,
-        z: 11.25875
-      },
-      time: 0.65,
-      interpolation: "linear"
-    },
-    {
-      channel: "position",
-      data_points: {
-        x: -6.5625,
-        y: -0.5625,
-        z: 11.378125
-      },
-      time: 0.95,
-      interpolation: "linear"
-    },
-    {
-      channel: "position",
-      data_points: {
-        x: -6.5625,
-        y: -0.5625,
-        z: 11.4775
-      },
-      time: 1.2,
-      interpolation: "linear"
-    },
-    {
-      channel: "position",
-      data_points: {
-        x: -6.5625,
-        y: -0.5625,
-        z: 11.596875
-      },
-      time: 1.5,
-      interpolation: "linear"
-    },
-    {
-      channel: "position",
-      data_points: {
-        x: -6.5625,
-        y: -0.5625,
-        z: 11.69625
-      },
-      time: 1.75,
-      interpolation: "linear"
-    },
-    {
-      channel: "position",
-      data_points: {
-        x: -6.5625,
-        y: -0.5625,
-        z: 11.815625
-      },
       time: 2.05,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -6.5625,
-        y: -0.5625,
-        z: 11.875
+        x: -5.0625,
+        y: 1.0575,
+        z: -10.575,
       },
+      channel: "position",
       time: 2.2,
-      interpolation: "step"
+      interpolation: "step",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.3125,
-        y: 0.9375,
-        z: 11.875
+        x: 1.1875,
+        y: 1.995,
+        z: -9.393749999999999,
       },
+      channel: "position",
       time: 2.25,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.385,
-        y: 0.89875,
-        z: 10.508125
+        x: 0.891875,
+        y: 2.124375,
+        z: 5.54375,
       },
-      time: 2.45,
-      interpolation: "linear"
-    },
-    {
       channel: "position",
-      data_points: {
-        x: -0.493125,
-        y: 0.84,
-        z: 8.458125
-      },
-      time: 2.75,
-      interpolation: "linear"
-    },
-    {
-      channel: "position",
-      data_points: {
-        x: -0.583125,
-        y: 0.791875,
-        z: 6.75
-      },
-      time: 3,
-      interpolation: "linear"
-    },
-    {
-      channel: "position",
-      data_points: {
-        x: -0.691875,
-        y: 0.733125,
-        z: 4.7
-      },
-      time: 3.3,
-      interpolation: "linear"
-    },
-    {
-      channel: "position",
-      data_points: {
-        x: -0.781875,
-        y: 0.685,
-        z: 2.991875
-      },
-      time: 3.55,
-      interpolation: "linear"
-    },
-    {
-      channel: "position",
-      data_points: {
-        x: -0.8725,
-        y: 0.63625,
-        z: 1.283125
-      },
-      time: 3.8,
-      interpolation: "linear"
-    },
-    {
-      channel: "position",
-      data_points: {
-        x: -0.980625,
-        y: 0.5775,
-        z: -0.766875
-      },
-      time: 4.1,
-      interpolation: "linear"
-    },
-    {
-      channel: "position",
-      data_points: {
-        x: -1.070625,
-        y: 0.529375,
-        z: -2.475
-      },
-      time: 4.35,
-      interpolation: "linear"
-    },
-    {
-      channel: "position",
-      data_points: {
-        x: -1.125,
-        y: 0.5,
-        z: -3.5
-      },
       time: 4.5,
-      interpolation: "step"
+      interpolation: "step",
     },
     {
-      channel: "position",
       data_points: {
-        x: -2.375,
-        y: -0.125,
-        z: -7
+        x: 0.125,
+        y: 1.495,
+        z: 8.6125,
       },
+      channel: "position",
       time: 4.55,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -2.5675,
-        y: -0.053125,
-        z: -8.755
+        x: 0.07937499999999997,
+        y: 1.563125,
+        z: 12.703125,
       },
-      time: 4.8,
-      interpolation: "linear"
+      channel: "position",
+      time: 5.15,
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -2.759375,
-        y: 0.019375,
-        z: -10.509375
+        x: 0,
+        y: 1.6825,
+        z: 12.9875,
       },
-      time: 5.05,
-      interpolation: "linear"
+      channel: "position",
+      time: 6.45,
+      interpolation: "step",
     },
     {
-      channel: "position",
       data_points: {
-        x: -2.875,
-        y: 0.0625,
-        z: -11.5625
+        x: 0.1627883095562499,
+        y: 0.9763233892625001,
+        z: 12.745352922293751,
       },
-      time: 5.2,
-      interpolation: "linear"
+      channel: "position",
+      time: 6.5,
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -2.875,
-        y: 0.0625,
-        z: -11.601875
+        x: 0.16640770843749997,
+        y: 1.0375171156187502,
+        z: 12.6798616801,
       },
-      time: 5.5,
-      interpolation: "linear"
-    },
-    {
       channel: "position",
-      data_points: {
-        x: -2.875,
-        y: 0.0625,
-        z: -11.64125
-      },
-      time: 5.8,
-      interpolation: "linear"
-    },
-    {
-      channel: "position",
-      data_points: {
-        x: -2.875,
-        y: 0.0625,
-        z: -11.680625
-      },
-      time: 6.1,
-      interpolation: "linear"
-    },
-    {
-      channel: "position",
-      data_points: {
-        x: -2.875,
-        y: 0.0625,
-        z: -11.6875
-      },
-      time: 6.15,
-      interpolation: "linear"
-    },
-    {
-      channel: "position",
-      data_points: {
-        x: -2.875,
-        y: 0.0625,
-        z: -11.6875
-      },
-      time: 6.2,
-      interpolation: "step"
-    },
-    {
-      channel: "position",
-      data_points: {
-        x: -2.349375,
-        y: -0.5,
-        z: -11.025625
-      },
-      time: 6.25,
-      interpolation: "linear"
-    },
-    {
-      channel: "position",
-      data_points: {
-        x: -2.349375,
-        y: -0.5,
-        z: -11.025625
-      },
       time: 8.9,
-      interpolation: "step"
+      interpolation: "step",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.060625,
-        y: -0.5,
-        z: -10.001875
+        x: 1.251875,
+        y: 1.12,
+        z: 10.601875000000001,
       },
+      channel: "position",
       time: 8.95,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.064375,
-        y: -0.500625,
-        z: -9.958125
+        x: 1.226875,
+        y: 1.12,
+        z: 10.926875,
       },
-      time: 9.3,
-      interpolation: "linear"
-    },
-    {
       channel: "position",
-      data_points: {
-        x: -1.066875,
-        y: -0.50125,
-        z: -9.9275
-      },
-      time: 9.55,
-      interpolation: "linear"
-    },
-    {
-      channel: "position",
-      data_points: {
-        x: -1.06875,
-        y: -0.50125,
-        z: -9.896875
-      },
-      time: 9.8,
-      interpolation: "linear"
-    },
-    {
-      channel: "position",
-      data_points: {
-        x: -1.071875,
-        y: -0.501875,
-        z: -9.859375
-      },
-      time: 10.1,
-      interpolation: "linear"
-    },
-    {
-      channel: "position",
-      data_points: {
-        x: -1.074375,
-        y: -0.5025,
-        z: -9.82875
-      },
-      time: 10.35,
-      interpolation: "linear"
-    },
-    {
-      channel: "position",
-      data_points: {
-        x: -1.078125,
-        y: -0.503125,
-        z: -9.779375
-      },
-      time: 10.75,
-      interpolation: "linear"
-    },
-    {
-      channel: "position",
-      data_points: {
-        x: -1.081875,
-        y: -0.50375,
-        z: -9.73
-      },
-      time: 11.15,
-      interpolation: "linear"
-    },
-    {
-      channel: "position",
-      data_points: {
-        x: -1.085,
-        y: -0.504375,
-        z: -9.686875
-      },
-      time: 11.5,
-      interpolation: "linear"
-    },
-    {
-      channel: "position",
-      data_points: {
-        x: -1.0875,
-        y: -0.505,
-        z: -9.65625
-      },
-      time: 11.75,
-      interpolation: "linear"
-    },
-    {
-      channel: "position",
-      data_points: {
-        x: -1.09,
-        y: -0.505625,
-        z: -9.61875
-      },
-      time: 12.05,
-      interpolation: "linear"
-    },
-    {
-      channel: "position",
-      data_points: {
-        x: -1.09375,
-        y: -0.50625,
-        z: -9.575625
-      },
-      time: 12.4,
-      interpolation: "linear"
-    },
-    {
-      channel: "position",
-      data_points: {
-        x: -1.0975,
-        y: -0.506875,
-        z: -9.52625
-      },
-      time: 12.8,
-      interpolation: "linear"
-    },
-    {
-      channel: "position",
-      data_points: {
-        x: -1.10125,
-        y: -0.5075,
-        z: -9.476875
-      },
-      time: 13.2,
-      interpolation: "linear"
-    },
-    {
-      channel: "position",
-      data_points: {
-        x: -1.104375,
-        y: -0.508125,
-        z: -9.43375
-      },
-      time: 13.55,
-      interpolation: "linear"
-    },
-    {
-      channel: "position",
-      data_points: {
-        x: -1.106875,
-        y: -0.50875,
-        z: -9.403125
-      },
-      time: 13.8,
-      interpolation: "linear"
-    },
-    {
-      channel: "position",
-      data_points: {
-        x: -1.10875,
-        y: -0.509375,
-        z: -9.371875
-      },
-      time: 14.05,
-      interpolation: "linear"
-    },
-    {
-      channel: "position",
-      data_points: {
-        x: -1.1125,
-        y: -0.51,
-        z: -9.32875
-      },
-      time: 14.4,
-      interpolation: "linear"
-    },
-    {
-      channel: "position",
-      data_points: {
-        x: -1.11625,
-        y: -0.510625,
-        z: -9.279375
-      },
-      time: 14.8,
-      interpolation: "linear"
-    },
-    {
-      channel: "position",
-      data_points: {
-        x: -1.12,
-        y: -0.51125,
-        z: -9.23
-      },
-      time: 15.2,
-      interpolation: "linear"
-    },
-    {
-      channel: "position",
-      data_points: {
-        x: -1.123125,
-        y: -0.511875,
-        z: -9.186875
-      },
       time: 15.55,
-      interpolation: "step"
+      interpolation: "step",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: -0.511875,
-        z: -2.999375
+        x: 1.351875,
+        y: 1.1081250000000002,
+        z: 4.299375,
       },
+      channel: "position",
       time: 15.6,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: -0.49875,
-        z: -2.908125
+        x: 1.351875,
+        y: 1.12125,
+        z: 4.208125,
       },
+      channel: "position",
       time: 15.7,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: -0.48875,
-        z: -2.819375
+        x: 1.351875,
+        y: 1.13125,
+        z: 4.119375,
       },
+      channel: "position",
       time: 15.8,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: -0.4775,
-        z: -2.691875
+        x: 1.351875,
+        y: 1.1425,
+        z: 3.9918750000000003,
       },
+      channel: "position",
       time: 15.95,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: -0.471875,
-        z: -2.610625
+        x: 1.351875,
+        y: 1.148125,
+        z: 3.9106250000000005,
       },
+      channel: "position",
       time: 16.05,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: -0.4675,
-        z: -2.494375
+        x: 1.351875,
+        y: 1.1525,
+        z: 3.7943749999999996,
       },
+      channel: "position",
       time: 16.2,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: -0.46625,
-        z: -2.38375
+        x: 1.351875,
+        y: 1.15375,
+        z: 3.68375,
       },
+      channel: "position",
       time: 16.35,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: -0.46625,
-        z: -2.313125
+        x: 1.351875,
+        y: 1.15375,
+        z: 3.613125,
       },
+      channel: "position",
       time: 16.45,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: -0.468125,
-        z: -2.211875
+        x: 1.351875,
+        y: 1.151875,
+        z: 3.511875,
       },
+      channel: "position",
       time: 16.6,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: -0.47,
-        z: -2.1475
+        x: 1.351875,
+        y: 1.1500000000000001,
+        z: 3.4475,
       },
+      channel: "position",
       time: 16.7,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: -0.473125,
-        z: -2.055625
+        x: 1.351875,
+        y: 1.146875,
+        z: 3.355625,
       },
+      channel: "position",
       time: 16.85,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: -0.475,
-        z: -1.9975
+        x: 1.351875,
+        y: 1.145,
+        z: 3.2975000000000003,
       },
+      channel: "position",
       time: 16.95,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: -0.47625,
-        z: -1.94125
+        x: 1.351875,
+        y: 1.14375,
+        z: 3.24125,
       },
+      channel: "position",
       time: 17.05,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: -0.4775,
-        z: -1.86125
+        x: 1.351875,
+        y: 1.1425,
+        z: 3.16125,
       },
+      channel: "position",
       time: 17.2,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: -0.47625,
-        z: -1.785625
+        x: 1.351875,
+        y: 1.14375,
+        z: 3.0856250000000003,
       },
+      channel: "position",
       time: 17.35,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: -0.470625,
-        z: -1.691875
+        x: 1.351875,
+        y: 1.149375,
+        z: 2.9918750000000003,
       },
+      channel: "position",
       time: 17.55,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: -0.465,
-        z: -1.648125
+        x: 1.351875,
+        y: 1.155,
+        z: 2.948125,
       },
+      channel: "position",
       time: 17.65,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: -0.4525,
-        z: -1.585
+        x: 1.351875,
+        y: 1.1675,
+        z: 2.885,
       },
+      channel: "position",
       time: 17.8,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: -0.435,
-        z: -1.52625
+        x: 1.351875,
+        y: 1.185,
+        z: 2.82625,
       },
+      channel: "position",
       time: 17.95,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: -0.411875,
-        z: -1.47125
+        x: 1.351875,
+        y: 1.2081250000000001,
+        z: 2.77125,
       },
+      channel: "position",
       time: 18.1,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: -0.4025,
-        z: -1.45375
+        x: 1.351875,
+        y: 1.2175,
+        z: 2.75375,
       },
+      channel: "position",
       time: 18.15,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: -0.38125,
-        z: -1.419375
+        x: 1.351875,
+        y: 1.23875,
+        z: 2.7193750000000003,
       },
+      channel: "position",
       time: 18.25,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: -0.356875,
-        z: -1.386875
+        x: 1.351875,
+        y: 1.263125,
+        z: 2.686875,
       },
+      channel: "position",
       time: 18.35,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: -0.32875,
-        z: -1.355625
+        x: 1.351875,
+        y: 1.2912500000000002,
+        z: 2.655625,
       },
+      channel: "position",
       time: 18.45,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: -0.296875,
-        z: -1.325625
+        x: 1.351875,
+        y: 1.323125,
+        z: 2.6256250000000003,
       },
+      channel: "position",
       time: 18.55,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: -0.279375,
-        z: -1.310625
+        x: 1.351875,
+        y: 1.3587500000000001,
+        z: 2.596875,
       },
-      time: 18.6,
-      interpolation: "linear"
-    },
-    {
       channel: "position",
-      data_points: {
-        x: -1.123125,
-        y: -0.26125,
-        z: -1.296875
-      },
       time: 18.65,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: -0.24125,
-        z: -1.2825
+        x: 1.351875,
+        y: 1.3787500000000001,
+        z: 2.5825,
       },
+      channel: "position",
       time: 18.7,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: -0.19875,
-        z: -1.255625
+        x: 1.351875,
+        y: 1.4212500000000001,
+        z: 2.555625,
       },
+      channel: "position",
       time: 18.8,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: -0.17625,
-        z: -1.2425
+        x: 1.351875,
+        y: 1.44375,
+        z: 2.5425,
       },
+      channel: "position",
       time: 18.85,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: -0.151875,
-        z: -1.23
+        x: 1.351875,
+        y: 1.4681250000000001,
+        z: 2.5300000000000002,
       },
+      channel: "position",
       time: 18.9,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: -0.1,
-        z: -1.205
+        x: 1.351875,
+        y: 1.52,
+        z: 2.505,
       },
+      channel: "position",
       time: 19,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: -0.0425,
-        z: -1.18125
+        x: 1.351875,
+        y: 1.5775000000000001,
+        z: 2.48125,
       },
+      channel: "position",
       time: 19.1,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: -0.0125,
-        z: -1.169375
+        x: 1.351875,
+        y: 1.6075000000000002,
+        z: 2.4693750000000003,
       },
+      channel: "position",
       time: 19.15,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: 0.019375,
-        z: -1.158125
+        x: 1.351875,
+        y: 1.639375,
+        z: 2.458125,
       },
+      channel: "position",
       time: 19.2,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: 0.0875,
-        z: -1.135625
+        x: 1.351875,
+        y: 1.7075,
+        z: 2.435625,
       },
+      channel: "position",
       time: 19.3,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: 0.12375,
-        z: -1.125
+        x: 1.351875,
+        y: 1.7437500000000001,
+        z: 2.425,
       },
+      channel: "position",
       time: 19.35,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: 0.16125,
-        z: -1.114375
+        x: 1.351875,
+        y: 1.78125,
+        z: 2.4143749999999997,
       },
+      channel: "position",
       time: 19.4,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: 0.24125,
-        z: -1.09375
+        x: 1.351875,
+        y: 1.86125,
+        z: 2.39375,
       },
+      channel: "position",
       time: 19.5,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: 0.3275,
-        z: -1.07375
+        x: 1.351875,
+        y: 1.9475000000000002,
+        z: 2.3737500000000002,
       },
+      channel: "position",
       time: 19.6,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: 0.373125,
-        z: -1.064375
+        x: 1.351875,
+        y: 2.04,
+        z: 2.354375,
       },
-      time: 19.65,
-      interpolation: "linear"
-    },
-    {
       channel: "position",
-      data_points: {
-        x: -1.123125,
-        y: 0.42,
-        z: -1.054375
-      },
       time: 19.7,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: 0.46875,
-        z: -1.045
+        x: 1.351875,
+        y: 2.08875,
+        z: 2.3449999999999998,
       },
+      channel: "position",
       time: 19.75,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: 0.519375,
-        z: -1.035625
+        x: 1.351875,
+        y: 2.1393750000000002,
+        z: 2.3356250000000003,
       },
+      channel: "position",
       time: 19.8,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: 0.625625,
-        z: -1.0175
+        x: 1.351875,
+        y: 2.245625,
+        z: 2.3175,
       },
+      channel: "position",
       time: 19.9,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: 0.681875,
-        z: -1.008125
+        x: 1.351875,
+        y: 2.359375,
+        z: 2.299375,
       },
-      time: 19.95,
-      interpolation: "linear"
-    },
-    {
       channel: "position",
-      data_points: {
-        x: -1.123125,
-        y: 0.739375,
-        z: -0.999375
-      },
       time: 20,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: 0.78375,
-        z: -0.99375
+        x: 1.351875,
+        y: 2.40375,
+        z: 2.29375,
       },
+      channel: "position",
       time: 20.05,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.1225,
-        y: 0.83,
-        z: -0.98875
+        x: 1.3525,
+        y: 2.45,
+        z: 2.2887500000000003,
       },
+      channel: "position",
       time: 20.1,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.12125,
-        y: 0.87875,
-        z: -0.985625
+        x: 1.35375,
+        y: 2.4987500000000002,
+        z: 2.285625,
       },
+      channel: "position",
       time: 20.15,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.12,
-        y: 0.93,
-        z: -0.983125
+        x: 1.355,
+        y: 2.5500000000000003,
+        z: 2.283125,
       },
+      channel: "position",
       time: 20.2,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.11875,
-        y: 0.98375,
-        z: -0.9825
+        x: 1.35625,
+        y: 2.6037500000000002,
+        z: 2.2825,
       },
+      channel: "position",
       time: 20.25,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.116875,
-        y: 1.039375,
-        z: -0.9825
+        x: 1.358125,
+        y: 2.659375,
+        z: 2.2825,
       },
+      channel: "position",
       time: 20.3,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.114375,
-        y: 1.096875,
-        z: -0.98375
+        x: 1.360625,
+        y: 2.716875,
+        z: 2.28375,
       },
+      channel: "position",
       time: 20.35,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.111875,
-        y: 1.156875,
-        z: -0.98625
+        x: 1.3631250000000001,
+        y: 2.7768750000000004,
+        z: 2.28625,
       },
+      channel: "position",
       time: 20.4,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.10875,
-        y: 1.21875,
-        z: -0.99
+        x: 1.36625,
+        y: 2.83875,
+        z: 2.29,
       },
+      channel: "position",
       time: 20.45,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.1025,
-        y: 1.34875,
-        z: -1
+        x: 1.3725,
+        y: 2.96875,
+        z: 2.3,
       },
+      channel: "position",
       time: 20.55,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.094375,
-        y: 1.48625,
-        z: -1.01375
+        x: 1.380625,
+        y: 3.10625,
+        z: 2.3137499999999998,
       },
+      channel: "position",
       time: 20.65,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.090625,
-        y: 1.5575,
-        z: -1.021875
+        x: 1.384375,
+        y: 3.1775,
+        z: 2.3218750000000004,
       },
+      channel: "position",
       time: 20.7,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.08625,
-        y: 1.63125,
-        z: -1.03125
+        x: 1.38875,
+        y: 3.25125,
+        z: 2.33125,
       },
+      channel: "position",
       time: 20.75,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.08125,
-        y: 1.70625,
-        z: -1.041875
+        x: 1.39375,
+        y: 3.32625,
+        z: 2.341875,
       },
+      channel: "position",
       time: 20.8,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.07625,
-        y: 1.7825,
-        z: -1.0525
+        x: 1.39875,
+        y: 3.4025,
+        z: 2.3525,
       },
+      channel: "position",
       time: 20.85,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.065625,
-        y: 1.94125,
-        z: -1.076875
+        x: 1.409375,
+        y: 3.5612500000000002,
+        z: 2.376875,
       },
+      channel: "position",
       time: 20.95,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.06,
-        y: 2.0225,
-        z: -1.090625
+        x: 1.415,
+        y: 3.6425,
+        z: 2.390625,
       },
+      channel: "position",
       time: 21,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.054375,
-        y: 2.105625,
-        z: -1.104375
+        x: 1.420625,
+        y: 3.725625,
+        z: 2.404375,
       },
+      channel: "position",
       time: 21.05,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.0425,
-        y: 2.275625,
-        z: -1.135
+        x: 1.4325,
+        y: 3.895625,
+        z: 2.435,
       },
+      channel: "position",
       time: 21.15,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.03625,
-        y: 2.3625,
-        z: -1.150625
+        x: 1.43875,
+        y: 3.9825,
+        z: 2.450625,
       },
+      channel: "position",
       time: 21.2,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.023125,
-        y: 2.540625,
-        z: -1.185
+        x: 1.451875,
+        y: 4.160625,
+        z: 2.4850000000000003,
       },
+      channel: "position",
       time: 21.3,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.01625,
-        y: 2.63125,
-        z: -1.203125
+        x: 1.45875,
+        y: 4.251250000000001,
+        z: 2.503125,
       },
+      channel: "position",
       time: 21.35,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.995625,
-        y: 2.910625,
-        z: -1.259375
+        x: 1.479375,
+        y: 4.530625000000001,
+        z: 2.559375,
       },
+      channel: "position",
       time: 21.5,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.98125,
-        y: 3.101875,
-        z: -1.3
+        x: 1.49375,
+        y: 4.721875000000001,
+        z: 2.6,
       },
+      channel: "position",
       time: 21.6,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.966875,
-        y: 3.2975,
-        z: -1.34125
+        x: 1.5081250000000002,
+        y: 4.9175,
+        z: 2.6412500000000003,
       },
+      channel: "position",
       time: 21.7,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.944375,
-        y: 3.595625,
-        z: -1.40625
+        x: 1.5306250000000001,
+        y: 5.215625,
+        z: 2.70625,
       },
+      channel: "position",
       time: 21.85,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.921875,
-        y: 3.900625,
-        z: -1.47375
+        x: 1.553125,
+        y: 5.520625,
+        z: 2.7737499999999997,
       },
+      channel: "position",
       time: 22,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.89125,
-        y: 4.314375,
-        z: -1.565625
+        x: 1.58375,
+        y: 5.934375,
+        z: 2.865625,
       },
+      channel: "position",
       time: 22.2,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.861875,
-        y: 4.73375,
-        z: -1.65875
+        x: 1.6131250000000001,
+        y: 6.35375,
+        z: 2.95875,
       },
+      channel: "position",
       time: 22.4,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.826875,
-        y: 5.261875,
-        z: -1.77375
+        x: 1.648125,
+        y: 6.881875,
+        z: 3.07375,
       },
+      channel: "position",
       time: 22.65,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.80125,
-        y: 5.6825,
-        z: -1.861875
+        x: 1.67375,
+        y: 7.3025,
+        z: 3.161875,
       },
+      channel: "position",
       time: 22.85,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.7775,
-        y: 6.099375,
-        z: -1.945625
+        x: 1.6975,
+        y: 7.719375,
+        z: 3.245625,
       },
+      channel: "position",
       time: 23.05,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.766875,
-        y: 6.305625,
-        z: -1.985
+        x: 1.708125,
+        y: 7.925625,
+        z: 3.285,
       },
+      channel: "position",
       time: 23.15,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.7575,
-        y: 6.509375,
-        z: -2.021875
+        x: 1.7175,
+        y: 8.129375,
+        z: 3.3218750000000004,
       },
+      channel: "position",
       time: 23.25,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.74875,
-        y: 6.710625,
-        z: -2.0575
+        x: 1.72625,
+        y: 8.330625000000001,
+        z: 3.3575,
       },
+      channel: "position",
       time: 23.35,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.74125,
-        y: 6.90875,
-        z: -2.090625
+        x: 1.7337500000000001,
+        y: 8.52875,
+        z: 3.390625,
       },
+      channel: "position",
       time: 23.45,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.7375,
-        y: 7.006875,
-        z: -2.105625
+        x: 1.7375,
+        y: 8.626875,
+        z: 3.4056249999999997,
       },
+      channel: "position",
       time: 23.5,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.73125,
-        y: 7.2,
-        z: -2.135
+        x: 1.74375,
+        y: 8.82,
+        z: 3.4349999999999996,
       },
+      channel: "position",
       time: 23.6,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.726875,
-        y: 7.389375,
-        z: -2.160625
+        x: 1.748125,
+        y: 9.009375,
+        z: 3.4606250000000003,
       },
+      channel: "position",
       time: 23.7,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.723125,
-        y: 7.574375,
-        z: -2.18375
+        x: 1.751875,
+        y: 9.194375,
+        z: 3.4837499999999997,
       },
+      channel: "position",
       time: 23.8,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.721875,
-        y: 7.665,
-        z: -2.19375
+        x: 1.753125,
+        y: 9.285,
+        z: 3.4937500000000004,
       },
+      channel: "position",
       time: 23.85,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.720625,
-        y: 7.8425,
-        z: -2.211875
+        x: 1.754375,
+        y: 9.4625,
+        z: 3.511875,
       },
+      channel: "position",
       time: 23.95,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.72,
-        y: 7.93,
-        z: -2.219375
+        x: 1.755,
+        y: 9.55,
+        z: 3.519375,
       },
+      channel: "position",
       time: 24,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.72125,
-        y: 8.1,
-        z: -2.23125
+        x: 1.75375,
+        y: 9.719999999999999,
+        z: 3.53125,
       },
+      channel: "position",
       time: 24.1,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.723125,
-        y: 8.26375,
-        z: -2.239375
+        x: 1.751875,
+        y: 9.88375,
+        z: 3.5393749999999997,
       },
+      channel: "position",
       time: 24.2,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.725,
-        y: 8.34375,
-        z: -2.241875
+        x: 1.75,
+        y: 9.963750000000001,
+        z: 3.541875,
       },
+      channel: "position",
       time: 24.25,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.73,
-        y: 8.49875,
-        z: -2.24375
+        x: 1.745,
+        y: 10.118749999999999,
+        z: 3.54375,
       },
+      channel: "position",
       time: 24.35,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.733125,
-        y: 8.57375,
-        z: -2.2425
+        x: 1.741875,
+        y: 10.193750000000001,
+        z: 3.5425000000000004,
       },
+      channel: "position",
       time: 24.4,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.736875,
-        y: 8.646875,
-        z: -2.240625
+        x: 1.7381250000000001,
+        y: 10.266874999999999,
+        z: 3.5406250000000004,
       },
+      channel: "position",
       time: 24.45,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.740625,
-        y: 8.718125,
-        z: -2.236875
+        x: 1.734375,
+        y: 10.338125000000002,
+        z: 3.536875,
       },
+      channel: "position",
       time: 24.5,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.75,
-        y: 8.855625,
-        z: -2.226875
+        x: 1.725,
+        y: 10.475625,
+        z: 3.5268750000000004,
       },
+      channel: "position",
       time: 24.6,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.755625,
-        y: 8.92125,
-        z: -2.219375
+        x: 1.7193749999999999,
+        y: 10.541250000000002,
+        z: 3.519375,
       },
+      channel: "position",
       time: 24.65,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.76125,
-        y: 8.985,
-        z: -2.21125
+        x: 1.71375,
+        y: 10.605,
+        z: 3.5112500000000004,
       },
+      channel: "position",
       time: 24.7,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.768125,
-        y: 9.046875,
-        z: -2.20125
+        x: 1.7068750000000001,
+        y: 10.666875000000001,
+        z: 3.5012499999999998,
       },
+      channel: "position",
       time: 24.75,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.775,
-        y: 9.106875,
-        z: -2.190625
+        x: 1.7,
+        y: 10.726875,
+        z: 3.4906249999999996,
       },
+      channel: "position",
       time: 24.8,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.7825,
-        y: 9.164375,
-        z: -2.1775
+        x: 1.6925,
+        y: 10.784375,
+        z: 3.4775,
       },
+      channel: "position",
       time: 24.85,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.790625,
-        y: 9.22,
-        z: -2.16375
+        x: 1.684375,
+        y: 10.84,
+        z: 3.46375,
       },
+      channel: "position",
       time: 24.9,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.799375,
-        y: 9.273125,
-        z: -2.148125
+        x: 1.6756250000000001,
+        y: 10.893125000000001,
+        z: 3.448125,
       },
+      channel: "position",
       time: 24.95,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.808125,
-        y: 9.324375,
-        z: -2.13125
+        x: 1.666875,
+        y: 10.944375,
+        z: 3.4312500000000004,
       },
+      channel: "position",
       time: 25,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.818125,
-        y: 9.373125,
-        z: -2.113125
+        x: 1.6568749999999999,
+        y: 10.993125,
+        z: 3.413125,
       },
+      channel: "position",
       time: 25.05,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.828125,
-        y: 9.419375,
-        z: -2.093125
+        x: 1.646875,
+        y: 11.039375,
+        z: 3.3931250000000004,
       },
+      channel: "position",
       time: 25.1,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.839375,
-        y: 9.463125,
-        z: -2.07125
+        x: 1.635625,
+        y: 11.083124999999999,
+        z: 3.37125,
       },
+      channel: "position",
       time: 25.15,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.850625,
-        y: 9.505,
-        z: -2.048125
+        x: 1.6243750000000001,
+        y: 11.125,
+        z: 3.3481250000000005,
       },
+      channel: "position",
       time: 25.2,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.863125,
-        y: 9.544375,
-        z: -2.02375
+        x: 1.611875,
+        y: 11.164375,
+        z: 3.3237500000000004,
       },
+      channel: "position",
       time: 25.25,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.875625,
-        y: 9.580625,
-        z: -1.996875
+        x: 1.599375,
+        y: 11.200624999999999,
+        z: 3.296875,
       },
+      channel: "position",
       time: 25.3,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.88875,
-        y: 9.614375,
-        z: -1.96875
+        x: 1.58625,
+        y: 11.234375,
+        z: 3.26875,
       },
+      channel: "position",
       time: 25.35,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.903125,
-        y: 9.64625,
-        z: -1.93875
+        x: 1.571875,
+        y: 11.26625,
+        z: 3.23875,
       },
+      channel: "position",
       time: 25.4,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.9175,
-        y: 9.675,
-        z: -1.9075
+        x: 1.5575,
+        y: 11.295000000000002,
+        z: 3.2075,
       },
+      channel: "position",
       time: 25.45,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.9325,
-        y: 9.700625,
-        z: -1.87375
+        x: 1.5425,
+        y: 11.320625,
+        z: 3.17375,
       },
+      channel: "position",
       time: 25.5,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.94875,
-        y: 9.72375,
-        z: -1.83875
+        x: 1.52625,
+        y: 11.34375,
+        z: 3.13875,
       },
+      channel: "position",
       time: 25.55,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.965,
-        y: 9.744375,
-        z: -1.801875
+        x: 1.51,
+        y: 11.364374999999999,
+        z: 3.1018749999999997,
       },
+      channel: "position",
       time: 25.6,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -0.9825,
-        y: 9.761875,
-        z: -1.763125
+        x: 1.4925,
+        y: 11.381875,
+        z: 3.0631250000000003,
       },
+      channel: "position",
       time: 25.65,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.000625,
-        y: 9.77625,
-        z: -1.7225
+        x: 1.474375,
+        y: 11.396249999999998,
+        z: 3.0225,
       },
+      channel: "position",
       time: 25.7,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.01875,
-        y: 9.788125,
-        z: -1.68
+        x: 1.45625,
+        y: 11.408125000000002,
+        z: 2.98,
       },
+      channel: "position",
       time: 25.75,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.038125,
-        y: 9.796875,
-        z: -1.635
+        x: 1.4368750000000001,
+        y: 11.416875000000001,
+        z: 2.935,
       },
+      channel: "position",
       time: 25.8,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.05875,
-        y: 9.8025,
-        z: -1.58875
+        x: 1.41625,
+        y: 11.4225,
+        z: 2.88875,
       },
+      channel: "position",
       time: 25.85,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.079375,
-        y: 9.805,
-        z: -1.54
+        x: 1.395625,
+        y: 11.425,
+        z: 2.84,
       },
+      channel: "position",
       time: 25.9,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.100625,
-        y: 9.804375,
-        z: -1.489375
+        x: 1.3743750000000001,
+        y: 11.424375000000001,
+        z: 2.7893749999999997,
       },
+      channel: "position",
       time: 25.95,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "position",
       data_points: {
-        x: -1.123125,
-        y: 9.800625,
-        z: -1.436875
+        x: 1.351875,
+        y: 11.420625000000001,
+        z: 2.736875,
       },
+      channel: "position",
       time: 26,
-      interpolation: "linear"
-    }
+      interpolation: "linear",
+    },
   ],
   rotations: [
     {
-      channel: "rotation",
       data_points: {
-        x: "0",
-        y: "-90",
-        z: "0"
+        x: 0,
+        y: -90,
+        z: 0,
       },
+      channel: "rotation",
       time: 2.2,
-      interpolation: "step"
+      interpolation: "step",
     },
     {
-      channel: "rotation",
       data_points: {
-        x: "17.5",
-        y: "0",
-        z: "0"
+        x: 17.5,
+        y: 0,
+        z: 0,
       },
+      channel: "rotation",
       time: 2.25,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "rotation",
       data_points: {
-        x: "20.39",
-        y: "0",
-        z: "0"
+        x: 8.84,
+        y: 0,
+        z: 0,
       },
-      time: 2.9,
-      interpolation: "linear"
-    },
-    {
       channel: "rotation",
-      data_points: {
-        x: "23.28",
-        y: "0",
-        z: "0"
-      },
-      time: 3.55,
-      interpolation: "linear"
-    },
-    {
-      channel: "rotation",
-      data_points: {
-        x: "26.17",
-        y: "0",
-        z: "0"
-      },
-      time: 4.2,
-      interpolation: "linear"
-    },
-    {
-      channel: "rotation",
-      data_points: {
-        x: "27.5",
-        y: "0",
-        z: "0"
-      },
       time: 4.5,
-      interpolation: "step"
+      interpolation: "step",
     },
     {
-      channel: "rotation",
       data_points: {
-        x: "0",
-        y: "-90",
-        z: "0"
+        x: 0,
+        y: -90,
+        z: 0,
       },
+      channel: "rotation",
       time: 4.55,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "rotation",
       data_points: {
-        x: "0",
-        y: "-90",
-        z: "0"
+        x: 0,
+        y: -90,
+        z: 0,
       },
-      time: 6.2,
-      interpolation: "step"
+      channel: "rotation",
+      time: 5.2,
+      interpolation: "linear",
     },
     {
-      channel: "rotation",
       data_points: {
-        x: "190",
-        y: "-45",
-        z: "-180"
+        x: 7.5,
+        y: -90,
+        z: null,
       },
-      time: 6.25,
-      interpolation: "linear"
+      channel: "rotation",
+      time: 5.25,
+      interpolation: "linear",
     },
     {
-      channel: "rotation",
       data_points: {
-        x: "190",
-        y: "-45",
-        z: "-180"
+        x: 10,
+        y: -90,
+        z: 0,
       },
+      channel: "rotation",
+      time: 5.35,
+      interpolation: "linear",
+    },
+    {
+      data_points: {
+        x: 0,
+        y: -90,
+        z: 0,
+      },
+      channel: "rotation",
+      time: 5.6,
+      interpolation: "linear",
+    },
+    {
+      data_points: {
+        x: 0,
+        y: -90,
+        z: 0,
+      },
+      channel: "rotation",
+      time: 6.45,
+      interpolation: "step",
+    },
+    {
+      data_points: {
+        x: 12.5,
+        y: -135,
+        z: 0,
+      },
+      channel: "rotation",
+      time: 6.5,
+      interpolation: "linear",
+    },
+    {
+      data_points: {
+        x: 12.5,
+        y: -135,
+        z: 0,
+      },
+      channel: "rotation",
       time: 8.9,
-      interpolation: "step"
+      interpolation: "linear",
     },
     {
-      channel: "rotation",
       data_points: {
-        x: "0",
-        y: "0",
-        z: "0"
+        x: 0,
+        y: 0,
+        z: 0,
       },
+      channel: "rotation",
       time: 8.95,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "rotation",
       data_points: {
-        x: "-9.53",
-        y: "0",
-        z: "0"
+        x: -48.1,
+        y: -5,
+        z: 0,
       },
-      time: 9.6,
-      interpolation: "linear"
-    },
-    {
       channel: "rotation",
-      data_points: {
-        x: "-19.05",
-        y: "0",
-        z: "0"
-      },
-      time: 10.25,
-      interpolation: "linear"
-    },
-    {
-      channel: "rotation",
-      data_points: {
-        x: "-28.58",
-        y: "0",
-        z: "0"
-      },
-      time: 10.9,
-      interpolation: "linear"
-    },
-    {
-      channel: "rotation",
-      data_points: {
-        x: "-38.1",
-        y: "0",
-        z: "0"
-      },
-      time: 11.55,
-      interpolation: "linear"
-    },
-    {
-      channel: "rotation",
-      data_points: {
-        x: "-42.5",
-        y: "0",
-        z: "0"
-      },
-      time: 11.85,
-      interpolation: "linear"
-    },
-    {
-      channel: "rotation",
-      data_points: {
-        x: "-45.57",
-        y: "-0.88",
-        z: "0"
-      },
-      time: 12.5,
-      interpolation: "linear"
-    },
-    {
-      channel: "rotation",
-      data_points: {
-        x: "-48.65",
-        y: "-1.76",
-        z: "0"
-      },
-      time: 13.15,
-      interpolation: "linear"
-    },
-    {
-      channel: "rotation",
-      data_points: {
-        x: "-51.72",
-        y: "-2.64",
-        z: "0"
-      },
-      time: 13.8,
-      interpolation: "linear"
-    },
-    {
-      channel: "rotation",
-      data_points: {
-        x: "-54.8",
-        y: "-3.51",
-        z: "0"
-      },
-      time: 14.45,
-      interpolation: "linear"
-    },
-    {
-      channel: "rotation",
-      data_points: {
-        x: "-57.87",
-        y: "-4.39",
-        z: "0"
-      },
-      time: 15.1,
-      interpolation: "linear"
-    },
-    {
-      channel: "rotation",
-      data_points: {
-        x: "-60",
-        y: "-5",
-        z: "0"
-      },
       time: 15.55,
-      interpolation: "step"
+      interpolation: "step",
     },
     {
-      channel: "rotation",
       data_points: {
-        x: "-5",
-        y: "0",
-        z: "0"
+        x: -5,
+        y: 0,
+        z: 0,
       },
+      channel: "rotation",
       time: 15.6,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "rotation",
       data_points: {
-        x: "-3.97",
-        y: "0",
-        z: "0"
+        x: 2.5,
+        y: 0,
+        z: 0,
       },
-      time: 16.25,
-      interpolation: "linear"
-    },
-    {
       channel: "rotation",
-      data_points: {
-        x: "-2.95",
-        y: "0",
-        z: "0"
-      },
-      time: 16.9,
-      interpolation: "linear"
-    },
-    {
-      channel: "rotation",
-      data_points: {
-        x: "-1.92",
-        y: "0",
-        z: "0"
-      },
-      time: 17.55,
-      interpolation: "linear"
-    },
-    {
-      channel: "rotation",
-      data_points: {
-        x: "-0.89",
-        y: "0",
-        z: "0"
-      },
-      time: 18.2,
-      interpolation: "linear"
-    },
-    {
-      channel: "rotation",
-      data_points: {
-        x: "0.13",
-        y: "0",
-        z: "0"
-      },
-      time: 18.85,
-      interpolation: "linear"
-    },
-    {
-      channel: "rotation",
-      data_points: {
-        x: "1.16",
-        y: "0",
-        z: "0"
-      },
-      time: 19.5,
-      interpolation: "linear"
-    },
-    {
-      channel: "rotation",
-      data_points: {
-        x: "2.18",
-        y: "0",
-        z: "0"
-      },
-      time: 20.15,
-      interpolation: "linear"
-    },
-    {
-      channel: "rotation",
-      data_points: {
-        x: "2.5",
-        y: "0",
-        z: "0"
-      },
       time: 20.35,
-      interpolation: "linear"
+      interpolation: "linear",
     },
     {
-      channel: "rotation",
       data_points: {
-        x: "1.64",
-        y: "0",
-        z: "0"
+        x: -5,
+        y: 0,
+        z: 0,
       },
-      time: 21,
-      interpolation: "linear"
-    },
-    {
       channel: "rotation",
-      data_points: {
-        x: "0.77",
-        y: "0",
-        z: "0"
-      },
-      time: 21.65,
-      interpolation: "linear"
-    },
-    {
-      channel: "rotation",
-      data_points: {
-        x: "-0.09",
-        y: "0",
-        z: "0"
-      },
-      time: 22.3,
-      interpolation: "linear"
-    },
-    {
-      channel: "rotation",
-      data_points: {
-        x: "-0.95",
-        y: "0",
-        z: "0"
-      },
-      time: 22.95,
-      interpolation: "linear"
-    },
-    {
-      channel: "rotation",
-      data_points: {
-        x: "-1.81",
-        y: "0",
-        z: "0"
-      },
-      time: 23.6,
-      interpolation: "linear"
-    },
-    {
-      channel: "rotation",
-      data_points: {
-        x: "-2.68",
-        y: "0",
-        z: "0"
-      },
-      time: 24.25,
-      interpolation: "linear"
-    },
-    {
-      channel: "rotation",
-      data_points: {
-        x: "-3.54",
-        y: "0",
-        z: "0"
-      },
-      time: 24.9,
-      interpolation: "linear"
-    },
-    {
-      channel: "rotation",
-      data_points: {
-        x: "-4.4",
-        y: "0",
-        z: "0"
-      },
-      time: 25.55,
-      interpolation: "linear"
-    },
-    {
-      channel: "rotation",
-      data_points: {
-        x: "-5",
-        y: "0",
-        z: "0"
-      },
       time: 26,
-      interpolation: "linear"
-    }
+      interpolation: "linear",
+    },
   ],
   times: [
-    0,
-    0.4,
-    0.65,
-    0.95,
-    1.2,
-    1.5,
-    1.75,
-    2.05,
-    2.2,
-    2.25,
-    2.45,
-    2.75,
-    2.9,
-    3,
-    3.3,
-    3.55,
-    3.8,
-    4.1,
-    4.2,
-    4.35,
-    4.5,
-    4.55,
-    4.8,
-    5.05,
-    5.2,
-    5.5,
-    5.8,
-    6.1,
-    6.15,
-    6.2,
-    6.25,
-    8.9,
-    8.95,
-    9.3,
-    9.55,
-    9.6,
-    9.8,
-    10.1,
-    10.25,
-    10.35,
-    10.75,
-    10.9,
-    11.15,
-    11.5,
-    11.55,
-    11.75,
-    11.85,
-    12.05,
-    12.4,
-    12.5,
-    12.8,
-    13.15,
-    13.2,
-    13.55,
-    13.8,
-    14.05,
-    14.4,
-    14.45,
-    14.8,
-    15.1,
-    15.2,
-    15.55,
-    15.6,
-    15.7,
-    15.8,
-    15.95,
-    16.05,
-    16.2,
-    16.25,
-    16.35,
-    16.45,
-    16.6,
-    16.7,
-    16.85,
-    16.9,
-    16.95,
-    17.05,
-    17.2,
-    17.35,
-    17.55,
-    17.65,
-    17.8,
-    17.95,
-    18.1,
-    18.15,
-    18.2,
-    18.25,
-    18.35,
-    18.45,
-    18.55,
-    18.6,
-    18.65,
-    18.7,
-    18.8,
-    18.85,
-    18.9,
-    19,
-    19.1,
-    19.15,
-    19.2,
-    19.3,
-    19.35,
-    19.4,
-    19.5,
-    19.6,
-    19.65,
-    19.7,
-    19.75,
-    19.8,
-    19.9,
-    19.95,
-    20,
-    20.05,
-    20.1,
-    20.15,
-    20.2,
-    20.25,
-    20.3,
-    20.35,
-    20.4,
-    20.45,
-    20.55,
-    20.65,
-    20.7,
-    20.75,
-    20.8,
-    20.85,
-    20.95,
-    21,
-    21.05,
-    21.15,
-    21.2,
-    21.3,
-    21.35,
-    21.5,
-    21.6,
-    21.65,
-    21.7,
-    21.85,
-    22,
-    22.2,
-    22.3,
-    22.4,
-    22.65,
-    22.85,
-    22.95,
-    23.05,
-    23.15,
-    23.25,
-    23.35,
-    23.45,
-    23.5,
-    23.6,
-    23.7,
-    23.8,
-    23.85,
-    23.95,
-    24,
-    24.1,
-    24.2,
-    24.25,
-    24.35,
-    24.4,
-    24.45,
-    24.5,
-    24.6,
-    24.65,
-    24.7,
-    24.75,
-    24.8,
-    24.85,
-    24.9,
-    24.95,
-    25,
-    25.05,
-    25.1,
-    25.15,
-    25.2,
-    25.25,
-    25.3,
-    25.35,
-    25.4,
-    25.45,
-    25.5,
-    25.55,
-    25.6,
-    25.65,
-    25.7,
-    25.75,
-    25.8,
-    25.85,
-    25.9,
-    25.95,
-    26
+    0, 2.05, 2.2, 2.25, 4.5, 4.55, 5.15, 5.2, 5.25, 5.35, 5.6, 6.45, 6.5, 8.9, 8.95, 15.55, 15.6, 15.7, 15.8, 15.95,
+    16.05, 16.2, 16.35, 16.45, 16.6, 16.7, 16.85, 16.95, 17.05, 17.2, 17.35, 17.55, 17.65, 17.8, 17.95, 18.1, 18.15,
+    18.25, 18.35, 18.45, 18.55, 18.65, 18.7, 18.8, 18.85, 18.9, 19, 19.1, 19.15, 19.2, 19.3, 19.35, 19.4, 19.5, 19.6,
+    19.7, 19.75, 19.8, 19.9, 20, 20.05, 20.1, 20.15, 20.2, 20.25, 20.3, 20.35, 20.4, 20.45, 20.55, 20.65, 20.7, 20.75,
+    20.8, 20.85, 20.95, 21, 21.05, 21.15, 21.2, 21.3, 21.35, 21.5, 21.6, 21.7, 21.85, 22, 22.2, 22.4, 22.65, 22.85,
+    23.05, 23.15, 23.25, 23.35, 23.45, 23.5, 23.6, 23.7, 23.8, 23.85, 23.95, 24, 24.1, 24.2, 24.25, 24.35, 24.4, 24.45,
+    24.5, 24.6, 24.65, 24.7, 24.75, 24.8, 24.85, 24.9, 24.95, 25, 25.05, 25.1, 25.15, 25.2, 25.25, 25.3, 25.35, 25.4,
+    25.45, 25.5, 25.55, 25.6, 25.65, 25.7, 25.75, 25.8, 25.85, 25.9, 25.95, 26,
   ],
   sceneId: "namespace:scene_name",
   entityOption: {
     location: {
       x: 0,
       y: 0,
-      z: 0
+      z: 0,
     },
-    type: "rebo:forest_teaser"
+    type: "rebo:forest_teaser",
+    closest: 1,
   },
   playerOption: {
     location: {
       x: 0,
       y: 0,
-      z: 0
+      z: 0,
     },
-    type: "minecraft:player"
+    type: "minecraft:player",
   },
-  animationId: "animation.player.forest_teaser_animation"
+  animationId: "animation.player.forest_teaser_animation",
 };
