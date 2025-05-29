@@ -1,44 +1,14 @@
-const _0x279a47 = _0x8daf;
-(function (_0x417d74, _0x2c06db) {
-  const _0x3698f0 = _0x8daf,
-    _0x30ab0d = _0x417d74();
-  while (!![]) {
-    try {
-      const _0x179b0b =
-        parseInt(_0x3698f0(0xa5)) / 0x1 +
-        parseInt(_0x3698f0(0xb2)) / 0x2 +
-        (parseInt(_0x3698f0(0x6d)) / 0x3) * (-parseInt(_0x3698f0(0x75)) / 0x4) +
-        parseInt(_0x3698f0(0x8e)) / 0x5 +
-        -parseInt(_0x3698f0(0x80)) / 0x6 +
-        (parseInt(_0x3698f0(0xb1)) / 0x7) * (parseInt(_0x3698f0(0x95)) / 0x8) +
-        -parseInt(_0x3698f0(0x7b)) / 0x9;
-      if (_0x179b0b === _0x2c06db) break;
-      else _0x30ab0d["push"](_0x30ab0d["shift"]());
-    } catch (_0x4a4ad3) {
-      _0x30ab0d["push"](_0x30ab0d["shift"]());
-    }
-  }
-})(_0x4a3f, 0x5a0f6);
+const _0x3c86cb = _0x7107; function _0x362b() { const _0x5c1f8d = [ "runTimeout", "9171169MQnXax", "144076uIccdO", "gamemode ", " @s", "animationId", "min", ". Skipping scene.", "inputpermission set @s movement enabled", "sizeCenter", "location", "entityOption", "setGamemode", "belowCenter", "defineProperty", "14092160lWLVlR", "playAnimation", "sourceType", "Block", "getRotation", "', found ", "sin", "center", "hud @s reset", "clearRun", "9GBtvyS", "interpolation", "commandRun", "scriptEventReceive", "get", "rotation", "NPCDialogue", "camera @s clear", "linear", "cos", "easeInOut", "coordinates", "floor", "6VJRDHd", "set", "abs", "65qaJUDy", "sourceBlock", "step", "time", "Vectors must be either Vector2 or Vector3", "2576105mTugAe", "effect @s invisibility infinite 1 true", "gamemode spectator @s", "getAllPlayers", "getGameMode", "hud @s hide all", "subscribe", "effect @s invisibility 0", "toVector2", "69445739zBDWop", "69LSsojb", "length", "sendMessage", "13190gFqOAN", "_roundToNearestHalf", "inputpermission set @s movement disabled", "inputpermission set @s camera enabled", "sizeBelowCenter", "offset", "data_points", "flat", "toFixed", "inputpermission set @s camera disabled", "sceneId", "initiator", "teleport", "prototype", "getEntities", "7805656ZDiZYZ", "check", "object", "dimension", "sqrt", "gamemode", "easeOut", "runCommand", "teleport @s ", "successCount", ]; _0x362b = function () { return _0x5c1f8d; }; return _0x362b(); } (function (_0x437e12, _0x75779) { const _0x3be5dc = _0x7107, _0x2669ff = _0x437e12(); while (!![]) { try { const _0x49ec76 = (parseInt(_0x3be5dc(0x84)) / 0x1) * (-parseInt(_0x3be5dc(0x96)) / 0x2) + (-parseInt(_0x3be5dc(0x93)) / 0x3) * (parseInt(_0x3be5dc(0xb1)) / 0x4) + (parseInt(_0x3be5dc(0x89)) / 0x5) * (-parseInt(_0x3be5dc(0x81)) / 0x6) + -parseInt(_0x3be5dc(0xb0)) / 0x7 + (parseInt(_0x3be5dc(0xa5)) / 0x8) * (-parseInt(_0x3be5dc(0xc8)) / 0x9) + -parseInt(_0x3be5dc(0xbe)) / 0xa + parseInt(_0x3be5dc(0x92)) / 0xb; if (_0x49ec76 === _0x75779) break; else _0x2669ff["push"](_0x2669ff["shift"]()); } catch (_0xc0772a) { _0x2669ff["push"](_0x2669ff["shift"]()); } } })(_0x362b, 0xce802);
+function _0x7107(_0x221037, _0x4cb78a) { const _0x362bd5 = _0x362b(); return ( (_0x7107 = function (_0x710753, _0x2dac37) { _0x710753 = _0x710753 - 0x7d; let _0x4d07b4 = _0x362bd5[_0x710753]; return _0x4d07b4; }), _0x7107(_0x221037, _0x4cb78a) ); }
 import { system, world, ScriptEventSource, Player, Entity } from "@minecraft/server";
-function _0x8daf(_0x39ef2f, _0x32a024) {
-  const _0x4a3f17 = _0x4a3f();
-  return (
-    (_0x8daf = function (_0x8daf0f, _0x309875) {
-      _0x8daf0f = _0x8daf0f - 0x6b;
-      let _0x1b063e = _0x4a3f17[_0x8daf0f];
-      return _0x1b063e;
-    }),
-    _0x8daf(_0x39ef2f, _0x32a024)
-  );
-}
 
 const content = {
   "positions": [
     {
       "data_points": {
-        "x": -5.0625,
+        "x": -5.4625,
         "y": 1.0575,
-        "z": -9.7
+        "z": -10
       },
       "channel": "position",
       "time": 0,
@@ -46,9 +16,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": -5.0625,
+        "x": -5.4625,
         "y": 1.0575,
-        "z": -10.515625
+        "z": -10.815625
       },
       "channel": "position",
       "time": 2.05,
@@ -56,9 +26,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": -5.0625,
+        "x": -5.4625,
         "y": 1.0575,
-        "z": -10.575
+        "z": -10.875
       },
       "channel": "position",
       "time": 2.2,
@@ -66,9 +36,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.1875,
+        "x": 0.7875,
         "y": 1.995,
-        "z": -9.393749999999999
+        "z": -9.69375
       },
       "channel": "position",
       "time": 2.25,
@@ -76,9 +46,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 0.891875,
+        "x": 0.49187499999999995,
         "y": 2.124375,
-        "z": 5.54375
+        "z": 5.24375
       },
       "channel": "position",
       "time": 4.5,
@@ -86,9 +56,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 0.125,
+        "x": -0.275,
         "y": 1.495,
-        "z": 8.6125
+        "z": 8.3125
       },
       "channel": "position",
       "time": 4.55,
@@ -96,9 +66,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 0.07937499999999997,
+        "x": -0.32062500000000005,
         "y": 1.563125,
-        "z": 12.703125
+        "z": 12.403125
       },
       "channel": "position",
       "time": 5.15,
@@ -106,9 +76,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 0,
+        "x": -0.4,
         "y": 1.6825,
-        "z": 12.9875
+        "z": 12.6875
       },
       "channel": "position",
       "time": 6.45,
@@ -116,9 +86,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 0.1627883095562499,
+        "x": -0.23721169044375012,
         "y": 0.9763233892625001,
-        "z": 12.745352922293751
+        "z": 12.44535292229375
       },
       "channel": "position",
       "time": 6.5,
@@ -126,9 +96,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 0.16640770843749997,
+        "x": -0.23359229156250005,
         "y": 1.0375171156187502,
-        "z": 12.6798616801
+        "z": 12.3798616801
       },
       "channel": "position",
       "time": 8.9,
@@ -136,9 +106,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.251875,
+        "x": 0.8518749999999999,
         "y": 1.12,
-        "z": 10.601875000000001
+        "z": 10.301875
       },
       "channel": "position",
       "time": 8.95,
@@ -146,9 +116,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.226875,
+        "x": 0.826875,
         "y": 1.12,
-        "z": 10.926875
+        "z": 10.626875
       },
       "channel": "position",
       "time": 15.55,
@@ -156,9 +126,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 1.1081250000000002,
-        "z": 4.299375
+        "z": 3.999375
       },
       "channel": "position",
       "time": 15.6,
@@ -166,9 +136,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 1.12125,
-        "z": 4.208125
+        "z": 3.908125
       },
       "channel": "position",
       "time": 15.7,
@@ -176,9 +146,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 1.13125,
-        "z": 4.119375
+        "z": 3.819375
       },
       "channel": "position",
       "time": 15.8,
@@ -186,9 +156,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 1.1425,
-        "z": 3.9918750000000003
+        "z": 3.691875
       },
       "channel": "position",
       "time": 15.95,
@@ -196,9 +166,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 1.148125,
-        "z": 3.9106250000000005
+        "z": 3.610625
       },
       "channel": "position",
       "time": 16.05,
@@ -206,9 +176,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 1.1525,
-        "z": 3.7943749999999996
+        "z": 3.494375
       },
       "channel": "position",
       "time": 16.2,
@@ -216,9 +186,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 1.15375,
-        "z": 3.68375
+        "z": 3.38375
       },
       "channel": "position",
       "time": 16.35,
@@ -226,9 +196,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 1.15375,
-        "z": 3.613125
+        "z": 3.313125
       },
       "channel": "position",
       "time": 16.45,
@@ -236,9 +206,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 1.151875,
-        "z": 3.511875
+        "z": 3.211875
       },
       "channel": "position",
       "time": 16.6,
@@ -246,9 +216,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 1.1500000000000001,
-        "z": 3.4475
+        "z": 3.1475
       },
       "channel": "position",
       "time": 16.7,
@@ -256,9 +226,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 1.146875,
-        "z": 3.355625
+        "z": 3.055625
       },
       "channel": "position",
       "time": 16.85,
@@ -266,9 +236,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 1.145,
-        "z": 3.2975000000000003
+        "z": 2.9975
       },
       "channel": "position",
       "time": 16.95,
@@ -276,9 +246,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 1.14375,
-        "z": 3.24125
+        "z": 2.94125
       },
       "channel": "position",
       "time": 17.05,
@@ -286,9 +256,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 1.1425,
-        "z": 3.16125
+        "z": 2.86125
       },
       "channel": "position",
       "time": 17.2,
@@ -296,9 +266,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 1.14375,
-        "z": 3.0856250000000003
+        "z": 2.785625
       },
       "channel": "position",
       "time": 17.35,
@@ -306,9 +276,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 1.149375,
-        "z": 2.9918750000000003
+        "z": 2.691875
       },
       "channel": "position",
       "time": 17.55,
@@ -316,9 +286,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 1.155,
-        "z": 2.948125
+        "z": 2.6481250000000003
       },
       "channel": "position",
       "time": 17.65,
@@ -326,9 +296,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 1.1675,
-        "z": 2.885
+        "z": 2.585
       },
       "channel": "position",
       "time": 17.8,
@@ -336,9 +306,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 1.185,
-        "z": 2.82625
+        "z": 2.52625
       },
       "channel": "position",
       "time": 17.95,
@@ -346,9 +316,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 1.2081250000000001,
-        "z": 2.77125
+        "z": 2.47125
       },
       "channel": "position",
       "time": 18.1,
@@ -356,9 +326,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 1.2175,
-        "z": 2.75375
+        "z": 2.4537500000000003
       },
       "channel": "position",
       "time": 18.15,
@@ -366,9 +336,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 1.23875,
-        "z": 2.7193750000000003
+        "z": 2.419375
       },
       "channel": "position",
       "time": 18.25,
@@ -376,9 +346,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 1.263125,
-        "z": 2.686875
+        "z": 2.386875
       },
       "channel": "position",
       "time": 18.35,
@@ -386,9 +356,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 1.2912500000000002,
-        "z": 2.655625
+        "z": 2.355625
       },
       "channel": "position",
       "time": 18.45,
@@ -396,9 +366,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 1.323125,
-        "z": 2.6256250000000003
+        "z": 2.325625
       },
       "channel": "position",
       "time": 18.55,
@@ -406,9 +376,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 1.3587500000000001,
-        "z": 2.596875
+        "z": 2.296875
       },
       "channel": "position",
       "time": 18.65,
@@ -416,9 +386,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 1.3787500000000001,
-        "z": 2.5825
+        "z": 2.2824999999999998
       },
       "channel": "position",
       "time": 18.7,
@@ -426,9 +396,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 1.4212500000000001,
-        "z": 2.555625
+        "z": 2.255625
       },
       "channel": "position",
       "time": 18.8,
@@ -436,9 +406,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 1.44375,
-        "z": 2.5425
+        "z": 2.2424999999999997
       },
       "channel": "position",
       "time": 18.85,
@@ -446,9 +416,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 1.4681250000000001,
-        "z": 2.5300000000000002
+        "z": 2.23
       },
       "channel": "position",
       "time": 18.9,
@@ -456,9 +426,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 1.52,
-        "z": 2.505
+        "z": 2.205
       },
       "channel": "position",
       "time": 19,
@@ -466,9 +436,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 1.5775000000000001,
-        "z": 2.48125
+        "z": 2.18125
       },
       "channel": "position",
       "time": 19.1,
@@ -476,9 +446,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 1.6075000000000002,
-        "z": 2.4693750000000003
+        "z": 2.169375
       },
       "channel": "position",
       "time": 19.15,
@@ -486,9 +456,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 1.639375,
-        "z": 2.458125
+        "z": 2.158125
       },
       "channel": "position",
       "time": 19.2,
@@ -496,9 +466,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 1.7075,
-        "z": 2.435625
+        "z": 2.135625
       },
       "channel": "position",
       "time": 19.3,
@@ -506,9 +476,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 1.7437500000000001,
-        "z": 2.425
+        "z": 2.125
       },
       "channel": "position",
       "time": 19.35,
@@ -516,9 +486,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 1.78125,
-        "z": 2.4143749999999997
+        "z": 2.114375
       },
       "channel": "position",
       "time": 19.4,
@@ -526,9 +496,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 1.86125,
-        "z": 2.39375
+        "z": 2.09375
       },
       "channel": "position",
       "time": 19.5,
@@ -536,9 +506,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 1.9475000000000002,
-        "z": 2.3737500000000002
+        "z": 2.07375
       },
       "channel": "position",
       "time": 19.6,
@@ -546,9 +516,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 2.04,
-        "z": 2.354375
+        "z": 2.0543750000000003
       },
       "channel": "position",
       "time": 19.7,
@@ -556,9 +526,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 2.08875,
-        "z": 2.3449999999999998
+        "z": 2.045
       },
       "channel": "position",
       "time": 19.75,
@@ -566,9 +536,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 2.1393750000000002,
-        "z": 2.3356250000000003
+        "z": 2.035625
       },
       "channel": "position",
       "time": 19.8,
@@ -576,9 +546,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 2.245625,
-        "z": 2.3175
+        "z": 2.0175
       },
       "channel": "position",
       "time": 19.9,
@@ -586,9 +556,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 2.359375,
-        "z": 2.299375
+        "z": 1.9993750000000001
       },
       "channel": "position",
       "time": 20,
@@ -596,9 +566,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 2.40375,
-        "z": 2.29375
+        "z": 1.99375
       },
       "channel": "position",
       "time": 20.05,
@@ -606,9 +576,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.3525,
+        "x": 0.9525,
         "y": 2.45,
-        "z": 2.2887500000000003
+        "z": 1.98875
       },
       "channel": "position",
       "time": 20.1,
@@ -616,9 +586,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.35375,
+        "x": 0.95375,
         "y": 2.4987500000000002,
-        "z": 2.285625
+        "z": 1.985625
       },
       "channel": "position",
       "time": 20.15,
@@ -626,9 +596,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.355,
+        "x": 0.955,
         "y": 2.5500000000000003,
-        "z": 2.283125
+        "z": 1.983125
       },
       "channel": "position",
       "time": 20.2,
@@ -636,9 +606,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.35625,
+        "x": 0.95625,
         "y": 2.6037500000000002,
-        "z": 2.2825
+        "z": 1.9825
       },
       "channel": "position",
       "time": 20.25,
@@ -646,9 +616,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.358125,
+        "x": 0.958125,
         "y": 2.659375,
-        "z": 2.2825
+        "z": 1.9825
       },
       "channel": "position",
       "time": 20.3,
@@ -656,9 +626,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.360625,
+        "x": 0.960625,
         "y": 2.716875,
-        "z": 2.28375
+        "z": 1.9837500000000001
       },
       "channel": "position",
       "time": 20.35,
@@ -666,9 +636,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.3631250000000001,
+        "x": 0.963125,
         "y": 2.7768750000000004,
-        "z": 2.28625
+        "z": 1.98625
       },
       "channel": "position",
       "time": 20.4,
@@ -676,9 +646,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.36625,
+        "x": 0.9662499999999999,
         "y": 2.83875,
-        "z": 2.29
+        "z": 1.99
       },
       "channel": "position",
       "time": 20.45,
@@ -686,9 +656,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.3725,
+        "x": 0.9724999999999999,
         "y": 2.96875,
-        "z": 2.3
+        "z": 2
       },
       "channel": "position",
       "time": 20.55,
@@ -696,9 +666,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.380625,
+        "x": 0.980625,
         "y": 3.10625,
-        "z": 2.3137499999999998
+        "z": 2.01375
       },
       "channel": "position",
       "time": 20.65,
@@ -706,9 +676,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.384375,
+        "x": 0.984375,
         "y": 3.1775,
-        "z": 2.3218750000000004
+        "z": 2.021875
       },
       "channel": "position",
       "time": 20.7,
@@ -716,9 +686,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.38875,
+        "x": 0.98875,
         "y": 3.25125,
-        "z": 2.33125
+        "z": 2.03125
       },
       "channel": "position",
       "time": 20.75,
@@ -726,9 +696,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.39375,
+        "x": 0.9937499999999999,
         "y": 3.32625,
-        "z": 2.341875
+        "z": 2.041875
       },
       "channel": "position",
       "time": 20.8,
@@ -736,9 +706,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.39875,
+        "x": 0.99875,
         "y": 3.4025,
-        "z": 2.3525
+        "z": 2.0525
       },
       "channel": "position",
       "time": 20.85,
@@ -746,9 +716,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.409375,
+        "x": 1.009375,
         "y": 3.5612500000000002,
-        "z": 2.376875
+        "z": 2.0768750000000002
       },
       "channel": "position",
       "time": 20.95,
@@ -756,9 +726,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.415,
+        "x": 1.015,
         "y": 3.6425,
-        "z": 2.390625
+        "z": 2.090625
       },
       "channel": "position",
       "time": 21,
@@ -766,9 +736,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.420625,
+        "x": 1.020625,
         "y": 3.725625,
-        "z": 2.404375
+        "z": 2.104375
       },
       "channel": "position",
       "time": 21.05,
@@ -776,9 +746,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.4325,
+        "x": 1.0325,
         "y": 3.895625,
-        "z": 2.435
+        "z": 2.135
       },
       "channel": "position",
       "time": 21.15,
@@ -786,9 +756,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.43875,
+        "x": 1.0387499999999998,
         "y": 3.9825,
-        "z": 2.450625
+        "z": 2.150625
       },
       "channel": "position",
       "time": 21.2,
@@ -796,9 +766,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.451875,
+        "x": 1.051875,
         "y": 4.160625,
-        "z": 2.4850000000000003
+        "z": 2.185
       },
       "channel": "position",
       "time": 21.3,
@@ -806,9 +776,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.45875,
+        "x": 1.0587499999999999,
         "y": 4.251250000000001,
-        "z": 2.503125
+        "z": 2.203125
       },
       "channel": "position",
       "time": 21.35,
@@ -816,9 +786,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.479375,
+        "x": 1.079375,
         "y": 4.530625000000001,
-        "z": 2.559375
+        "z": 2.259375
       },
       "channel": "position",
       "time": 21.5,
@@ -826,9 +796,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.49375,
+        "x": 1.09375,
         "y": 4.721875000000001,
-        "z": 2.6
+        "z": 2.3
       },
       "channel": "position",
       "time": 21.6,
@@ -836,9 +806,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.5081250000000002,
+        "x": 1.108125,
         "y": 4.9175,
-        "z": 2.6412500000000003
+        "z": 2.34125
       },
       "channel": "position",
       "time": 21.7,
@@ -846,9 +816,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.5306250000000001,
+        "x": 1.130625,
         "y": 5.215625,
-        "z": 2.70625
+        "z": 2.40625
       },
       "channel": "position",
       "time": 21.85,
@@ -856,9 +826,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.553125,
+        "x": 1.153125,
         "y": 5.520625,
-        "z": 2.7737499999999997
+        "z": 2.47375
       },
       "channel": "position",
       "time": 22,
@@ -866,9 +836,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.58375,
+        "x": 1.1837499999999999,
         "y": 5.934375,
-        "z": 2.865625
+        "z": 2.565625
       },
       "channel": "position",
       "time": 22.2,
@@ -876,9 +846,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.6131250000000001,
+        "x": 1.213125,
         "y": 6.35375,
-        "z": 2.95875
+        "z": 2.65875
       },
       "channel": "position",
       "time": 22.4,
@@ -886,9 +856,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.648125,
+        "x": 1.248125,
         "y": 6.881875,
-        "z": 3.07375
+        "z": 2.7737499999999997
       },
       "channel": "position",
       "time": 22.65,
@@ -896,9 +866,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.67375,
+        "x": 1.27375,
         "y": 7.3025,
-        "z": 3.161875
+        "z": 2.861875
       },
       "channel": "position",
       "time": 22.85,
@@ -906,9 +876,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.6975,
+        "x": 1.2974999999999999,
         "y": 7.719375,
-        "z": 3.245625
+        "z": 2.9456249999999997
       },
       "channel": "position",
       "time": 23.05,
@@ -916,9 +886,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.708125,
+        "x": 1.308125,
         "y": 7.925625,
-        "z": 3.285
+        "z": 2.9850000000000003
       },
       "channel": "position",
       "time": 23.15,
@@ -926,9 +896,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.7175,
+        "x": 1.3175,
         "y": 8.129375,
-        "z": 3.3218750000000004
+        "z": 3.021875
       },
       "channel": "position",
       "time": 23.25,
@@ -936,9 +906,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.72625,
+        "x": 1.32625,
         "y": 8.330625000000001,
-        "z": 3.3575
+        "z": 3.0575
       },
       "channel": "position",
       "time": 23.35,
@@ -946,9 +916,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.7337500000000001,
+        "x": 1.33375,
         "y": 8.52875,
-        "z": 3.390625
+        "z": 3.090625
       },
       "channel": "position",
       "time": 23.45,
@@ -956,9 +926,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.7375,
+        "x": 1.3375,
         "y": 8.626875,
-        "z": 3.4056249999999997
+        "z": 3.105625
       },
       "channel": "position",
       "time": 23.5,
@@ -966,9 +936,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.74375,
+        "x": 1.34375,
         "y": 8.82,
-        "z": 3.4349999999999996
+        "z": 3.135
       },
       "channel": "position",
       "time": 23.6,
@@ -976,9 +946,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.748125,
+        "x": 1.348125,
         "y": 9.009375,
-        "z": 3.4606250000000003
+        "z": 3.160625
       },
       "channel": "position",
       "time": 23.7,
@@ -986,9 +956,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.751875,
+        "x": 1.3518750000000002,
         "y": 9.194375,
-        "z": 3.4837499999999997
+        "z": 3.18375
       },
       "channel": "position",
       "time": 23.8,
@@ -996,9 +966,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.753125,
+        "x": 1.353125,
         "y": 9.285,
-        "z": 3.4937500000000004
+        "z": 3.19375
       },
       "channel": "position",
       "time": 23.85,
@@ -1006,9 +976,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.754375,
+        "x": 1.354375,
         "y": 9.4625,
-        "z": 3.511875
+        "z": 3.211875
       },
       "channel": "position",
       "time": 23.95,
@@ -1016,9 +986,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.755,
+        "x": 1.355,
         "y": 9.55,
-        "z": 3.519375
+        "z": 3.219375
       },
       "channel": "position",
       "time": 24,
@@ -1026,9 +996,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.75375,
+        "x": 1.3537499999999998,
         "y": 9.719999999999999,
-        "z": 3.53125
+        "z": 3.23125
       },
       "channel": "position",
       "time": 24.1,
@@ -1036,9 +1006,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.751875,
+        "x": 1.3518750000000002,
         "y": 9.88375,
-        "z": 3.5393749999999997
+        "z": 3.239375
       },
       "channel": "position",
       "time": 24.2,
@@ -1046,9 +1016,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.75,
+        "x": 1.35,
         "y": 9.963750000000001,
-        "z": 3.541875
+        "z": 3.241875
       },
       "channel": "position",
       "time": 24.25,
@@ -1056,9 +1026,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.745,
+        "x": 1.345,
         "y": 10.118749999999999,
-        "z": 3.54375
+        "z": 3.24375
       },
       "channel": "position",
       "time": 24.35,
@@ -1066,9 +1036,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.741875,
+        "x": 1.341875,
         "y": 10.193750000000001,
-        "z": 3.5425000000000004
+        "z": 3.2425
       },
       "channel": "position",
       "time": 24.4,
@@ -1076,9 +1046,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.7381250000000001,
+        "x": 1.338125,
         "y": 10.266874999999999,
-        "z": 3.5406250000000004
+        "z": 3.240625
       },
       "channel": "position",
       "time": 24.45,
@@ -1086,9 +1056,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.734375,
+        "x": 1.334375,
         "y": 10.338125000000002,
-        "z": 3.536875
+        "z": 3.236875
       },
       "channel": "position",
       "time": 24.5,
@@ -1096,9 +1066,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.725,
+        "x": 1.325,
         "y": 10.475625,
-        "z": 3.5268750000000004
+        "z": 3.226875
       },
       "channel": "position",
       "time": 24.6,
@@ -1106,9 +1076,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.7193749999999999,
+        "x": 1.319375,
         "y": 10.541250000000002,
-        "z": 3.519375
+        "z": 3.219375
       },
       "channel": "position",
       "time": 24.65,
@@ -1116,9 +1086,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.71375,
+        "x": 1.31375,
         "y": 10.605,
-        "z": 3.5112500000000004
+        "z": 3.21125
       },
       "channel": "position",
       "time": 24.7,
@@ -1126,9 +1096,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.7068750000000001,
+        "x": 1.306875,
         "y": 10.666875000000001,
-        "z": 3.5012499999999998
+        "z": 3.20125
       },
       "channel": "position",
       "time": 24.75,
@@ -1136,9 +1106,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.7,
+        "x": 1.2999999999999998,
         "y": 10.726875,
-        "z": 3.4906249999999996
+        "z": 3.190625
       },
       "channel": "position",
       "time": 24.8,
@@ -1146,9 +1116,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.6925,
+        "x": 1.2925,
         "y": 10.784375,
-        "z": 3.4775
+        "z": 3.1775
       },
       "channel": "position",
       "time": 24.85,
@@ -1156,9 +1126,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.684375,
+        "x": 1.2843749999999998,
         "y": 10.84,
-        "z": 3.46375
+        "z": 3.16375
       },
       "channel": "position",
       "time": 24.9,
@@ -1166,9 +1136,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.6756250000000001,
+        "x": 1.275625,
         "y": 10.893125000000001,
-        "z": 3.448125
+        "z": 3.148125
       },
       "channel": "position",
       "time": 24.95,
@@ -1176,9 +1146,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.666875,
+        "x": 1.266875,
         "y": 10.944375,
-        "z": 3.4312500000000004
+        "z": 3.13125
       },
       "channel": "position",
       "time": 25,
@@ -1186,9 +1156,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.6568749999999999,
+        "x": 1.256875,
         "y": 10.993125,
-        "z": 3.413125
+        "z": 3.113125
       },
       "channel": "position",
       "time": 25.05,
@@ -1196,9 +1166,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.646875,
+        "x": 1.246875,
         "y": 11.039375,
-        "z": 3.3931250000000004
+        "z": 3.093125
       },
       "channel": "position",
       "time": 25.1,
@@ -1206,9 +1176,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.635625,
+        "x": 1.235625,
         "y": 11.083124999999999,
-        "z": 3.37125
+        "z": 3.07125
       },
       "channel": "position",
       "time": 25.15,
@@ -1216,9 +1186,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.6243750000000001,
+        "x": 1.224375,
         "y": 11.125,
-        "z": 3.3481250000000005
+        "z": 3.048125
       },
       "channel": "position",
       "time": 25.2,
@@ -1226,9 +1196,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.611875,
+        "x": 1.211875,
         "y": 11.164375,
-        "z": 3.3237500000000004
+        "z": 3.02375
       },
       "channel": "position",
       "time": 25.25,
@@ -1236,9 +1206,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.599375,
+        "x": 1.1993749999999999,
         "y": 11.200624999999999,
-        "z": 3.296875
+        "z": 2.996875
       },
       "channel": "position",
       "time": 25.3,
@@ -1246,9 +1216,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.58625,
+        "x": 1.1862499999999998,
         "y": 11.234375,
-        "z": 3.26875
+        "z": 2.96875
       },
       "channel": "position",
       "time": 25.35,
@@ -1256,9 +1226,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.571875,
+        "x": 1.171875,
         "y": 11.26625,
-        "z": 3.23875
+        "z": 2.9387499999999998
       },
       "channel": "position",
       "time": 25.4,
@@ -1266,9 +1236,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.5575,
+        "x": 1.1575,
         "y": 11.295000000000002,
-        "z": 3.2075
+        "z": 2.9074999999999998
       },
       "channel": "position",
       "time": 25.45,
@@ -1276,9 +1246,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.5425,
+        "x": 1.1425,
         "y": 11.320625,
-        "z": 3.17375
+        "z": 2.8737500000000002
       },
       "channel": "position",
       "time": 25.5,
@@ -1286,9 +1256,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.52625,
+        "x": 1.12625,
         "y": 11.34375,
-        "z": 3.13875
+        "z": 2.83875
       },
       "channel": "position",
       "time": 25.55,
@@ -1296,9 +1266,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.51,
+        "x": 1.1099999999999999,
         "y": 11.364374999999999,
-        "z": 3.1018749999999997
+        "z": 2.801875
       },
       "channel": "position",
       "time": 25.6,
@@ -1306,9 +1276,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.4925,
+        "x": 1.0925,
         "y": 11.381875,
-        "z": 3.0631250000000003
+        "z": 2.763125
       },
       "channel": "position",
       "time": 25.65,
@@ -1316,9 +1286,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.474375,
+        "x": 1.0743749999999999,
         "y": 11.396249999999998,
-        "z": 3.0225
+        "z": 2.7225
       },
       "channel": "position",
       "time": 25.7,
@@ -1326,9 +1296,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.45625,
+        "x": 1.05625,
         "y": 11.408125000000002,
-        "z": 2.98
+        "z": 2.6799999999999997
       },
       "channel": "position",
       "time": 25.75,
@@ -1336,9 +1306,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.4368750000000001,
+        "x": 1.036875,
         "y": 11.416875000000001,
-        "z": 2.935
+        "z": 2.635
       },
       "channel": "position",
       "time": 25.8,
@@ -1346,9 +1316,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.41625,
+        "x": 1.0162499999999999,
         "y": 11.4225,
-        "z": 2.88875
+        "z": 2.58875
       },
       "channel": "position",
       "time": 25.85,
@@ -1356,9 +1326,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.395625,
+        "x": 0.995625,
         "y": 11.425,
-        "z": 2.84
+        "z": 2.54
       },
       "channel": "position",
       "time": 25.9,
@@ -1366,9 +1336,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.3743750000000001,
+        "x": 0.974375,
         "y": 11.424375000000001,
-        "z": 2.7893749999999997
+        "z": 2.489375
       },
       "channel": "position",
       "time": 25.95,
@@ -1376,9 +1346,9 @@ const content = {
     },
     {
       "data_points": {
-        "x": 1.351875,
+        "x": 0.951875,
         "y": 11.420625000000001,
-        "z": 2.736875
+        "z": 2.4368749999999997
       },
       "channel": "position",
       "time": 26,
@@ -1707,392 +1677,20 @@ const content = {
     "type": "minecraft:player"
   },
   "animationId": "animation.player.forest_teaser_animation"
-}; 
+};
 
-function load() {
-  const _0x1e8006 = _0x8daf;
-  for (const _0x3ce315 of world[_0x1e8006(0xaa)]()) {
-    _0x3ce315["commandRun"](
-      "camera @s clear",
-      _0x1e8006(0x9e),
-      "inputpermission set @s camera enabled",
-      _0x1e8006(0x8d)
-    );
-  }
-}
-function runScene(_0x293bb5) {
-  const _0x2f7f2e = _0x8daf,
-    { positions: _0x392432, rotations: _0x404c3b } = content,
-    _0x2b4501 = _0x293bb5["dimension"],
-    _0x4448d6 = _0x2b4501[_0x2f7f2e(0x7a)](content[_0x2f7f2e(0x86)]),
-    _0x3983a1 = _0x2b4501["getEntities"](content[_0x2f7f2e(0xb6)]);
-  if (_0x3983a1[_0x2f7f2e(0x84)] !== 0x1) {
-    world[_0x2f7f2e(0xab)](
-      _0x2f7f2e(0x87) +
-        content["entityOption"][_0x2f7f2e(0x7f)] +
-        "', found " +
-        _0x3983a1[_0x2f7f2e(0x84)] +
-        ". Skipping scene."
-    );
-    return;
-  }
-  const _0x419fac = _0x3983a1[0x0],
-    _0x476d43 = new Map();
-  for (const _0x582271 of _0x4448d6) {
-    _0x476d43[_0x2f7f2e(0x7d)](_0x582271["id"], _0x582271[_0x2f7f2e(0xa0)]),
-      _0x582271[_0x2f7f2e(0x9a)](
-        "camera @s clear",
-        _0x2f7f2e(0x8c),
-        _0x2f7f2e(0xb5),
-        _0x2f7f2e(0x78),
-        _0x2f7f2e(0x9d),
-        _0x2f7f2e(0x89)
-      ),
-      _0x419fac[_0x2f7f2e(0xaf)](content[_0x2f7f2e(0xb3)]);
-    let _0x48abf6 = 0x0;
-    const _0x4b1c2e = 0x14,
-      _0x31153d = system[_0x2f7f2e(0x91)](() => {
-        const _0x375276 = _0x2f7f2e;
-        _0x48abf6 += 0x1 / _0x4b1c2e;
-        const [_0x213c7a, _0x2bfa22] = getKeyframePair(_0x392432, _0x48abf6),
-          _0x484043 =
-            (_0x48abf6 - _0x213c7a[_0x375276(0x94)]) / (_0x2bfa22[_0x375276(0x94)] - _0x213c7a[_0x375276(0x94)]),
-          _0x2b26a4 = applyEasing(Math[_0x375276(0x90)](_0x484043, 0x1), _0x213c7a[_0x375276(0x83)]),
-          _0x26e3f0 = _0x419fac["coordinates"],
-          _0x5e38cd = new Vector3(_0x213c7a["data_points"])[_0x375276(0x73)](_0x26e3f0),
-          _0xf17eba = new Vector3(_0x2bfa22["data_points"])[_0x375276(0x73)](_0x26e3f0),
-          _0x4be8e4 =
-            _0x213c7a[_0x375276(0x83)] === _0x375276(0x77) ? _0x5e38cd : lerpVector(_0x5e38cd, _0xf17eba, _0x2b26a4),
-          [_0x296902, _0x2010d0] = getKeyframePair(_0x404c3b, _0x48abf6),
-          _0x130b5f = (_0x48abf6 - _0x296902["time"]) / (_0x2010d0[_0x375276(0x94)] - _0x296902[_0x375276(0x94)]),
-          _0x379490 = applyEasing(Math[_0x375276(0x90)](_0x130b5f, 0x1), _0x296902[_0x375276(0x83)]),
-          _0x971230 = new Vector2(+_0x296902[_0x375276(0x72)]["x"], +_0x296902[_0x375276(0x72)]["y"]),
-          _0x4a8004 = new Vector2(+_0x2010d0["data_points"]["x"], +_0x2010d0["data_points"]["y"]);
-        let _0x541572 =
-          _0x296902[_0x375276(0x83)] === _0x375276(0x77) ? _0x971230 : lerpVector(_0x971230, _0x4a8004, _0x379490);
-        const _0xeaf7 = 0.000001;
-        (_0x541572["x"] = Math[_0x375276(0x7c)](_0x541572["x"]) < _0xeaf7 ? 0x0 : _0x541572["x"]),
-          (_0x541572["y"] = Math[_0x375276(0x7c)](_0x541572["y"]) < _0xeaf7 ? 0x0 : _0x541572["y"]);
-        if (Math[_0x375276(0x7c)](_0x541572["x"]) < _0xeaf7) _0x541572["x"] = 0x0;
-        if (Math["abs"](_0x541572["y"]) < _0xeaf7) _0x541572["y"] = 0x0;
-        _0x582271[_0x375276(0x93)](_0x4be8e4);
-        const _0x5313d7 = (_0x20d486) => {
-            const _0x2e17fa = _0x375276,
-              _0x57f56e = Number(_0x20d486);
-            return _0x57f56e % 0x1 === 0x0 ? _0x57f56e["toFixed"](0x1) : _0x57f56e[_0x2e17fa(0x6b)](0x4);
-          },
-          _0x5073fa =
-            "camera @s set minecraft:free ease 0.05 linear pos " +
-            _0x5313d7(_0x4be8e4["x"]) +
-            " " +
-            _0x5313d7(_0x4be8e4["y"]) +
-            " " +
-            _0x5313d7(_0x4be8e4["z"]) +
-            _0x375276(0x79) +
-            _0x541572["x"] +
-            " " +
-            _0x541572["y"];
-        _0x582271[_0x375276(0x81)](_0x5073fa),
-          _0x48abf6 > _0x392432["at"](-0x1)[_0x375276(0x94)] &&
-            _0x48abf6 > _0x404c3b["at"](-0x1)[_0x375276(0x94)] &&
-            system[_0x375276(0xac)](() => {
-              const _0x36e20c = _0x375276;
-              system[_0x36e20c(0x70)](_0x31153d);
-              const _0x40e985 = _0x476d43[_0x36e20c(0x9c)](_0x582271["id"]);
-              _0x582271[_0x36e20c(0x9a)](
-                "camera @s clear",
-                "effect @s invisibility 0",
-                _0x36e20c(0x9e),
-                "inputpermission set @s camera enabled",
-                _0x36e20c(0x8d),
-                _0x36e20c(0xae) + _0x40e985 + _0x36e20c(0x88)
-              );
-            }, 0x1);
-      }, 0x1);
-  }
-}
-system[_0x279a47(0x6e)][_0x279a47(0x76)]["subscribe"]((_0x549765) => {
-  const _0x75d7d8 = _0x279a47;
-  let _0x2f1744;
-  switch (_0x549765[_0x75d7d8(0x7e)]) {
-    case ScriptEventSource["Block"]:
-      _0x2f1744 = _0x549765[_0x75d7d8(0xb0)];
-      break;
-    case ScriptEventSource["Entity"]:
-      _0x2f1744 = _0x549765["sourceEntity"];
-      break;
-    case ScriptEventSource[_0x75d7d8(0xa7)]:
-      _0x2f1744 = _0x549765[_0x75d7d8(0x8a)];
-      break;
-    default:
-      return;
-  }
-  switch (_0x549765["id"]) {
-    case content[_0x75d7d8(0x74)]:
-      runScene(_0x2f1744);
-      break;
-    default:
-      break;
-  }
-});
-function getKeyframePair(_0x338b53, _0x35f996) {
-  const _0x5c7fc2 = _0x279a47;
-  let _0x5e1a92 = 0x0,
-    _0x12a1d1 = _0x338b53[_0x5c7fc2(0x84)] - 0x1;
-  while (_0x5e1a92 < _0x12a1d1) {
-    const _0x3aae2f = Math[_0x5c7fc2(0x92)]((_0x5e1a92 + _0x12a1d1) / 0x2);
-    if (_0x338b53[_0x3aae2f][_0x5c7fc2(0x94)] < _0x35f996) _0x5e1a92 = _0x3aae2f + 0x1;
-    else _0x12a1d1 = _0x3aae2f;
-  }
-  return [_0x338b53[_0x5e1a92 - 0x1] || _0x338b53[_0x5e1a92], _0x338b53[_0x5e1a92]];
-}
-function lerpVector(_0x2e1bb8, _0x8a8376, _0x2d39da) {
-  if (_0x2e1bb8 instanceof Vector3 && _0x8a8376 instanceof Vector3) return lerpVector3(_0x2e1bb8, _0x8a8376, _0x2d39da);
-  else {
-    if (_0x2e1bb8 instanceof Vector2 && _0x8a8376 instanceof Vector2)
-      return lerpVector2(_0x2e1bb8, _0x8a8376, _0x2d39da);
-  }
-  throw new Error("Vectors must be either Vector2 or Vector3");
-}
-function lerp(_0x13f7d0, _0x31ce82, _0x54bde2) {
-  return _0x13f7d0 + (_0x31ce82 - _0x13f7d0) * _0x54bde2;
-}
-function lerpVector3(_0x432243, _0x4cb449, _0x5bd9a9) {
-  const _0x5179a6 = lerp(_0x432243["x"], _0x4cb449["x"], _0x5bd9a9),
-    _0x429c11 = lerp(_0x432243["y"], _0x4cb449["y"], _0x5bd9a9),
-    _0x193d04 = lerp(_0x432243["z"], _0x4cb449["z"], _0x5bd9a9);
-  return new Vector3(_0x5179a6, _0x429c11, _0x193d04);
-}
-function lerpVector2(_0x46e4f1, _0x5744d9, _0x581e3a) {
-  const _0xdb6a34 = lerp(_0x46e4f1["x"], _0x5744d9["x"], _0x581e3a),
-    _0x20b25c = lerp(_0x46e4f1["y"], _0x5744d9["y"], _0x581e3a);
-  return new Vector2(_0xdb6a34, _0x20b25c);
-}
-function applyEasing(_0x47dff2, _0x4186f7 = _0x279a47(0x9f)) {
-  const _0x5898f4 = _0x279a47;
-  switch (_0x4186f7) {
-    case _0x5898f4(0xa2):
-      return _0x47dff2 * _0x47dff2;
-    case _0x5898f4(0x6f):
-      return _0x47dff2 * (0x2 - _0x47dff2);
-    case "easeInOut":
-      return _0x47dff2 < 0.5 ? 0x2 * _0x47dff2 * _0x47dff2 : -0x1 + (0x4 - 0x2 * _0x47dff2) * _0x47dff2;
-    default:
-      return _0x47dff2;
-  }
-}
-class Vector2 {
-  constructor(_0x52a13c, _0x11e3de) {
-    const _0xce706e = _0x279a47;
-    typeof _0x52a13c === _0xce706e(0x6c) && _0x52a13c !== null && "x" in _0x52a13c && "y" in _0x52a13c
-      ? ((this["x"] = _0x52a13c["x"]),
-        (this["_y"] = _0x52a13c["y"]),
-        (this["z"] = _0x52a13c["z"] !== undefined ? _0x52a13c["z"] : _0x52a13c["y"]))
-      : ((this["x"] = _0x52a13c), (this["_y"] = _0x11e3de), (this["z"] = _0x11e3de));
-  }
-  set ["y"](_0x312773) {
-    (this["_y"] = _0x312773), (this["z"] = _0x312773);
-  }
-  get ["y"]() {
-    return this["_y"];
-  }
-  [_0x279a47(0x71)]() {
-    return this["x"] + " " + this["y"];
-  }
-  [_0x279a47(0x73)](_0x1f6480, _0x26eba3) {
-    const _0x122bcb = _0x279a47;
-    if (typeof _0x1f6480 === _0x122bcb(0x6c) && _0x1f6480 !== null && "x" in _0x1f6480 && "y" in _0x1f6480)
-      return new Vector2(this["x"] + _0x1f6480["x"], this["y"] + _0x1f6480["y"]);
-    return new Vector2(this["x"] + _0x1f6480, this["y"] + _0x26eba3);
-  }
-  [_0x279a47(0x97)](_0x37b124, _0x1001aa) {
-    return this["x"] === _0x37b124 && this["y"] === _0x1001aa;
-  }
-  [_0x279a47(0xad)]() {
-    const _0x4bc396 = _0x279a47,
-      _0x14d0bb = Math[_0x4bc396(0x9b)](this["x"] * this["x"] + this["y"] * this["y"]);
-    return new Vector2(this["x"] / _0x14d0bb, this["y"] / _0x14d0bb);
-  }
-}
-function _0x4a3f() {
-  const _0x349624 = [
-    "defineProperty",
-    "commandRun",
-    "sqrt",
-    "get",
-    "inputpermission set @s movement disabled",
-    "hud @s reset",
-    "linear",
-    "gamemode",
-    "round",
-    "easeIn",
-    "flat",
-    "_roundToNearestHalf",
-    "378249QidzYK",
-    "location",
-    "NPCDialogue",
-    "center",
-    "sizeCenter",
-    "getAllPlayers",
-    "sendMessage",
-    "runTimeout",
-    "normalized",
-    "gamemode ",
-    "playAnimation",
-    "sourceBlock",
-    "91amYImX",
-    "1152410jEmnVD",
-    "animationId",
-    "coordinates",
-    "hud @s hide all",
-    "entityOption",
-    "toFixed",
-    "object",
-    "3VrmcyH",
-    "afterEvents",
-    "easeOut",
-    "clearRun",
-    "toString",
-    "data_points",
-    "offset",
-    "sceneId",
-    "2251408XRdxLu",
-    "scriptEventReceive",
-    "step",
-    "inputpermission set @s camera disabled",
-    " rot ",
-    "getEntities",
-    "3655152FufOlB",
-    "abs",
-    "set",
-    "sourceType",
-    "type",
-    "1655586gfUboM",
-    "runCommand",
-    "successCount",
-    "interpolation",
-    "length",
-    "prototype",
-    "playerOption",
-    "§cExpected 1 model entity: '",
-    " @s",
-    "gamemode spectator @s",
-    "initiator",
-    "toVector2",
-    "effect @s invisibility infinite 1 true",
-    "inputpermission set @s movement enabled",
-    "2013420rykikS",
-    "sizeBelowCenter",
-    "min",
-    "runInterval",
-    "floor",
-    "teleport",
-    "time",
-    "157944BWuuTX",
-    "belowCenter",
-    "check",
-    "setGamemode",
-  ];
-  _0x4a3f = function () {
-    return _0x349624;
-  };
-  return _0x4a3f();
-}
-class Vector3 extends Vector2 {
-  constructor(_0x3cc07e, _0x18d612, _0xa7f2df) {
-    typeof _0x3cc07e === "object" && _0x3cc07e !== null && "x" in _0x3cc07e && "y" in _0x3cc07e
-      ? (super(_0x3cc07e["x"], _0x3cc07e["y"]),
-        (this["z"] = _0x3cc07e["z"] !== undefined ? _0x3cc07e["z"] : _0x3cc07e["y"]))
-      : (super(_0x3cc07e, _0x18d612), (this["z"] = _0xa7f2df));
-  }
-  [_0x279a47(0x73)](_0x3b6d03, _0x460034, _0x31abab) {
-    const _0x4c94a4 = _0x279a47;
-    if (typeof _0x3b6d03 === _0x4c94a4(0x6c) && _0x3b6d03 !== null && "x" in _0x3b6d03 && "y" in _0x3b6d03)
-      return new Vector3(
-        this["x"] + _0x3b6d03["x"],
-        this["y"] + _0x3b6d03["y"],
-        this["z"] + (_0x3b6d03["z"] !== undefined ? _0x3b6d03["z"] : _0x3b6d03["y"])
-      );
-    return new Vector3(this["x"] + _0x3b6d03, this["y"] + _0x460034, this["z"] + _0x31abab);
-  }
-  [_0x279a47(0x97)](_0x4259f4, _0x1883fc, _0x25e019) {
-    return this["x"] === _0x4259f4 && this["y"] === _0x1883fc && this["z"] === _0x25e019;
-  }
-  [_0x279a47(0x8b)]() {
-    return new Vector2(this["x"], this["y"]);
-  }
-  [_0x279a47(0x71)]() {
-    return this["x"] + " " + this["y"] + " " + this["z"];
-  }
-  [_0x279a47(0x96)]() {
-    const _0x2545e4 = _0x279a47,
-      _0x50811e = this["_roundToNearestHalf"](this["x"]),
-      _0x46e13e = this["y"],
-      _0x3a68c3 = this[_0x2545e4(0xa4)](this["z"]);
-    return new Vector3(_0x50811e, _0x46e13e, _0x3a68c3);
-  }
-  [_0x279a47(0xa8)]() {
-    const _0x49e3b9 = _0x279a47,
-      _0x4b4e65 = this[_0x49e3b9(0xa4)](this["x"]),
-      _0x56009f = this["_roundToNearestHalf"](this["y"]),
-      _0x355a17 = this["_roundToNearestHalf"](this["z"]);
-    return new Vector3(_0x4b4e65, _0x56009f, _0x355a17);
-  }
-  [_0x279a47(0xa9)]() {
-    const _0x1f2cbb = _0x279a47,
-      _0x53de41 = Math[_0x1f2cbb(0x92)](this["x"] / 0x2),
-      _0x13f42f = Math[_0x1f2cbb(0x92)](this["z"] / 0x2),
-      _0x2d4ed5 = Math[_0x1f2cbb(0x92)](this["z"] / 0x2);
-    return new Vector3(_0x53de41, _0x13f42f, _0x2d4ed5);
-  }
-  [_0x279a47(0x8f)]() {
-    const _0x47d70b = _0x279a47,
-      _0x34fdba = Math[_0x47d70b(0x92)](this["x"] / 0x2),
-      _0x4644bf = 0x0,
-      _0x4555d9 = Math[_0x47d70b(0x92)](this["z"] / 0x2);
-    return new Vector3(_0x34fdba, _0x4644bf, _0x4555d9);
-  }
-  [_0x279a47(0xa4)](_0x165a6d) {
-    const _0x26c9ad = _0x279a47;
-    return Math[_0x26c9ad(0xa1)](_0x165a6d * 0x2) / 0x2;
-  }
-  [_0x279a47(0xad)]() {
-    const _0x4ded4a = Math["sqrt"](this["x"] * this["x"] + this["y"] * this["y"] + this["z"] * this["z"]);
-    return new Vector3(this["x"] / _0x4ded4a, this["y"] / _0x4ded4a, this["z"] / _0x4ded4a);
-  }
-}
-Object[_0x279a47(0x99)](Entity[_0x279a47(0x85)], _0x279a47(0xb4), {
-  get: function () {
-    const _0x2ef242 = _0x279a47;
-    return new Vector3(
-      Math["floor"](this[_0x2ef242(0xa6)]["x"]),
-      Math[_0x2ef242(0x92)](this[_0x2ef242(0xa6)]["y"]),
-      Math[_0x2ef242(0x92)](this[_0x2ef242(0xa6)]["z"])
-    );
-  },
-  enumerable: !![],
-}),
-  Object[_0x279a47(0x99)](Entity[_0x279a47(0x85)], _0x279a47(0x9a), {
-    value: function (..._0x3ac7ec) {
-      const _0xf01b39 = _0x279a47,
-        _0x10d242 = _0x3ac7ec[_0xf01b39(0xa3)](),
-        _0x47af32 = { successCount: 0x0 };
-      for (const _0x20b6bd of _0x10d242) {
-        const _0x32331a = this[_0xf01b39(0x81)](_0x20b6bd);
-        if (_0x32331a["successCount"] > 0x0) _0x47af32[_0xf01b39(0x82)]++;
-      }
-      return _0x47af32;
-    },
-    enumerable: !![],
-  }),
-  Object[_0x279a47(0x99)](Player["prototype"], _0x279a47(0xa0), {
-    get: function () {
-      return this["getGameMode"]();
-    },
-    set: function (_0x4226a9) {
-      const _0x870445 = _0x279a47;
-      this[_0x870445(0x98)](_0x4226a9);
-    },
-    enumerable: !![],
-  }),
-  load();
+let scene;
+function load() { const _0x7b0205 = _0x7107; for (const _0x1db8a3 of world[_0x7b0205(0x8c)]()) { _0x1db8a3[_0x7b0205(0xca)](_0x7b0205(0xcf), "hud @s reset", _0x7b0205(0x99), _0x7b0205(0xb7)); } }
+function runScene(_0x3502a3) { const _0x53ba8e = _0x7107; if (scene) system[_0x53ba8e(0xc7)](scene); const { positions: _0x59d387, rotations: _0x3ebe22 } = content, _0x40fd14 = _0x3502a3[_0x53ba8e(0xa8)], _0x376726 = _0x40fd14[_0x53ba8e(0xa4)](content["playerOption"]), _0x3a4079 = _0x40fd14[_0x53ba8e(0xa4)](content["entityOption"]); if (_0x3a4079[_0x53ba8e(0x94)] !== 0x1) { world[_0x53ba8e(0x95)]( "§cExpected 1 model entity: '" + content[_0x53ba8e(0xba)]["type"] + _0x53ba8e(0xc3) + _0x3a4079[_0x53ba8e(0x94)] + _0x53ba8e(0xb6) ); return; } const _0x39c2c8 = _0x3a4079[0x0], _0x420c11 = new Map(), _0x403575 = new Map(); for (const _0xecb709 of _0x376726) { _0x420c11[_0x53ba8e(0x82)](_0xecb709["id"], _0xecb709["gamemode"]), _0x403575["set"](_0xecb709["id"], { location: _0xecb709[_0x53ba8e(0xb9)], rotation: _0xecb709[_0x53ba8e(0xc2)](), }), _0xecb709[_0x53ba8e(0xca)]( _0x53ba8e(0xcf), _0x53ba8e(0x8a), _0x53ba8e(0x8e), _0x53ba8e(0x9f), _0x53ba8e(0x98), _0x53ba8e(0x8b) ), _0x39c2c8[_0x53ba8e(0xbf)](content[_0x53ba8e(0xb4)]); let _0xf24bb4 = 0x0; const _0x53c98c = 0x14; scene = system["runInterval"](() => { const _0x34cc12 = _0x53ba8e; _0xf24bb4 += 0x1 / _0x53c98c; const [_0x35efe4, _0x52e456] = getKeyframePair(_0x59d387, _0xf24bb4), _0x43edf9 = (_0xf24bb4 - _0x35efe4["time"]) / (_0x52e456[_0x34cc12(0x87)] - _0x35efe4[_0x34cc12(0x87)]), _0x4b99a5 = applyEasing(Math[_0x34cc12(0xb5)](_0x43edf9, 0x1), _0x35efe4[_0x34cc12(0xc9)]), _0x92321f = _0x39c2c8[_0x34cc12(0x7f)], _0x4a59b9 = new Vector3(_0x35efe4[_0x34cc12(0x9c)])[_0x34cc12(0x9b)](_0x92321f), _0x525d60 = new Vector3(_0x52e456[_0x34cc12(0x9c)])[_0x34cc12(0x9b)](_0x92321f), _0xc1e9b = _0x35efe4[_0x34cc12(0xc9)] === _0x34cc12(0x86) ? _0x4a59b9 : lerpVector(_0x4a59b9, _0x525d60, _0x4b99a5), [_0x467c6c, _0x28240b] = getKeyframePair(_0x3ebe22, _0xf24bb4), _0x120df8 = (_0xf24bb4 - _0x467c6c[_0x34cc12(0x87)]) / (_0x28240b[_0x34cc12(0x87)] - _0x467c6c[_0x34cc12(0x87)]), _0x1075fc = applyEasing(Math[_0x34cc12(0xb5)](_0x120df8, 0x1), _0x467c6c[_0x34cc12(0xc9)]), _0x47d11e = new Vector2(+_0x467c6c["data_points"]["x"], +_0x467c6c["data_points"]["y"]), _0x29024d = new Vector2(+_0x28240b["data_points"]["x"], +_0x28240b[_0x34cc12(0x9c)]["y"]); let _0x2a96fc = _0x467c6c[_0x34cc12(0xc9)] === _0x34cc12(0x86) ? _0x47d11e : lerpVector(_0x47d11e, _0x29024d, _0x1075fc); const _0x51dab0 = 0.000001; (_0x2a96fc["x"] = Math[_0x34cc12(0x83)](_0x2a96fc["x"]) < _0x51dab0 ? 0x0 : _0x2a96fc["x"]), (_0x2a96fc["y"] = Math[_0x34cc12(0x83)](_0x2a96fc["y"]) < _0x51dab0 ? 0x0 : _0x2a96fc["y"]); if (Math[_0x34cc12(0x83)](_0x2a96fc["x"]) < _0x51dab0) _0x2a96fc["x"] = 0x0; if (Math[_0x34cc12(0x83)](_0x2a96fc["y"]) < _0x51dab0) _0x2a96fc["y"] = 0x0; const _0x38a747 = _0x39c2c8[_0x34cc12(0xb9)], _0x2f7328 = _0x39c2c8[_0x34cc12(0xc2)]()["y"], _0x4895a7 = _0xc1e9b[_0x34cc12(0x9b)](-_0x38a747["x"], -_0x38a747["y"], -_0x38a747["z"]), _0x5c9a10 = rotatePosition(_0x4895a7, _0x2f7328), _0x4b58e4 = _0x5c9a10["offset"](_0x38a747); (_0x2a96fc["y"] += _0x2f7328), (_0x2a96fc["y"] = normalizeRotation(_0x2a96fc["y"])), _0xecb709[_0x34cc12(0xa2)](_0x4b58e4); const _0x2d6efe = (_0x37bcdb) => { const _0x413145 = _0x34cc12, _0x525648 = Number(_0x37bcdb); return _0x525648 % 0x1 === 0x0 ? _0x525648[_0x413145(0x9e)](0x1) : _0x525648[_0x413145(0x9e)](0x4); }; _0xecb709["commandRun"]( "execute as @e[type=armor_stand] run teleport @s " + _0x2d6efe(_0x4b58e4["x"]) + " " + _0x2d6efe(_0x4b58e4["y"]) + " " + _0x2d6efe(_0x4b58e4["z"]) + " " + _0x2d6efe(_0x2a96fc["y"]) + " " + _0x2d6efe(_0x2a96fc["x"]) ); const _0x3a72f8 = "camera @s set minecraft:free ease 0.05 linear pos " + _0x2d6efe(_0x4b58e4["x"]) + " " + _0x2d6efe(_0x4b58e4["y"]) + " " + _0x2d6efe(_0x4b58e4["z"]) + " rot " + _0x2a96fc["x"] + " " + _0x2a96fc["y"]; _0xecb709["runCommand"](_0x3a72f8), _0xf24bb4 > _0x59d387["at"](-0x1)[_0x34cc12(0x87)] && _0xf24bb4 > _0x3ebe22["at"](-0x1)[_0x34cc12(0x87)] && system[_0x34cc12(0xaf)](() => { const _0x4caccc = _0x34cc12; system[_0x4caccc(0xc7)](scene); const _0x167f49 = _0x420c11[_0x4caccc(0xcc)](_0xecb709["id"]), _0x10fedb = _0x403575["get"](_0xecb709["id"]); _0xecb709[_0x4caccc(0xca)]( _0x4caccc(0xcf), _0x4caccc(0x90), _0x4caccc(0xc6), _0x4caccc(0x99), _0x4caccc(0xb7), _0x4caccc(0xb2) + _0x167f49 + _0x4caccc(0xb3), _0x4caccc(0xad) + _0x10fedb["location"]["x"] + " " + _0x10fedb[_0x4caccc(0xb9)]["y"] + " " + _0x10fedb[_0x4caccc(0xb9)]["z"] + " " + _0x10fedb[_0x4caccc(0xcd)]["y"] + " " + _0x10fedb[_0x4caccc(0xcd)]["x"] ); }, 0x1); }, 0x1); } }
+system["afterEvents"][_0x3c86cb(0xcb)][_0x3c86cb(0x8f)]((_0x2b9e3f) => { const _0x2d10cb = _0x3c86cb; let _0x542de2; switch (_0x2b9e3f[_0x2d10cb(0xc0)]) { case ScriptEventSource[_0x2d10cb(0xc1)]: _0x542de2 = _0x2b9e3f[_0x2d10cb(0x85)]; break; case ScriptEventSource["Entity"]: _0x542de2 = _0x2b9e3f["sourceEntity"]; break; case ScriptEventSource[_0x2d10cb(0xce)]: _0x542de2 = _0x2b9e3f[_0x2d10cb(0xa1)]; break; default: return; } switch (_0x2b9e3f["id"]) { case content[_0x2d10cb(0xa0)]: runScene(_0x542de2); break; default: break; } });
+function rotatePosition(_0x19d036, _0x9b974d) { const _0x5cc080 = _0x3c86cb, _0x59b68c = (_0x9b974d * Math["PI"]) / 0xb4, _0x5071fb = Math[_0x5cc080(0x7d)](_0x59b68c), _0x3d0b41 = Math[_0x5cc080(0xc4)](_0x59b68c), _0x53a42e = _0x19d036["x"] * _0x5071fb - _0x19d036["z"] * _0x3d0b41, _0x230339 = _0x19d036["x"] * _0x3d0b41 + _0x19d036["z"] * _0x5071fb; return new Vector3(_0x53a42e, _0x19d036["y"], _0x230339); }
+function getKeyframePair(_0x27ab0c, _0x14e9e2) { const _0xc916f5 = _0x3c86cb; let _0x1516ec = 0x0, _0x4aa29d = _0x27ab0c[_0xc916f5(0x94)] - 0x1; while (_0x1516ec < _0x4aa29d) { const _0xfa215e = Math[_0xc916f5(0x80)]((_0x1516ec + _0x4aa29d) / 0x2); if (_0x27ab0c[_0xfa215e][_0xc916f5(0x87)] < _0x14e9e2) _0x1516ec = _0xfa215e + 0x1; else _0x4aa29d = _0xfa215e; } return [_0x27ab0c[_0x1516ec - 0x1] || _0x27ab0c[_0x1516ec], _0x27ab0c[_0x1516ec]]; }
+function lerpVector(_0x854268, _0x29ef32, _0x22c65e) { const _0x5be341 = _0x3c86cb; if (_0x854268 instanceof Vector3 && _0x29ef32 instanceof Vector3) return lerpVector3(_0x854268, _0x29ef32, _0x22c65e); else { if (_0x854268 instanceof Vector2 && _0x29ef32 instanceof Vector2) return lerpVector2(_0x854268, _0x29ef32, _0x22c65e); } throw new Error(_0x5be341(0x88)); }
+function lerp(_0x32a92f, _0x39ba5f, _0x56dd17) { return _0x32a92f + (_0x39ba5f - _0x32a92f) * _0x56dd17; }
+function lerpVector3(_0x1cedf7, _0xaa40b5, _0x4cc96b) { const _0x156a67 = lerp(_0x1cedf7["x"], _0xaa40b5["x"], _0x4cc96b), _0x35ded0 = lerp(_0x1cedf7["y"], _0xaa40b5["y"], _0x4cc96b), _0x2a37e3 = lerp(_0x1cedf7["z"], _0xaa40b5["z"], _0x4cc96b); return new Vector3(_0x156a67, _0x35ded0, _0x2a37e3); }
+function lerpVector2(_0x389326, _0xf64fc, _0x252daa) { const _0x14a8e1 = lerp(_0x389326["x"], _0xf64fc["x"], _0x252daa), _0x3021d8 = lerp(_0x389326["y"], _0xf64fc["y"], _0x252daa); return new Vector2(_0x14a8e1, _0x3021d8); }
+function applyEasing(_0x23f371, _0x2d75ed = _0x3c86cb(0xd0)) { const _0x174e66 = _0x3c86cb; switch (_0x2d75ed) { case "easeIn": return _0x23f371 * _0x23f371; case _0x174e66(0xab): return _0x23f371 * (0x2 - _0x23f371); case _0x174e66(0x7e): return _0x23f371 < 0.5 ? 0x2 * _0x23f371 * _0x23f371 : -0x1 + (0x4 - 0x2 * _0x23f371) * _0x23f371; default: return _0x23f371; } }
+function normalizeRotation(_0x39a132) { return ((_0x39a132 + 0xb4) % 0x168) - 0xb4; }
+class Vector2 { constructor(_0x542165, _0x17af22) { const _0x4ae273 = _0x3c86cb; typeof _0x542165 === _0x4ae273(0xa7) && _0x542165 !== null && "x" in _0x542165 && "y" in _0x542165 ? ((this["x"] = _0x542165["x"]), (this["_y"] = _0x542165["y"]), (this["z"] = _0x542165["z"] !== undefined ? _0x542165["z"] : _0x542165["y"])) : ((this["x"] = _0x542165), (this["_y"] = _0x17af22), (this["z"] = _0x17af22)); } set ["y"](_0x4a9a77) { (this["_y"] = _0x4a9a77), (this["z"] = _0x4a9a77); } get ["y"]() { return this["_y"]; } ["toString"]() { return this["x"] + " " + this["y"]; } [_0x3c86cb(0x9b)](_0x52b0be, _0x467b95) { const _0x5dd8b1 = _0x3c86cb; if (typeof _0x52b0be === _0x5dd8b1(0xa7) && _0x52b0be !== null && "x" in _0x52b0be && "y" in _0x52b0be) return new Vector2(this["x"] + _0x52b0be["x"], this["y"] + _0x52b0be["y"]); return new Vector2(this["x"] + _0x52b0be, this["y"] + _0x467b95); } [_0x3c86cb(0xa6)](_0x2976c5, _0x3957a7) { return this["x"] === _0x2976c5 && this["y"] === _0x3957a7; } ["normalized"]() { const _0x2f48e4 = _0x3c86cb, _0x32f891 = Math[_0x2f48e4(0xa9)](this["x"] * this["x"] + this["y"] * this["y"]); return new Vector2(this["x"] / _0x32f891, this["y"] / _0x32f891); } }
+class Vector3 extends Vector2 { constructor(_0x33e253, _0x36d333, _0x4a0342) { typeof _0x33e253 === "object" && _0x33e253 !== null && "x" in _0x33e253 && "y" in _0x33e253 ? (super(_0x33e253["x"], _0x33e253["y"]), (this["z"] = _0x33e253["z"] !== undefined ? _0x33e253["z"] : _0x33e253["y"])) : (super(_0x33e253, _0x36d333), (this["z"] = _0x4a0342)); } ["offset"](_0x468e50, _0xf86122, _0xcbc991) { const _0x162655 = _0x3c86cb; if (typeof _0x468e50 === _0x162655(0xa7) && _0x468e50 !== null && "x" in _0x468e50 && "y" in _0x468e50) return new Vector3( this["x"] + _0x468e50["x"], this["y"] + _0x468e50["y"], this["z"] + (_0x468e50["z"] !== undefined ? _0x468e50["z"] : _0x468e50["y"]) ); return new Vector3(this["x"] + _0x468e50, this["y"] + _0xf86122, this["z"] + _0xcbc991); } [_0x3c86cb(0xa6)](_0x4f7cb9, _0x14e934, _0x44a0cd) { return this["x"] === _0x4f7cb9 && this["y"] === _0x14e934 && this["z"] === _0x44a0cd; } [_0x3c86cb(0x91)]() { return new Vector2(this["x"], this["y"]); } ["toString"]() { return this["x"] + " " + this["y"] + " " + this["z"]; } [_0x3c86cb(0xbc)]() { const _0xa862d1 = _0x3c86cb, _0x26d778 = this[_0xa862d1(0x97)](this["x"]), _0x36c456 = this["y"], _0x27e028 = this[_0xa862d1(0x97)](this["z"]); return new Vector3(_0x26d778, _0x36c456, _0x27e028); } [_0x3c86cb(0xc5)]() { const _0x1c3977 = _0x3c86cb, _0x43204f = this[_0x1c3977(0x97)](this["x"]), _0x6df483 = this[_0x1c3977(0x97)](this["y"]), _0x3f16e4 = this[_0x1c3977(0x97)](this["z"]); return new Vector3(_0x43204f, _0x6df483, _0x3f16e4); } [_0x3c86cb(0xb8)]() { const _0x4eebd3 = _0x3c86cb, _0x54407c = Math[_0x4eebd3(0x80)](this["x"] / 0x2), _0x82ac35 = Math["floor"](this["z"] / 0x2), _0x2912e3 = Math["floor"](this["z"] / 0x2); return new Vector3(_0x54407c, _0x82ac35, _0x2912e3); } [_0x3c86cb(0x9a)]() { const _0xd3ed19 = _0x3c86cb, _0x47bace = Math[_0xd3ed19(0x80)](this["x"] / 0x2), _0x1d2956 = 0x0, _0x3412ce = Math[_0xd3ed19(0x80)](this["z"] / 0x2); return new Vector3(_0x47bace, _0x1d2956, _0x3412ce); } ["_roundToNearestHalf"](_0x547bc0) { return Math["round"](_0x547bc0 * 0x2) / 0x2; } ["normalized"]() { const _0x21739e = _0x3c86cb, _0x2d6305 = Math[_0x21739e(0xa9)](this["x"] * this["x"] + this["y"] * this["y"] + this["z"] * this["z"]); return new Vector3(this["x"] / _0x2d6305, this["y"] / _0x2d6305, this["z"] / _0x2d6305); } }
+Object["defineProperty"](Entity[_0x3c86cb(0xa3)], _0x3c86cb(0x7f), { get: function () { const _0x12fd84 = _0x3c86cb; return new Vector3( Math[_0x12fd84(0x80)](this[_0x12fd84(0xb9)]["x"]), Math["floor"](this[_0x12fd84(0xb9)]["y"]), Math[_0x12fd84(0x80)](this[_0x12fd84(0xb9)]["z"]) ); }, enumerable: !![], }), Object[_0x3c86cb(0xbd)](Entity["prototype"], "commandRun", { value: function (..._0x66ef87) { const _0x3c1c81 = _0x3c86cb, _0x5ac4b9 = _0x66ef87[_0x3c1c81(0x9d)](), _0x24ab34 = { successCount: 0x0 }; for (const _0x3d2ee4 of _0x5ac4b9) { const _0x11c39c = this[_0x3c1c81(0xac)](_0x3d2ee4); if (_0x11c39c[_0x3c1c81(0xae)] > 0x0) _0x24ab34["successCount"]++; } return _0x24ab34; }, enumerable: !![], }), Object[_0x3c86cb(0xbd)](Player[_0x3c86cb(0xa3)], _0x3c86cb(0xaa), { get: function () { const _0x296fed = _0x3c86cb; return this[_0x296fed(0x8d)](); }, set: function (_0x23bb85) { const _0x4eecbe = _0x3c86cb; this[_0x4eecbe(0xbb)](_0x23bb85); }, enumerable: !![], }), load();

@@ -1,9 +1,15 @@
-import { system, world, ScriptEventSource, Player, Entity } from "@minecraft/server";
-import content from "./Content";
+import { system, world, ScriptEventSource, Player, Entity, Dimension } from "@minecraft/server";
+/* @preserve-start */
+
+import content from "./Content.js";
+
+/* @preserve-end */
+
+let scene;
 
 function load() {
   for (const player of world.getAllPlayers()) {
-    player.commandRun(
+    player.commandRunAsync(
       "camera @s clear",
       "hud @s reset",
       "inputpermission set @s camera enabled",
@@ -13,6 +19,8 @@ function load() {
 }
 
 function runScene(source) {
+  if (scene) system.clearRun(scene);
+
   const { positions, rotations } = content;
   const dimension = source.dimension;
   const players = dimension.getEntities(content.playerOption);
@@ -28,9 +36,15 @@ function runScene(source) {
   const entity = entities[0];
 
   const gamemodes = new Map();
+  const checkpoints = new Map();
+  const completedCommands = new Set();
+  const completedSounds = new Set();
+  let finished = false;
   for (const player of players) {
+    // -- START --
     gamemodes.set(player.id, player.gamemode);
-    player.commandRun(
+    checkpoints.set(player.id, { location: player.location, rotation: player.getRotation() });
+    player.commandRunAsync(
       "camera @s clear",
       "effect @s invisibility infinite 1 true",
       "hud @s hide all",
@@ -40,70 +54,124 @@ function runScene(source) {
     );
 
     entity.playAnimation(content.animationId);
+  }
 
-    let time = 0;
-    const tps = 20;
-    const intervalId = system.runInterval(() => {
-      time += 1 / tps;
+  let time = 0;
+  const tps = 20;
+  const location = entity.location;
+  const rotation = entity.getRotation().y;
 
-      // -- POSITION INTERPOLATION --
-      const [posA, posB] = getKeyframePair(positions, time);
-      const posT = (time - posA.time) / (posB.time - posA.time);
-      const easedPosT = applyEasing(Math.min(posT, 1), posA.interpolation);
+  function updateScene() {
+    time += 1 / tps;
 
-      const coords = entity.coordinates;
-      const posStart = new Vector3(posA.data_points).offset(coords);
-      const posEnd = new Vector3(posB.data_points).offset(coords);
+    // -- POSITION INTERPOLATION --
+    const [posA, posB] = getKeyframePair(positions, time);
+    const posT = posB.time !== posA.time ? (time - posA.time) / (posB.time - posA.time) : 0;
+    const easedPosT = applyEasing(Math.min(posT, 1), posA.interpolation);
 
-      const finalPos = posA.interpolation === "step" ? posStart : lerpVector(posStart, posEnd, easedPosT);
+    const coords = entity.coordinates;
+    const posStart = new Vector3(posA.data_points).offset(coords);
+    const posEnd = new Vector3(posB.data_points).offset(coords);
 
-      // -- ROTATION INTERPOLATION --
-      const [rotA, rotB] = getKeyframePair(rotations, time);
-      const rotT = (time - rotA.time) / (rotB.time - rotA.time);
-      const easedRotT = applyEasing(Math.min(rotT, 1), rotA.interpolation);
+    const finalPos =
+      posA.interpolation === "step" || posA.time === posB.time ? posStart : lerpVector(posStart, posEnd, easedPosT);
 
-      const rotStart = new Vector2(+rotA.data_points.x, +rotA.data_points.y);
-      const rotEnd = new Vector2(+rotB.data_points.x, +rotB.data_points.y);
-      let finalRot = rotA.interpolation === "step" ? rotStart : lerpVector(rotStart, rotEnd, easedRotT);
+    // -- ROTATION INTERPOLATION --
+    const [rotA, rotB] = getKeyframePair(rotations, time);
+    const rotT = (time - rotA.time) / (rotB.time - rotA.time);
+    const easedRotT = applyEasing(Math.min(rotT, 1), rotA.interpolation);
 
-      const threshold = 1e-6; // Small threshold for rounding
-      finalRot.x = Math.abs(finalRot.x) < threshold ? 0 : finalRot.x;
-      finalRot.y = Math.abs(finalRot.y) < threshold ? 0 : finalRot.y;
+    const rotStart = new Vector2(+rotA.data_points.x, +rotA.data_points.y);
+    const rotEnd = new Vector2(+rotB.data_points.x, +rotB.data_points.y);
+    let finalRot = rotA.interpolation === "step" ? rotStart : lerpVector(rotStart, rotEnd, easedRotT);
 
-      if (Math.abs(finalRot.x) < threshold) finalRot.x = 0;
-      if (Math.abs(finalRot.y) < threshold) finalRot.y = 0;
+    const threshold = 1e-6; // Small threshold for rounding
+    finalRot.x = Math.abs(finalRot.x) < threshold ? 0 : finalRot.x;
+    finalRot.y = Math.abs(finalRot.y) < threshold ? 0 : finalRot.y;
 
-      // -- APPLY TO PLAYER --
-      player.teleport(finalPos);
+    if (Math.abs(finalRot.x) < threshold) finalRot.x = 0;
+    if (Math.abs(finalRot.y) < threshold) finalRot.y = 0;
 
-      const toCommandDecimal = (value) => {
-        const num = Number(value);
-        return num % 1 === 0 ? num.toFixed(1) : num.toFixed(4);
-      };
+    const relativePos = finalPos.offset(-location.x, -location.y, -location.z);
+    const rotatedPos = rotatePosition(relativePos, rotation);
+    const finalRotatedPos = rotatedPos.offset(location);
+    finalRot.y += rotation;
+    finalRot.y = normalizeRotation(finalRot.y);
 
-      const cmd = `camera @s set minecraft:free ease 0.05 linear pos ${toCommandDecimal(finalPos.x)} ${toCommandDecimal(
-        finalPos.y
-      )} ${toCommandDecimal(finalPos.z)} rot ${finalRot.x} ${finalRot.y}`;
+    const playerPos = finalRotatedPos.offset(0.1, -1.62, 0.35);
 
-      player.runCommand(cmd);
+    // -- COMMANDS --
+    const epsilon = 0.05;
+    for (const command of content.commands) {
+      try {
+        if (Math.abs(command.time - time) <= epsilon) {
+          if (!completedCommands.has(command.time)) {
+            dimension.commandRunAsync(...command.data_points);
+            completedCommands.add(command.time);
+          }
+        }
+      } catch (error) {
+        world.sendMessage(`§6Error in command at time ${command.time}:\n§c${error.message}`);
+      }
+    }
 
-      // -- END --
-      if (time > positions.at(-1).time && time > rotations.at(-1).time) {
+    // -- SOUNDS --
+    let currentSound;
+    for (const sound of content.sounds) {
+      if (Math.abs(sound.time - time) <= epsilon) {
+        if (!completedSounds.has(sound.time)) {
+          currentSound = sound;
+          completedSounds.add(sound.time);
+          break;
+        }
+      }
+    }
+    // -- APPLY TO PLAYER --
+
+    const cmd = `camera @s set minecraft:free ease 0.05 linear pos ${toCommandDecimal(
+      finalRotatedPos.x
+    )} ${toCommandDecimal(finalRotatedPos.y)} ${toCommandDecimal(finalRotatedPos.z)} rot ${finalRot.x} ${finalRot.y}`;
+
+    finished = time >= content.length;
+
+    players.forEach((player) => {
+      player.teleport(playerPos, { rotation: { x: finalRot.x, y: finalRot.y } });
+      player.runCommandAsync(cmd);
+
+      if (currentSound) {
+        for (const sound of currentSound.data_points) {
+          player.playSound(sound);
+        }
+      }
+
+      if (finished) {
+        const gamemode = gamemodes.get(player.id);
+        const checkpoint = checkpoints.get(player.id);
         system.runTimeout(() => {
-          system.clearRun(intervalId);
-          const gamemode = gamemodes.get(player.id);
-          player.commandRun(
+          player.commandRunAsync(
             "camera @s clear",
             "effect @s invisibility 0",
             "hud @s reset",
             "inputpermission set @s camera enabled",
             "inputpermission set @s movement enabled",
-            `gamemode ${gamemode} @s`
+            `gamemode ${gamemode} @s`,
+            `teleport @s ${checkpoint.location.x} ${checkpoint.location.y} ${checkpoint.location.z} ${checkpoint.rotation.y} ${checkpoint.rotation.x}`
           );
         }, 1);
       }
-    }, 1);
+    });
+
+    // -- END --
+    if (finished) {
+      system.runTimeout(() => {
+        system.clearRun(scene);
+      }, 1);
+    } else {
+      scene = system.run(updateScene);
+    }
   }
+
+  scene = system.run(updateScene);
 }
 
 system.afterEvents.scriptEventReceive.subscribe((e) => {
@@ -133,6 +201,22 @@ system.afterEvents.scriptEventReceive.subscribe((e) => {
 });
 
 // -- UTILITY FUNCTIONS --
+function rotatePosition(pos, angleDegrees) {
+  const angleRadians = (angleDegrees * Math.PI) / 180;
+  const cos = Math.cos(angleRadians);
+  const sin = Math.sin(angleRadians);
+
+  const rotatedX = pos.x * cos - pos.z * sin;
+  const rotatedZ = pos.x * sin + pos.z * cos;
+
+  return new Vector3(rotatedX, pos.y, rotatedZ);
+}
+
+function toCommandDecimal(value) {
+  const num = Number(value);
+  return num % 1 === 0 ? num.toFixed(1) : num.toFixed(4);
+}
+
 function getKeyframePair(frames, t) {
   let left = 0,
     right = frames.length - 1;
@@ -181,6 +265,10 @@ function applyEasing(t, mode = "linear") {
     default:
       return t;
   }
+}
+
+function normalizeRotation(rotation) {
+  return ((rotation + 180) % 360) - 180;
 }
 
 class Vector2 {
@@ -298,22 +386,37 @@ Object.defineProperty(Entity.prototype, "coordinates", {
     return new Vector3(Math.floor(this.location.x), Math.floor(this.location.y), Math.floor(this.location.z));
   },
   enumerable: true,
+  configurable: true,
+});
+async function runCommandAsync(...commands) {
+  const result = { successCount: 0 };
+
+  const flattenedCommands = commands.flat();
+
+  const commandPromises = flattenedCommands.map(async (command) => {
+    const cr = await this.runCommandAsync(command);
+    if (cr.successCount > 0) {
+      result.successCount++;
+    }
+  });
+
+  await Promise.all(commandPromises);
+
+  return result;
+}
+
+Object.defineProperty(Entity.prototype, "commandRunAsync", {
+  value: async function (...commands) {
+    return await runCommandAsync.apply(this, commands);
+  },
+  configurable: true,
 });
 
-Object.defineProperty(Entity.prototype, "commandRun", {
-  value: function (...commands) {
-    const flattenedCommands = commands.flat(); // Still works if nested arrays or single list
-
-    const result = { successCount: 0 };
-
-    for (const command of flattenedCommands) {
-      const cr = this.runCommand(command);
-      if (cr.successCount > 0) result.successCount++;
-    }
-
-    return result;
+Object.defineProperty(Dimension.prototype, "commandRunAsync", {
+  value: async function (...commands) {
+    return await runCommandAsync.apply(this, commands);
   },
-  enumerable: true,
+  configurable: true,
 });
 
 Object.defineProperty(Player.prototype, "gamemode", {
@@ -324,6 +427,7 @@ Object.defineProperty(Player.prototype, "gamemode", {
     this.setGamemode(gamemode);
   },
   enumerable: true,
+  configurable: true,
 });
 
 load();

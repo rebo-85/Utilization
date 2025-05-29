@@ -1,0 +1,30 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc_trailer:scene_3",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/bc_trailer/BC_Trailer_Texture"
+      },
+      "geometry": {
+        "default": "geometry.bc_trailer.scene_3"
+      },
+      "render_controllers": ["controller.render.default"],
+      "spawn_egg": {
+        "base_color": "#ccd7ad",
+        "overlay_color": "#4be19e"
+      },
+      "particle_effects": {
+        "bubbles_1": "eternal:bubbles_1",
+        "bubbles_2": "eternal:bubbles_2",
+        "bubbles_3": "eternal:bubbles_3",
+        "bubbles_4": "eternal:bubbles_4",
+        "bubbles_5": "eternal:bubbles_5",
+        "underwater_particles_1": "eternal:underwater_particles_1"
+      }
+    }
+  }
+}
